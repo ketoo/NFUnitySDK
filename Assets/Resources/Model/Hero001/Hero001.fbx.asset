@@ -1,0 +1,382 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f22112e034044c1789f94ba2110075c, type: 3}
+  m_Name: Hero001.fbx
+  m_EditorClassIdentifier: 
+  VirtualPointList:
+  - None
+  DefaultAnimationType: 0
+  AnimationSkillList:
+  - IsFoldout: 1
+    Type: 0
+    fTime: 2.4000006
+    NextType: 0
+    AnimationClip: {fileID: 7400000, guid: dffa50cfe77e0434bbfa71245b3dd529, type: 3}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 1
+    fTime: 0.59333324
+    NextType: 0
+    AnimationClip: {fileID: 7400000, guid: 1cb8ed3cbba15f0479fbae54e0a963df, type: 3}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 2
+    fTime: 0.9899998
+    NextType: 0
+    AnimationClip: {fileID: 7400000, guid: b1a5e04ae51004842aba06704a6c2903, type: 3}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 3
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 4
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 5
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 6
+    fTime: 0.06666708
+    NextType: 0
+    AnimationClip: {fileID: 7400004, guid: 0d9d26e2162aa4d11ab075b34c029673, type: 3}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 7
+    fTime: 0.06666708
+    NextType: 0
+    AnimationClip: {fileID: 7400004, guid: 0d9d26e2162aa4d11ab075b34c029673, type: 3}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 8
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 9
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 10
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 11
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 12
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 13
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 14
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 15
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 20
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 21
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 30
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 40
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 41
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 42
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 43
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 44
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 50
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 51
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 52
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 100
+    fTime: 1
+    NextType: 0
+    AnimationClip: {fileID: 0}
+    fCurTime: 0
+    fSpeed: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    MovementStructList: []
+    CameraStructList: []

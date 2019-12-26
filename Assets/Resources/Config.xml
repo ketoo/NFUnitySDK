@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+
+<XML>
+	<Servers>
+		<Server ID="1" Name="public server" IP = "52.187.201.202" Port="15001"/>
+        <Server ID="2" Name="local server" IP = "127.0.0.1" Port="15001"/>
+	</Servers>
+	<Evironment>
+		<DataPath ID=""/>
+	</Evironment>
+</XML>

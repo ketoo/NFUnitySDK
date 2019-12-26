@@ -1,0 +1,11 @@
+
+/Library
+/log
+/obj
+/Temp
+/.vs
+
+*.csproj
+*.app
+*.log
+*.sln

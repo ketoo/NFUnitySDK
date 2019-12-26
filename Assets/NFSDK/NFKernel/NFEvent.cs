@@ -1,0 +1,40 @@
+﻿//-----------------------------------------------------------------------
+// <copyright file="NFILogicClassModule.cs">
+//     Copyright (C) 2015-2019 lvsheng.huang <https://github.com/ketoo/NFrame>
+// </copyright>
+//-----------------------------------------------------------------------
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace NFSDK
+{
+	class NFEvent : NFIEvent
+	{
+		public NFEvent(int nEventID, NFDataList valueList)
+		{
+			mnEventID = nEventID;
+            mArgValueList = valueList;
+		}
+
+		public override void RegisterCallback(NFIEvent.EventHandler handler)
+		{
+			mHandlerDel += handler;
+		}
+
+		public override void DoEvent(NFDataList valueList)
+		{
+			if (null != mHandlerDel)
+			{
+				//mHandlerDel(mSelf, mnEventID, mArgValueList, valueList);
+				mHandlerDel(valueList);
+			}
+		}
+
+		NFGUID mSelf;
+		int mnEventID;
+		NFDataList mArgValueList;
+		NFIEvent.EventHandler mHandlerDel;
+	}
+}

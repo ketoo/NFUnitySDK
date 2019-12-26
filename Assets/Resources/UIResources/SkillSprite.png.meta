@@ -1,0 +1,1843 @@
+fileFormatVersion: 2
+guid: dd2d3551a469647a38666bc784b28ed2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: altera_1
+  - first:
+      213: 21300002
+    second: Skill1
+  - first:
+      213: 21300004
+    second: 2h_blade_crushing_blow
+  - first:
+      213: 21300006
+    second: wisdom_of_wildor
+  - first:
+      213: 21300008
+    second: zaordan
+  - first:
+      213: 21300010
+    second: withering_darkness
+  - first:
+      213: 21300012
+    second: zerkhan_5
+  - first:
+      213: 21300014
+    second: thunder
+  - first:
+      213: 21300016
+    second: wind_frenzy
+  - first:
+      213: 21300018
+    second: camouflage
+  - first:
+      213: 21300020
+    second: arkana_2
+  - first:
+      213: 21300022
+    second: stumbled_leg
+  - first:
+      213: 21300024
+    second: tvern_3
+  - first:
+      213: 21300026
+    second: 2haxe_cleave
+  - first:
+      213: 21300028
+    second: yoton_3_2
+  - first:
+      213: 21300030
+    second: ward_stone
+  - first:
+      213: 21300032
+    second: wand_sword
+  - first:
+      213: 21300034
+    second: xbow_attack
+  - first:
+      213: 21300036
+    second: arkana_1
+  - first:
+      213: 21300038
+    second: wall
+  - first:
+      213: 21300040
+    second: 1h_axe_attack
+  - first:
+      213: 21300042
+    second: wyvern_muzzle
+  - first:
+      213: 21300044
+    second: altera_8
+  - first:
+      213: 21300046
+    second: brog_5
+  - first:
+      213: 21300048
+    second: brog_1_2
+  - first:
+      213: 21300050
+    second: warriors_pride
+  - first:
+      213: 21300052
+    second: zerkhan_4_1
+  - first:
+      213: 21300054
+    second: club_crushing_blow_2
+  - first:
+      213: 21300056
+    second: yoton_1_1
+  - first:
+      213: 21300058
+    second: yoton_5_2
+  - first:
+      213: 21300060
+    second: taunting_shout_2
+  - first:
+      213: 21300062
+    second: tvern_2
+  - first:
+      213: 21300064
+    second: tired_human
+  - first:
+      213: 21300066
+    second: sun_in_the_sky
+  - first:
+      213: 21300068
+    second: zerkhan_1_2
+  - first:
+      213: 21300070
+    second: club_crushing_blow_1
+  - first:
+      213: 21300072
+    second: 2haxe_skull
+  - first:
+      213: 21300074
+    second: yellow_flash
+  - first:
+      213: 21300076
+    second: arkana_5
+  - first:
+      213: 21300078
+    second: blinding_shot
+  - first:
+      213: 21300080
+    second: yoton_3_1
+  - first:
+      213: 21300082
+    second: brog_1_1
+  - first:
+      213: 21300084
+    second: timer
+  - first:
+      213: 21300086
+    second: wounds
+  - first:
+      213: 21300088
+    second: wound_charm
+  - first:
+      213: 21300090
+    second: stun
+  - first:
+      213: 21300092
+    second: tvern_4
+  - first:
+      213: 21300094
+    second: triumphal_fist
+  - first:
+      213: 21300096
+    second: Skill4
+  - first:
+      213: 21300098
+    second: club_punch
+  - first:
+      213: 21300100
+    second: brog_4
+  - first:
+      213: 21300102
+    second: cahorash_2
+  - first:
+      213: 21300104
+    second: zerkhan_3_1
+  - first:
+      213: 21300106
+    second: blinding
+  - first:
+      213: 21300108
+    second: wave_of_arrows
+  - first:
+      213: 21300110
+    second: taunting_shout_1
+  - first:
+      213: 21300112
+    second: altera_9
+  - first:
+      213: 21300114
+    second: zerkhan_2
+  - first:
+      213: 21300116
+    second: young_growth
+  - first:
+      213: 21300118
+    second: cahorash_1
+  - first:
+      213: 21300120
+    second: vae_victis
+  - first:
+      213: 21300122
+    second: storm
+  - first:
+      213: 21300124
+    second: tiger
+  - first:
+      213: 21300126
+    second: darh_3
+  - first:
+      213: 21300128
+    second: Skill2
+  - first:
+      213: 21300130
+    second: altera_5
+  - first:
+      213: 21300132
+    second: strength_of_knowledge
+  - first:
+      213: 21300134
+    second: zerkhan_4_2
+  - first:
+      213: 21300136
+    second: tenacity
+  - first:
+      213: 21300138
+    second: yin_yang
+  - first:
+      213: 21300140
+    second: 2haxe_shield_hack
+  - first:
+      213: 21300142
+    second: butterfly_blow
+  - first:
+      213: 21300144
+    second: witchdoctor_ritual
+  - first:
+      213: 21300146
+    second: undo
+  - first:
+      213: 21300148
+    second: altera_7
+  - first:
+      213: 21300150
+    second: three_arrows
+  - first:
+      213: 21300152
+    second: darh_2
+  - first:
+      213: 21300154
+    second: 2haxe_strike
+  - first:
+      213: 21300156
+    second: yoton_4_2
+  - first:
+      213: 21300158
+    second: weakening
+  - first:
+      213: 21300160
+    second: 1h_blade_attack
+  - first:
+      213: 21300162
+    second: tvern_5
+  - first:
+      213: 21300164
+    second: arkana_4
+  - first:
+      213: 21300166
+    second: yoton_1_2
+  - first:
+      213: 21300168
+    second: arkana_3
+  - first:
+      213: 21300170
+    second: zerkhan_1_1
+  - first:
+      213: 21300172
+    second: strengthening
+  - first:
+      213: 21300174
+    second: altera_10
+  - first:
+      213: 21300176
+    second: yoton_2_2
+  - first:
+      213: 21300178
+    second: altera_4
+  - first:
+      213: 21300180
+    second: cahorash_4
+  - first:
+      213: 21300182
+    second: darh_4
+  - first:
+      213: 21300184
+    second: yell_of_pain
+  - first:
+      213: 21300186
+    second: wild_fire
+  - first:
+      213: 21300188
+    second: teared_flag
+  - first:
+      213: 21300190
+    second: zerkhan_3_2
+  - first:
+      213: 21300192
+    second: yoton_2_1
+  - first:
+      213: 21300194
+    second: yoton_5_1
+  - first:
+      213: 21300196
+    second: cahorash_3
+  - first:
+      213: 21300198
+    second: block_skill_icon
+  - first:
+      213: 21300200
+    second: target_arrow
+  - first:
+      213: 21300202
+    second: altera_3
+  - first:
+      213: 21300204
+    second: 2h_axe_attack
+  - first:
+      213: 21300206
+    second: club_strike
+  - first:
+      213: 21300208
+    second: tortoise_sluggishness
+  - first:
+      213: 21300210
+    second: brog_1_3
+  - first:
+      213: 21300212
+    second: storm_charge
+  - first:
+      213: 21300214
+    second: darh_5
+  - first:
+      213: 21300216
+    second: altera_2
+  - first:
+      213: 21300218
+    second: sting
+  - first:
+      213: 21300220
+    second: strong_aggression
+  - first:
+      213: 21300222
+    second: tvern_1
+  - first:
+      213: 21300224
+    second: darh_1
+  - first:
+      213: 21300226
+    second: brog_3
+  - first:
+      213: 21300228
+    second: taking_potion
+  - first:
+      213: 21300230
+    second: Skill3
+  - first:
+      213: 21300232
+    second: 2h_blade_piercing_strike
+  - first:
+      213: 21300234
+    second: brog_2
+  - first:
+      213: 21300236
+    second: 2h_blade_attack
+  - first:
+      213: 21300238
+    second: yoton_4_1
+  - first:
+      213: 21300240
+    second: 2haxe_bloody_hand
+  - first:
+      213: 21300242
+    second: warm_touch
+  - first:
+      213: 21300244
+    second: 2h_blade
+  - first:
+      213: 21300246
+    second: altera_6
+  - first:
+      213: 21300248
+    second: SKILL_Special1_Hero003
+  - first:
+      213: 21300250
+    second: SKILL_Special1_Hero005
+  - first:
+      213: 21300252
+    second: SKILL_Special1_Hero004
+  - first:
+      213: 21300254
+    second: SKILL_Special1_Hero006
+  - first:
+      213: 21300256
+    second: SKILL_Special2_Hero014
+  - first:
+      213: 21300258
+    second: SKILL_Special1_Hero015
+  - first:
+      213: 21300260
+    second: SKILL_Special1_Hero009
+  - first:
+      213: 21300262
+    second: SKILL_Special2_Hero001
+  - first:
+      213: 21300264
+    second: SKILL_THUMP_Hero016
+  - first:
+      213: 21300266
+    second: SKILL_Special2_Hero018
+  - first:
+      213: 21300268
+    second: SKILL_Special2_Hero002
+  - first:
+      213: 21300270
+    second: SKILL_Special2_Hero005
+  - first:
+      213: 21300272
+    second: SKILL_THUMP_Hero012
+  - first:
+      213: 21300274
+    second: SKILL_THUMP_Hero006
+  - first:
+      213: 21300276
+    second: SKILL_Special2_Hero004
+  - first:
+      213: 21300278
+    second: SKILL_Special1_Hero010
+  - first:
+      213: 21300280
+    second: SKILL_Special2_Hero006
+  - first:
+      213: 21300282
+    second: SKILL_THUMP_Hero013
+  - first:
+      213: 21300284
+    second: SKILL_Special1_Hero019
+  - first:
+      213: 21300286
+    second: SKILL_Special1_Hero016
+  - first:
+      213: 21300288
+    second: SKILL_Special2_Hero009
+  - first:
+      213: 21300290
+    second: SKILL_THUMP_Hero004
+  - first:
+      213: 21300292
+    second: SKILL_Special1_Hero008
+  - first:
+      213: 21300294
+    second: SKILL_Special2_Hero008
+  - first:
+      213: 21300296
+    second: SKILL_Special1_Hero002
+  - first:
+      213: 21300298
+    second: SKILL_Special1_Hero011
+  - first:
+      213: 21300300
+    second: SKILL_Special2_Hero012
+  - first:
+      213: 21300302
+    second: SKILL_Special2_Hero007
+  - first:
+      213: 21300304
+    second: SKILL_THUMP_Hero002
+  - first:
+      213: 21300306
+    second: SKILL_Special2_Hero019
+  - first:
+      213: 21300308
+    second: SKILL_THUMP_Hero015
+  - first:
+      213: 21300310
+    second: SKILL_THUMP_Hero017
+  - first:
+      213: 21300312
+    second: SKILL_Special2_Hero003
+  - first:
+      213: 21300314
+    second: SKILL_THUMP_Hero014
+  - first:
+      213: 21300316
+    second: SKILL_Special1_Hero012
+  - first:
+      213: 21300318
+    second: SKILL_Special2_Hero016
+  - first:
+      213: 21300320
+    second: SKILL_THUMP_Hero008
+  - first:
+      213: 21300322
+    second: SKILL_THUMP_Hero007
+  - first:
+      213: 21300324
+    second: SKILL_Special2_Hero013
+  - first:
+      213: 21300326
+    second: SKILL_THUMP_Hero010
+  - first:
+      213: 21300328
+    second: SKILL_Special2_Hero011
+  - first:
+      213: 21300330
+    second: SKILL_Special1_Hero018
+  - first:
+      213: 21300332
+    second: SKILL_Special2_Hero015
+  - first:
+      213: 21300334
+    second: SKILL_THUMP_Hero003
+  - first:
+      213: 21300336
+    second: SKILL_Special1_Hero014
+  - first:
+      213: 21300338
+    second: SKILL_THUMP_Hero001
+  - first:
+      213: 21300340
+    second: SKILL_THUMP_Hero019
+  - first:
+      213: 21300342
+    second: SKILL_THUMP_Hero018
+  - first:
+      213: 21300344
+    second: SKILL_Special1_Hero013
+  - first:
+      213: 21300346
+    second: SKILL_Special2_Hero017
+  - first:
+      213: 21300348
+    second: SKILL_THUMP_Hero005
+  - first:
+      213: 21300350
+    second: SKILL_Special2_Hero010
+  - first:
+      213: 21300352
+    second: SKILL_Special1_Hero001
+  - first:
+      213: 21300354
+    second: SKILL_THUMP_Hero011
+  - first:
+      213: 21300356
+    second: SKILL_Special1_Hero017
+  - first:
+      213: 21300358
+    second: SKILL_Special1_Hero007
+  - first:
+      213: 21300360
+    second: SKILL_THUMP_Hero009
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 4096
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 4
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 4096
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero003
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 129
+        height: 129
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81405410000000000800000000000000
+      internalID: 21300248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero005
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 130
+        width: 129
+        height: 129
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1405410000000000800000000000000
+      internalID: 21300250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero004
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 260
+        width: 129
+        height: 129
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1405410000000000800000000000000
+      internalID: 21300252
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero006
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 390
+        width: 128
+        height: 129
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e1405410000000000800000000000000
+      internalID: 21300254
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero014
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 520
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02405410000000000800000000000000
+      internalID: 21300256
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero015
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 649
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 22405410000000000800000000000000
+      internalID: 21300258
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero009
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 778
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 42405410000000000800000000000000
+      internalID: 21300260
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero001
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 390
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62405410000000000800000000000000
+      internalID: 21300262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero016
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 0
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82405410000000000800000000000000
+      internalID: 21300264
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero018
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 129
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a2405410000000000800000000000000
+      internalID: 21300266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero002
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 258
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c2405410000000000800000000000000
+      internalID: 21300268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero005
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 519
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2405410000000000800000000000000
+      internalID: 21300270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero012
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 648
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 03405410000000000800000000000000
+      internalID: 21300272
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero006
+      rect:
+        serializedVersion: 2
+        x: 129
+        y: 777
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 23405410000000000800000000000000
+      internalID: 21300274
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero004
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 387
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 43405410000000000800000000000000
+      internalID: 21300276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero010
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 0
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63405410000000000800000000000000
+      internalID: 21300278
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero006
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 129
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83405410000000000800000000000000
+      internalID: 21300280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero013
+      rect:
+        serializedVersion: 2
+        x: 259
+        y: 258
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a3405410000000000800000000000000
+      internalID: 21300282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero019
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 516
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3405410000000000800000000000000
+      internalID: 21300284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero016
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 645
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e3405410000000000800000000000000
+      internalID: 21300286
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero009
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 774
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04405410000000000800000000000000
+      internalID: 21300288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero004
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 387
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24405410000000000800000000000000
+      internalID: 21300290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero008
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 0
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 44405410000000000800000000000000
+      internalID: 21300292
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero008
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 129
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 64405410000000000800000000000000
+      internalID: 21300294
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero002
+      rect:
+        serializedVersion: 2
+        x: 388
+        y: 258
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 84405410000000000800000000000000
+      internalID: 21300296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero011
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 516
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a4405410000000000800000000000000
+      internalID: 21300298
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero012
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 645
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c4405410000000000800000000000000
+      internalID: 21300300
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero007
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 774
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e4405410000000000800000000000000
+      internalID: 21300302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero002
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 387
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05405410000000000800000000000000
+      internalID: 21300304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero019
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 0
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 25405410000000000800000000000000
+      internalID: 21300306
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero015
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 129
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 45405410000000000800000000000000
+      internalID: 21300308
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero017
+      rect:
+        serializedVersion: 2
+        x: 517
+        y: 258
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 65405410000000000800000000000000
+      internalID: 21300310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero003
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 516
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85405410000000000800000000000000
+      internalID: 21300312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero014
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 645
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a5405410000000000800000000000000
+      internalID: 21300314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero012
+      rect:
+        serializedVersion: 2
+        x: 516
+        y: 774
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c5405410000000000800000000000000
+      internalID: 21300316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero016
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 387
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5405410000000000800000000000000
+      internalID: 21300318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero008
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 0
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06405410000000000800000000000000
+      internalID: 21300320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero007
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 129
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 26405410000000000800000000000000
+      internalID: 21300322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero013
+      rect:
+        serializedVersion: 2
+        x: 646
+        y: 258
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46405410000000000800000000000000
+      internalID: 21300324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero010
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 516
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 66405410000000000800000000000000
+      internalID: 21300326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero011
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 645
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86405410000000000800000000000000
+      internalID: 21300328
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero018
+      rect:
+        serializedVersion: 2
+        x: 645
+        y: 774
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a6405410000000000800000000000000
+      internalID: 21300330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero015
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 387
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c6405410000000000800000000000000
+      internalID: 21300332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero003
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 0
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6405410000000000800000000000000
+      internalID: 21300334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero014
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 129
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 07405410000000000800000000000000
+      internalID: 21300336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero001
+      rect:
+        serializedVersion: 2
+        x: 775
+        y: 258
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27405410000000000800000000000000
+      internalID: 21300338
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero019
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 516
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47405410000000000800000000000000
+      internalID: 21300340
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero018
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 645
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 67405410000000000800000000000000
+      internalID: 21300342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero013
+      rect:
+        serializedVersion: 2
+        x: 774
+        y: 774
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 87405410000000000800000000000000
+      internalID: 21300344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero017
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 387
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a7405410000000000800000000000000
+      internalID: 21300346
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero005
+      rect:
+        serializedVersion: 2
+        x: 904
+        y: 0
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7405410000000000800000000000000
+      internalID: 21300348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special2_Hero010
+      rect:
+        serializedVersion: 2
+        x: 904
+        y: 129
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e7405410000000000800000000000000
+      internalID: 21300350
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero001
+      rect:
+        serializedVersion: 2
+        x: 904
+        y: 258
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 08405410000000000800000000000000
+      internalID: 21300352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero011
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 516
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 28405410000000000800000000000000
+      internalID: 21300354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero017
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 645
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 48405410000000000800000000000000
+      internalID: 21300356
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_Special1_Hero007
+      rect:
+        serializedVersion: 2
+        x: 903
+        y: 774
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68405410000000000800000000000000
+      internalID: 21300358
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SKILL_THUMP_Hero009
+      rect:
+        serializedVersion: 2
+        x: 1032
+        y: 387
+        width: 128
+        height: 128
+      alignment: 9
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88405410000000000800000000000000
+      internalID: 21300360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
