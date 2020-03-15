@@ -67,7 +67,6 @@ public class NFRoot : MonoBehaviour
 
 
         mPluginManager.Registered(new NFSDKPlugin(mPluginManager));
-        mPluginManager.Registered(new NFLogicPlugin(mPluginManager));
 		mPluginManager.Registered(new NFUIPlugin(mPluginManager));
 		mPluginManager.Registered(new NFScenePlugin(mPluginManager));
 

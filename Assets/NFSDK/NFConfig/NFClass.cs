@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="NFCLogicClass.cs">
-//     Copyright (C) 2015-2019 lvsheng.huang <https://github.com/ketoo/NFrame>
+//     Copyright (C) 2015-2015 lvsheng.huang <https://github.com/ketoo/NFrame>
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
@@ -33,12 +33,24 @@ namespace NFSDK
 
         public override List<string> GetConfigNameList()
         {
-            return mxIntansList;
+            return mxInstanceList;
+        }
+
+        public override List<string> GetIncludeFileList()
+        {
+            return mxIncludeFileList;
         }
 
         public override bool AddConfigName(string strConfigName)
         {
-            mxIntansList.Add(strConfigName);
+            mxInstanceList.Add(strConfigName);
+
+            return true;
+        }
+
+        public override bool AddIncludeFile(string fileName)
+        {
+            mxIncludeFileList.Add(fileName);
 
             return true;
         }
@@ -85,7 +97,8 @@ namespace NFSDK
         /////////////////////////////////////
         private NFIPropertyManager mxPropertyManager = new NFPropertyManager(new NFGUID());
         private NFIRecordManager mxRecordManager = new NFRecordManager(new NFGUID());
-        private List<string> mxIntansList = new List<string>();
+        private List<string> mxInstanceList = new List<string>();
+        private List<string> mxIncludeFileList = new List<string>();
         private string mstrName;
         private string mstrPath;
         private string mstrInstance;

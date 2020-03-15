@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------
 // <copyright file="NFCClassModule.cs">
-//     Copyright (C) 2015-2019 lvsheng.huang <https://github.com/ketoo/NFrame>
+//     Copyright (C) 2015-2015 lvsheng.huang <https://github.com/ketoo/NFrame>
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
@@ -60,7 +60,10 @@ namespace NFSDK
             LoadLogicClass(root);
             LoadLogicClassProperty();
             LoadLogicClassRecord();
-            
+            LoadLogicClassInclude();
+
+
+            ProcessLogicClassIncludeFiles();
 
             return false;
         }
@@ -324,6 +327,46 @@ namespace NFSDK
             }
         }
 
+        private void LoadLogicClassInclude()
+        {
+            Dictionary<string, NFIClass> xTable = GetElementList();
+            foreach (KeyValuePair<string, NFIClass> kv in xTable)
+            {
+                LoadLogicClassInclude(kv.Key);
+            }
+
+        }
+
+        private void LoadLogicClassInclude(string strName)
+        {
+            NFIClass xLogicClass = GetElement(strName);
+            if (null != xLogicClass)
+            {
+                string strLogicPath = mstrPath + xLogicClass.GetPath();
+
+                strLogicPath = strLogicPath.Replace(".xml", "");
+
+                TextAsset textAsset = (TextAsset)Resources.Load(strLogicPath);
+
+                XmlDocument xmldoc = new XmlDocument();
+                xmldoc.LoadXml(textAsset.text);
+                XmlNode xRoot = xmldoc.SelectSingleNode("XML");
+
+                XmlNode xNodePropertys = xRoot.SelectSingleNode("Includes");
+                XmlNodeList xNodeList = xNodePropertys.SelectNodes("Include");
+                for (int i = 0; i < xNodeList.Count; ++i)
+                {
+                    XmlNode xPropertyNode = xNodeList.Item(i);
+                    XmlAttribute strID = xPropertyNode.Attributes["Id"];
+                    int start = strID.Value.LastIndexOf('/') + 1;
+                    int end = strID.Value.LastIndexOf('.');
+                    string className = strID.Value.Substring(start, end - start);
+
+                    xLogicClass.AddIncludeFile(className);
+                }
+            }
+        }
+
         void AddBasePropertyFormOther(string strName, string strOther)
         {
             NFIClass xOtherClass = GetElement(strOther);
@@ -336,6 +379,41 @@ namespace NFSDK
                     NFIProperty xProperty = xOtherClass.GetPropertyManager().GetProperty(xValue.StringVal(i));
                     xLogicClass.GetPropertyManager().AddProperty(xValue.StringVal(i), xProperty.GetData());
                 }
+            }
+        }
+
+        void AddBaseRecordFormOther(string strName, string strOther)
+        {
+            NFIClass xOtherClass = GetElement(strOther);
+            NFIClass xLogicClass = GetElement(strName);
+            if (null != xLogicClass && null != xOtherClass)
+            {
+                NFDataList xValue = xOtherClass.GetRecordManager().GetRecordList();
+                for (int i = 0; i < xValue.Count(); ++i)
+                {
+                    NFIRecord record = xOtherClass.GetRecordManager().GetRecord(xValue.StringVal(i));
+
+                    xLogicClass.GetRecordManager().AddRecord(xValue.StringVal(i), record.GetRows(), record.GetColsData(), record.GetTagData());
+                }
+            }
+        }
+
+        private void ProcessLogicClassIncludeFiles()
+        {
+            Dictionary<string, NFIClass> xTable = GetElementList();
+            foreach (KeyValuePair<string, NFIClass> kv in xTable)
+            {
+                ProcessLogicClassIncludeFiles(kv.Value);
+            }
+        }
+
+        private void ProcessLogicClassIncludeFiles(NFIClass classObject)
+        {
+            List<string> includeFiles = classObject.GetIncludeFileList();
+            foreach (var item in includeFiles)
+            {
+                AddBasePropertyFormOther(classObject.GetName(), item);
+                AddBaseRecordFormOther(classObject.GetName(), item);
             }
         }
 

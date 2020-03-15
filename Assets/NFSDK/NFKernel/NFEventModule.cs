@@ -1,9 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="NFILogicClassModule.cs">
-//     Copyright (C) 2015-2019 lvsheng.huang <https://github.com/ketoo/NFrame>
-// </copyright>
-//-----------------------------------------------------------------------
-using System;
+﻿using System;
 using System.Linq;
 using System.Text;
 using System.Collections;

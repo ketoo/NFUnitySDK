@@ -614,24 +614,6 @@ namespace NFSDK
                 mUIModule.ShowUI<NFUIEstateBar>();
                 mUIModule.ShowUI<NFUIJoystick>();
             }
-            else if (nType == NFMsg.ESceneType.SingleCloneScene)
-            {
-                mUIModule.CloseAllUI();
-                mUIModule.ShowUI<NFUIEstateBar>();
-            }
-            else if (nType == NFMsg.ESceneType.MultiCloneScene)
-            {
-
-            }
-            else if (nType == NFMsg.ESceneType.HomeScene)
-            {
-                //要看是自己的，还是在别人的，如果是别人的，则是在战斗
-      
-                    mUIModule.CloseAllUI();
-                    //先播放readyfight ui的过场动画等
-                    mUIModule.ShowUI<NFUIJoystick>();
-
-            }
 
             Debug.Log("LoadSceneEnd: " + nSceneID + " " + nType);
 

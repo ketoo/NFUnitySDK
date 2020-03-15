@@ -33,19 +33,38 @@ namespace NFSDK
 
     public class NFSocketPacket
     {
-        public byte[] bytes = null;
-        public int bytesCount = 0;
-
-        public NFSocketPacket(byte[] bytes, int bytesCount)
+        public NFSocketPacket()
         {
-            this.bytes = bytes;
-            this.bytesCount = bytesCount;
+            sb = new NFStringRingBuffer(ConstDefine.NF_PACKET_BUFF_SIZE);
         }
 
+        private NFStringRingBuffer sb;
+        internal NFStringRingBuffer Sb { get => sb; set => sb = value; }
+
+        public void Reset()
+        {
+            sb.Clear();
+        }
+
+        public void FromBytes(byte[] by, int bytesCount)
+        {
+            sb.Clear();
+            sb.Push(by, bytesCount);
+        }
     }
 
     public class NFNetEventParams
     {
+        public void Reset()
+        {
+             client = null;
+             clientID = 0;
+             socket = null;
+             eventType = NFNetEventType.None;
+             message = "";
+             packet = null;
+        }
+
         public NFNetClient client = null;
         public int clientID = 0;
         public TcpClient socket = null;
@@ -71,9 +90,8 @@ namespace NFSDK
             mxEvents = new Queue<NFNetEventType>();
             mxMessages = new Queue<string>();
             mxPackets = new Queue<NFSocketPacket>();
+            mxPacketPool = new Queue<NFSocketPacket>();
         }
-
-		private int bufferSize = 65536;
 
         private NFNetState mxState;
         private NetworkStream mxStream;
@@ -84,9 +102,13 @@ namespace NFSDK
         private Queue<NFNetEventType> mxEvents;
         private Queue<string> mxMessages;
         private Queue<NFSocketPacket> mxPackets;
+        private Queue<NFSocketPacket> mxPacketPool;
 
-		private NFNetListener mxNetListener;
+        private NFNetListener mxNetListener;
 
+        private byte[] tempReadBytes = new byte[ConstDefine.NF_PACKET_BUFF_SIZE];
+
+        private NFNetEventParams eventParams = new NFNetEventParams();
 
         public bool IsConnected()
         {
@@ -103,7 +125,7 @@ namespace NFSDK
             return mxNetListener;
         }
 
-		public void Execute()
+        public void Execute()
         {
 			
             while (mxEvents.Count > 0)
@@ -112,7 +134,7 @@ namespace NFSDK
                 {
                     NFNetEventType eventType = mxEvents.Dequeue();
 
-                    NFNetEventParams eventParams = new NFNetEventParams();
+                    eventParams.Reset();
                     eventParams.eventType = eventType;
                     eventParams.client = this;
                     eventParams.socket = mxClient;
@@ -137,6 +159,8 @@ namespace NFSDK
                             eventParams.packet = mxPackets.Dequeue();
                         
                             mxNetListener.OnDataReceived(eventParams);
+
+                            mxPacketPool.Enqueue(eventParams.packet);
                         }
                     }
                     else if (eventType == NFNetEventType.ConnectionRefused)
@@ -166,7 +190,18 @@ namespace NFSDK
                 }
             }
         }
+        private NFSocketPacket GetPacketFromPool()
+        {
+            if (mxPacketPool.Count <= 0)
+            {
+                mxPacketPool.Enqueue(new NFSocketPacket());
+            }
 
+            NFSocketPacket packet = mxPacketPool.Dequeue();
+            packet.Reset();
+
+            return packet;
+        }
         private void ReadData()
         {
             bool endOfStream = false;
@@ -174,10 +209,10 @@ namespace NFSDK
             while (!endOfStream)
             {
                int bytesRead = 0;
-               byte[] bytes = new byte[bufferSize];
                try
                {
-                   bytesRead = mxStream.Read(bytes, 0, bufferSize);
+                    Array.Clear(tempReadBytes, 0, ConstDefine.NF_PACKET_BUFF_SIZE);
+                    bytesRead = mxStream.Read(tempReadBytes, 0, ConstDefine.NF_PACKET_BUFF_SIZE);
                }
                catch (Exception e)
                {
@@ -199,7 +234,10 @@ namespace NFSDK
                    }
                    lock (mxPackets)
                    {
-                       mxPackets.Enqueue(new NFSocketPacket(bytes, bytesRead));
+                        NFSocketPacket packet = GetPacketFromPool();
+                        packet.FromBytes(tempReadBytes, bytesRead);
+
+                        mxPackets.Enqueue(packet);
                    }
 
                }
@@ -250,9 +288,9 @@ namespace NFSDK
 
         }
 
-        public void SendBytes(byte[] bytes)
+        public void SendBytes(byte[] bytes, int length)
         {
-            SendBytes(bytes, 0, bytes.Length);
+            SendBytes(bytes, 0, length);
         }
 
         private void SendBytes(byte[] bytes, int offset, int size)

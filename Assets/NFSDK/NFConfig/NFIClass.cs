@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="NFILogicClass.cs">
-//     Copyright (C) 2015-2019 lvsheng.huang <https://github.com/ketoo/NFrame>
+//     Copyright (C) 2015-2015 lvsheng.huang <https://github.com/ketoo/NFrame>
 // </copyright>
 //-----------------------------------------------------------------------
 using System;
@@ -19,7 +19,9 @@ namespace NFSDK
         public abstract NFIPropertyManager GetPropertyManager();
         public abstract NFIRecordManager GetRecordManager();
         public abstract List<string> GetConfigNameList();
+        public abstract List<string> GetIncludeFileList();
         public abstract bool AddConfigName(string strConfigName);
+        public abstract bool AddIncludeFile(string fileName);
 
         public abstract string GetName();
         public abstract void SetName(string strConfigName);

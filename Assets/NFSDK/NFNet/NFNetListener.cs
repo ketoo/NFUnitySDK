@@ -18,8 +18,9 @@ namespace NFSDK
 {
 	public class ConstDefine
 	{
-		public static UInt32 NF_PACKET_HEAD_SIZE = 6;
-		public static int MAX_PACKET_LEN = 1024 * 1024 * 1;
+		public static int NF_PACKET_BUFF_SIZE = 65535;
+		public static int NF_PACKET_HEAD_SIZE = 6;
+		public static int MAX_PACKET_LEN = 1024 * 1024 * 20;
 	};
 
 	public class MsgHead
@@ -32,10 +33,47 @@ namespace NFSDK
 		public UInt16 unMsgID;
 		public UInt32 unDataLen;
 
+		public void Reset()
+		{
+			unMsgID = 0;
+			unDataLen = 0;
+			Array.Clear(byHead, 0, ConstDefine.NF_PACKET_HEAD_SIZE);
+		}
+
+		private byte[] byHead = new byte[ConstDefine.NF_PACKET_HEAD_SIZE];
+
+		public byte[] GetHeadBytes()
+		{
+			return byHead;
+		}
+
 		public byte[] EnCode()
 		{
-			byte[] byMsgID = BitConverter.GetBytes(unMsgID);
-			byte[] byDataLen = BitConverter.GetBytes(unDataLen);
+			byte[] tempByMsgID = BitConverter.GetBytes(unMsgID);
+			byte[] tempByDataLen = BitConverter.GetBytes(unDataLen);
+
+			bool isLittle = BitConverter.IsLittleEndian;
+			if (isLittle)
+			{
+				Array.Reverse(tempByMsgID);
+				Array.Reverse(tempByDataLen);
+			}
+
+			Array.Copy(tempByMsgID, 0, byHead, 0, sizeof(UInt16));
+			Array.Copy(tempByDataLen, 0, byHead, sizeof(UInt16), sizeof(UInt32));
+
+			return byHead;
+		}
+
+		private byte[] byMsgID = new byte[sizeof(UInt16)];
+		private byte[] byDataLen = new byte[sizeof(UInt32)];
+		public bool DeCode()
+		{
+			Array.Clear(byMsgID, 0, sizeof(UInt16));
+			Array.Clear(byDataLen, 0, sizeof(UInt16));
+
+			Array.Copy(byHead, 0, byMsgID, 0, sizeof(UInt16));
+			Array.Copy(byHead, sizeof(UInt16), byDataLen, 0, sizeof(UInt32));
 
 			bool isLittle = BitConverter.IsLittleEndian;
 			if (isLittle)
@@ -44,132 +82,89 @@ namespace NFSDK
 				Array.Reverse(byDataLen);
 			}
 
-			byte[] byHead = new byte[ConstDefine.NF_PACKET_HEAD_SIZE];
-			Array.Copy(byMsgID, 0, byHead, 0, sizeof(UInt16));
-			Array.Copy(byDataLen, 0, byHead, sizeof(UInt16), sizeof(UInt32));
+			unMsgID = BitConverter.ToUInt16(byMsgID,0);
+			unDataLen = BitConverter.ToUInt32(byDataLen,0);
 
-			return byHead;
-		}
-
-		public bool DeCode(byte[] strData)
-		{
-			if (strData.Length == ConstDefine.NF_PACKET_HEAD_SIZE)
-			{
-				byte[] byMsgID = new byte[sizeof(UInt16)];
-				byte[] byDataLen = new byte[sizeof(UInt32)];
-
-				Array.Copy(strData, 0, byMsgID, 0, sizeof(UInt16));
-				Array.Copy(strData, sizeof(UInt16), byDataLen, 0, sizeof(UInt32));
-
-				bool isLittle = BitConverter.IsLittleEndian;
-				if (isLittle)
-				{
-					Array.Reverse(byMsgID);
-					Array.Reverse(byDataLen);
-				}
-
-				unMsgID = BitConverter.ToUInt16(byMsgID,0);
-				unDataLen = BitConverter.ToUInt32(byDataLen,0);
-
-				return true;
-			}
-
-			return false;
+			return true;
 		}
 	};
 
     public class NFNetListener
     {      
-        private UInt32 mnPacketSize = 0;
-        private byte[] mPacket = new byte[ConstDefine.MAX_PACKET_LEN];
+		private NFStringRingBuffer mPacket = new NFStringRingBuffer(ConstDefine.MAX_PACKET_LEN);
 
 		public delegate void EventDelegation(NFNetEventType eventType);
 		private EventDelegation mHandlerDelegation;
         
-		public delegate void MsgDelegation(UInt16 id, MemoryStream stream);
-		private Dictionary<UInt16, MsgDelegation> mhtMsgDelegation = new Dictionary<UInt16, MsgDelegation>();
-        
+		public delegate void MsgDelegation(int id, MemoryStream stream);
+		private Dictionary<int, MsgDelegation> mhtMsgDelegation = new Dictionary<int, MsgDelegation>();
+
+		private MsgHead head = new MsgHead();
+		private MemoryStream dataReceivedBodyStream = new MemoryStream();
+
+		private NFStringRingBuffer body_and_head = new NFStringRingBuffer(ConstDefine.MAX_PACKET_LEN);
 		//////////////////////////////////////////////////////////////////
 		/// 
-        public void OnClientConnect(NFNetEventParams eventParams)
+		public void OnClientConnect(NFNetEventParams eventParams)
 		{
-            Array.Clear(mPacket, 0, ConstDefine.MAX_PACKET_LEN);
+			mPacket.Clear();
 
-            //NFLogModule.Instance.Log(NFLogModule.LOG_LEVEL.DEBUG, "Client connected");
-
-			mHandlerDelegation(NFNetEventType.Connected);
+			//NFLogModule.Instance.Log(NFLogModule.LOG_LEVEL.DEBUG, "Client connected");
+			if (mHandlerDelegation != null)
+            {
+                mHandlerDelegation(NFNetEventType.Connected);
+            }
         }
 
 		public void OnClientDisconnect(NFNetEventParams eventParams)
         {
-			//NFLogModule.Instance.Log(NFLogModule.LOG_LEVEL.DEBUG, "Client disconnected");
-
-			mHandlerDelegation(NFNetEventType.Disconnected);
+            if (mHandlerDelegation != null)
+            {
+                mHandlerDelegation(NFNetEventType.Disconnected);
+            }
         }
 
         public void OnClientConnectionRefused(NFNetEventParams eventParams)
         {
-			//NFLogModule.Instance.Log(NFLogModule.LOG_LEVEL.DEBUG, "Client refused");
-
-			mHandlerDelegation(NFNetEventType.ConnectionRefused);
+            if (mHandlerDelegation != null)
+            {
+                mHandlerDelegation(NFNetEventType.ConnectionRefused);
+            }
         }
 
 		public void OnDataReceived(NFNetEventParams eventParams)
 		{
+			mPacket.Push(eventParams.packet.Sb, eventParams.packet.Sb.Size());
+			eventParams.packet.Sb.Clear();
 
-			byte[] bytes = eventParams.packet.bytes;
-			int bytesCount = eventParams.packet.bytesCount;
-
-			//NFLogModule.Instance.Log(NFLogModule.LOG_LEVEL.INFO, "ReciveDataSize:" + bytesCount);
-            
-			if (mnPacketSize + bytesCount < ConstDefine.MAX_PACKET_LEN)
-			{
-				Array.Copy(bytes, 0, mPacket, mnPacketSize, bytesCount);
-				mnPacketSize += (UInt32)bytesCount;
-
-				OnDataReceived();
-			}
+			OnDataReceived();
 		}
 
 		void OnDataReceived()
 		{
-			//ensure the length > size of MsgHead at all time
-			if (mnPacketSize >= ConstDefine.NF_PACKET_HEAD_SIZE)
+			if (mPacket.Size() >= ConstDefine.NF_PACKET_HEAD_SIZE)
 			{
-				byte[] headBytes = new byte[ConstDefine.NF_PACKET_HEAD_SIZE];
-				Array.Copy(mPacket, 0, headBytes, 0, ConstDefine.NF_PACKET_HEAD_SIZE);
+				head.Reset();
 
-				MsgHead head = new MsgHead ();
-
-				if(head.DeCode(headBytes))
+				mPacket.Pop(head.GetHeadBytes(), ConstDefine.NF_PACKET_HEAD_SIZE, true);
+				if (head.DeCode())
 				{
-					if (head.unDataLen == mnPacketSize)
+					if (head.unDataLen == mPacket.Size())
 					{
-						byte[] body_head = new byte[head.unDataLen];
-						Array.Copy(mPacket, 0, body_head, 0, head.unDataLen);
-						mnPacketSize = 0;
+						body_and_head.Clear();
+						body_and_head.Push(mPacket, (int)head.unDataLen);
 
-						if (false == OnDataReceived(body_head, head.unDataLen))
+						if (false == OnDataReceived(body_and_head))
 						{
 							OnClientDisconnect(new NFNetEventParams());
 						}
 					}
-					else if (mnPacketSize > head.unDataLen)
+					else if (mPacket.Size() > head.unDataLen)
 					{
-						UInt32 nNewLen = mnPacketSize - head.unDataLen;
-						byte[] newpacket = new byte[nNewLen];
-						Array.Copy(mPacket, head.unDataLen, newpacket, 0, nNewLen);
+						body_and_head.Clear();
+						body_and_head.Push(mPacket, (int)head.unDataLen);
 
-						byte[] body_head = new byte[head.unDataLen];
-						Array.Copy(mPacket, 0, body_head, 0, head.unDataLen);
-
-						//memset 0
-						Array.Clear(mPacket, 0, ConstDefine.MAX_PACKET_LEN);
-						mnPacketSize = nNewLen;
-						Array.Copy(newpacket, 0, mPacket, 0, nNewLen);
-
-
-						if (false == OnDataReceived(body_head, head.unDataLen))
+						if (false == OnDataReceived(body_and_head))
 						{
 							OnClientDisconnect(new NFNetEventParams());
 						}
@@ -180,52 +175,41 @@ namespace NFSDK
 			}
 		}
 
-		bool OnDataReceived(byte[] bytes, UInt32 bytesCount)
+		bool OnDataReceived(NFStringRingBuffer sb)
 		{
-			if (bytes.Length == bytesCount)
+			head.Reset();
+
+			sb.Pop(head.GetHeadBytes(), ConstDefine.NF_PACKET_HEAD_SIZE);
+
+			if (head.DeCode() && head.unDataLen == sb.Size() + ConstDefine.NF_PACKET_HEAD_SIZE)
 			{
-
-				byte[] headBytes = new byte[ConstDefine.NF_PACKET_HEAD_SIZE];
-				Array.Copy(bytes, 0, headBytes, 0, ConstDefine.NF_PACKET_HEAD_SIZE);
-
-				MsgHead head = new MsgHead ();
-				if(head.DeCode(headBytes) && head.unDataLen == bytesCount)
+				Int32 nBodyLen = (Int32)sb.Size();
+				if (nBodyLen > 0)
 				{
-					Int32 nBodyLen = (Int32)bytesCount - (Int32)ConstDefine.NF_PACKET_HEAD_SIZE;
-					if (nBodyLen > 0)
-					{
-						byte[] body = new byte[nBodyLen];
-						Array.Copy(bytes, ConstDefine.NF_PACKET_HEAD_SIZE, body, 0, nBodyLen);
+					dataReceivedBodyStream.SetLength(0);
+					dataReceivedBodyStream.Position = 0;
+					sb.ToMemoryStream(dataReceivedBodyStream);
 
-						OnMessageEvent(head, body);
+					OnMessageEvent(head, dataReceivedBodyStream);
 
-						return true;
-					}
-					else
-					{
-						//space packet
-					}
+					return true;
 				}
-
-
+				else
+				{
+					//space packet, thats impossible
+				}
 			}
 
 			return false;
 		}
 
-		private void OnMessageEvent(MsgHead head, byte[] bytes)
+		private void OnMessageEvent(MsgHead head, MemoryStream ms)
         {
-            if (head.unDataLen != bytes.Length + ConstDefine.NF_PACKET_HEAD_SIZE)
-            {
-				Debug.LogError("ReciveMsg:" + head.unMsgID + "  Size:" + head.unDataLen);
-
-                return;
-            }
-
             if (mhtMsgDelegation.ContainsKey(head.unMsgID))
             {
                 MsgDelegation myDelegationHandler = (MsgDelegation)mhtMsgDelegation[head.unMsgID];
-                myDelegationHandler(head.unMsgID, new MemoryStream(bytes));
+				ms.Position = 0;
+				myDelegationHandler(head.unMsgID, ms);
             }
             else
             {
@@ -236,11 +220,11 @@ namespace NFSDK
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		public bool RegisteredNetEventHandler(EventDelegation eventHandler)
         {
-            mHandlerDelegation = eventHandler;
+            mHandlerDelegation += eventHandler;
             return true;
         }
 
-		public bool RegisteredDelegation(UInt16 eMsg, MsgDelegation msgDelegate)
+		public bool RegisteredDelegation(int eMsg, MsgDelegation msgDelegate)
 		{
 			if(!mhtMsgDelegation.ContainsKey(eMsg))
 			{
@@ -251,12 +235,17 @@ namespace NFSDK
 			{
 				MsgDelegation myDelegationHandler = (MsgDelegation)mhtMsgDelegation[eMsg];
 				myDelegationHandler += new MsgDelegation(msgDelegate);
-			}
+                mhtMsgDelegation[eMsg] = myDelegationHandler;
+            }
 
 			return true;
 		}
 
+		public void RemoveDelegation(int eMsg)
+		{
+			mhtMsgDelegation.Remove(eMsg);
+		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
-    }
+
+	}
 }

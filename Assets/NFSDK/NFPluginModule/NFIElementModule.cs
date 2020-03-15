@@ -1,6 +1,6 @@
 //-----------------------------------------------------------------------
 // <copyright file="NFIElementModule.cs">
-//     Copyright (C) 2015-2019 lvsheng.huang <https://github.com/ketoo/NFrame>
+//     Copyright (C) 2015-2015 lvsheng.huang <https://github.com/ketoo/NFrame>
 // </copyright>
 //-----------------------------------------------------------------------
 using System;

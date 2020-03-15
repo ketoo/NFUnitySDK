@@ -1,16 +1,46 @@
-//-----------------------------------------------------------------------
-// <copyright file="NFILogicClassModule.cs">
-//     Copyright (C) 2015-2019 lvsheng.huang <https://github.com/ketoo/NFrame>
-// </copyright>
-//-----------------------------------------------------------------------
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 
 namespace NFSDK
 {
+    public class NFGUIDConverter : TypeConverter
+    {
+        public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
+        {
+            if (sourceType == typeof(string))
+            {
+                return true;
+            }
+            return base.CanConvertFrom(context, sourceType);
+        }
+
+        public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value)
+        {
+            if (value is string)
+            {
+                return new NFGUID((string)value);
+            }
+            return base.ConvertFrom(context, culture, value);
+        }
+
+        public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType)
+        {
+            if (destinationType == typeof(string)
+                && value == typeof(NFGUID))
+            {
+                NFGUID id = (NFGUID)value;
+                return id.ToString();
+            }
+
+            return base.ConvertTo(context, culture, value, destinationType);
+        }
+    }
+
+    [TypeConverter(typeof(NFGUIDConverter))]
     public class NFGUID : Object
     {
         public Int64 nHead64;
@@ -37,7 +67,12 @@ namespace NFSDK
             nData64 = nData;
         }
 
-		public static bool operator == (NFGUID ident, NFGUID other)
+        public NFGUID(string id)
+        {
+            this.Parse(id);
+        }
+
+        public static bool operator == (NFGUID ident, NFGUID other)
 		{
             if (((object)ident == null) && ((object)other == null))
             {
@@ -67,38 +102,39 @@ namespace NFSDK
             return 0 == nData64 && 0 == nHead64;
         }
 
+        string strID = null;
         public override string ToString()
         {
-            return nHead64.ToString() + "-" + nData64.ToString();
+            if (strID == null)
+            {
+                strID = nHead64.ToString() + "-" + nData64.ToString();
+            }
+
+            return strID;
         }
 
-        public bool Parse(string strData, out NFGUID id)
+        public void Parse(string strData)
         {
-            NFGUID xId = new NFGUID();
-            id = xId;
-
             string[] strList = strData.Split('-');
             if (strList.Count() != 2)
             {
-                return false;
+                return;
             }
 
             Int64 nHead = 0;
             if (!Int64.TryParse(strList[0], out nHead))
             {
-                return false;
+                return;
             }
 
             Int64 nData = 0;
             if (!Int64.TryParse(strList[1], out nData))
             {
-                return false;
+                return;
             }
 
-            id.nHead64 = nHead;
-            id.nData64 = nData;
-
-            return true;
+            this.nHead64 = nHead;
+            this.nData64 = nData;
         }
 
         public override int GetHashCode()

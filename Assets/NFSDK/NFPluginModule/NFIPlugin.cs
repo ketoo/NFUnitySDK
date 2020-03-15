@@ -1,9 +1,4 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="NFIElementModule.cs">
-//     Copyright (C) 2015-2019 lvsheng.huang <https://github.com/ketoo/NFrame>
-// </copyright>
-//-----------------------------------------------------------------------
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
