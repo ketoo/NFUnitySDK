@@ -150,7 +150,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c7bc2d8a02497840bcc01d3887ddd56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mbShowCMDGUI: 0
+  mbShowCMDGUI: 1
   port: 15001
 --- !u!4 &294974243
 Transform:
