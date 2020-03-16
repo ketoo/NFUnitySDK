@@ -1039,6 +1039,8 @@ namespace NFrame
         /// 
         private void EGMI_ACK_MOVE(int id, MemoryStream stream)
         {
+            Debug.Log("Move " + Time.time);
+
             NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
 
             NFMsg.ReqAckPlayerMove xData = NFMsg.ReqAckPlayerMove.Parser.ParseFrom(xMsg.MsgData);
@@ -1055,6 +1057,7 @@ namespace NFrame
 
         private void EGMI_ACK_MOVE_IMMUNE(int id, MemoryStream stream)
         {
+            Debug.Log("EGMI_ACK_MOVE_IMMUNE " + Time.time);
             NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
 
             NFMsg.ReqAckPlayerMove xData = NFMsg.ReqAckPlayerMove.Parser.ParseFrom(xMsg.MsgData);
@@ -1101,6 +1104,7 @@ namespace NFrame
 
         private void EGMI_ACK_STATE_SYNC(int id, MemoryStream stream)
         {
+            Debug.Log("EGMI_ACK_STATE_SYNC " + Time.time);
             NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
 
             NFMsg.ReqAckPlayerMove xData = NFMsg.ReqAckPlayerMove.Parser.ParseFrom(xMsg.MsgData);
@@ -1160,6 +1164,7 @@ namespace NFrame
 
         private void EGMI_ACK_POS_SYNC(int id, MemoryStream stream)
         {
+            Debug.Log("EGMI_ACK_POS_SYNC " + Time.time);
             NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
 
             NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
@@ -1167,18 +1172,21 @@ namespace NFrame
             NFGUID xMover = mHelpModule.PBToNF(xData.Mover);
             if (xMover.IsNull())
             {
+                Debug.LogError("xMover " + Time.time);
                 return;
             }
 
             GameObject xGameObject = mSceneModule.GetObject(xMover);
             if (!xGameObject)
             {
+                Debug.LogError("xGameObject " + Time.time);
                 return;
             }
 
             NFHeroSync xHeroSync = xGameObject.GetComponent<NFHeroSync>();
             if (!xHeroSync)
             {
+                Debug.LogError("xHeroSync " + Time.time);
                 return;
             }
 

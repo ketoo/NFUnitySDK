@@ -48,13 +48,12 @@ public class NFHeroSync : MonoBehaviour
             NFHeroSyncBuffer.Keyframe keyframe = mxSyncBuffer.NextKeyframe();
             if (keyframe != null)
             {
+                mxHeroMotor.MoveTo(keyframe.Position);
+
                 NFAnimaStateType type = (NFrame.NFAnimaStateType)keyframe.status;
                 switch (type)
                 {
                     case NFAnimaStateType.Run:
-                        mxHeroMotor.MoveTo(keyframe.Position);
-                        break;
-                    case NFAnimaStateType.Idle:
                         break;
                     default:
                         break;
