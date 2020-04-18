@@ -146,14 +146,14 @@ namespace NFrame
         }
       
         ////////////////////////////////////修改自身属性
-        public void RequirePropertyInt(NFGUID objectID, string strPropertyName, NFDataList.TData newVar)
+        public void RequirePropertyInt(NFGUID objectID, string strPropertyName, int newVar)
         {
             NFMsg.ObjectPropertyInt xData = new NFMsg.ObjectPropertyInt();
             xData.PlayerId = mHelpModule.NFToPB(objectID);
 
             NFMsg.PropertyInt xPropertyInt = new NFMsg.PropertyInt();
             xPropertyInt.PropertyName = ByteString.CopyFromUtf8(strPropertyName);
-            xPropertyInt.Data = newVar.IntVal();
+            xPropertyInt.Data = newVar;
             xData.PropertyList.Add(xPropertyInt);
 
             mxBody.SetLength(0);
@@ -163,14 +163,14 @@ namespace NFrame
             SendMsg((int)NFMsg.EGameMsgID.AckPropertyInt, mxBody);
         }
 
-        public void RequirePropertyFloat(NFGUID objectID, string strPropertyName, NFDataList.TData newVar)
+        public void RequirePropertyFloat(NFGUID objectID, string strPropertyName, float newVar)
         {
             NFMsg.ObjectPropertyFloat xData = new NFMsg.ObjectPropertyFloat();
             xData.PlayerId = mHelpModule.NFToPB(objectID);
 
             NFMsg.PropertyFloat xPropertyFloat = new NFMsg.PropertyFloat();
             xPropertyFloat.PropertyName = ByteString.CopyFromUtf8(strPropertyName);
-            xPropertyFloat.Data = (float)newVar.FloatVal();
+            xPropertyFloat.Data = newVar;
             xData.PropertyList.Add(xPropertyFloat);
 
             mxBody.SetLength(0);
@@ -180,14 +180,14 @@ namespace NFrame
             SendMsg((int)NFMsg.EGameMsgID.AckPropertyFloat, mxBody);
         }
 
-        public void RequirePropertyString(NFGUID objectID, string strPropertyName, NFDataList.TData newVar)
+        public void RequirePropertyString(NFGUID objectID, string strPropertyName, string newVar)
         {
             NFMsg.ObjectPropertyString xData = new NFMsg.ObjectPropertyString();
             xData.PlayerId = mHelpModule.NFToPB(objectID);
 
             NFMsg.PropertyString xPropertyString = new NFMsg.PropertyString();
             xPropertyString.PropertyName = ByteString.CopyFromUtf8(strPropertyName);
-            xPropertyString.Data = ByteString.CopyFromUtf8(newVar.StringVal());
+            xPropertyString.Data = ByteString.CopyFromUtf8(newVar);
             xData.PropertyList.Add(xPropertyString);
 
             mxBody.SetLength(0);
@@ -197,14 +197,14 @@ namespace NFrame
             SendMsg((int)NFMsg.EGameMsgID.AckPropertyString, mxBody);
         }
 
-        public void RequirePropertyObject(NFGUID objectID, string strPropertyName, NFDataList.TData newVar)
+        public void RequirePropertyObject(NFGUID objectID, string strPropertyName, NFGUID newVar)
         {
             NFMsg.ObjectPropertyObject xData = new NFMsg.ObjectPropertyObject();
             xData.PlayerId = mHelpModule.NFToPB(objectID);
 
             NFMsg.PropertyObject xPropertyObject = new NFMsg.PropertyObject();
             xPropertyObject.PropertyName = ByteString.CopyFromUtf8(strPropertyName);
-            xPropertyObject.Data = mHelpModule.NFToPB(newVar.ObjectVal());
+            xPropertyObject.Data = mHelpModule.NFToPB(newVar);
             xData.PropertyList.Add(xPropertyObject);
 
             mxBody.SetLength(0);
@@ -214,14 +214,14 @@ namespace NFrame
             SendMsg((int)NFMsg.EGameMsgID.AckPropertyObject, mxBody);
         }
 
-        public void RequirePropertyVector2(NFGUID objectID, string strPropertyName, NFDataList.TData newVar)
+        public void RequirePropertyVector2(NFGUID objectID, string strPropertyName, NFVector2 newVar)
         {
             NFMsg.ObjectPropertyVector2 xData = new NFMsg.ObjectPropertyVector2();
             xData.PlayerId = mHelpModule.NFToPB(objectID);
 
             NFMsg.PropertyVector2 xProperty = new NFMsg.PropertyVector2();
             xProperty.PropertyName = ByteString.CopyFromUtf8(strPropertyName);
-            xProperty.Data = mHelpModule.NFToPB(newVar.Vector2Val());
+            xProperty.Data = mHelpModule.NFToPB(newVar);
             xData.PropertyList.Add(xProperty);
 
             mxBody.SetLength(0);
@@ -231,14 +231,14 @@ namespace NFrame
             SendMsg((int)NFMsg.EGameMsgID.AckPropertyVector2, mxBody);
         }
 
-        public void RequirePropertyVector3(NFGUID objectID, string strPropertyName, NFDataList.TData newVar)
+        public void RequirePropertyVector3(NFGUID objectID, string strPropertyName, NFVector3 newVar)
         {
             NFMsg.ObjectPropertyVector3 xData = new NFMsg.ObjectPropertyVector3();
             xData.PlayerId = mHelpModule.NFToPB(objectID);
 
             NFMsg.PropertyVector3 xProperty = new NFMsg.PropertyVector3();
             xProperty.PropertyName = ByteString.CopyFromUtf8(strPropertyName);
-            xProperty.Data = mHelpModule.NFToPB(newVar.Vector3Val());
+            xProperty.Data = mHelpModule.NFToPB(newVar);
             xData.PropertyList.Add(xProperty);
 
             mxBody.SetLength(0);
@@ -525,21 +525,15 @@ namespace NFrame
         //WSAD移动
         public void RequireMove(NFGUID objectID, int nType, UnityEngine.Vector3 vPos, UnityEngine.Vector3 vTar)
         {
-            NFMsg.ReqAckPlayerMove xData = new NFMsg.ReqAckPlayerMove();
+            NFMsg.ReqAckPlayerPosSync xData = new NFMsg.ReqAckPlayerPosSync();
             xData.Mover = mHelpModule.NFToPB(objectID);
-            xData.MoveType = nType;
 
-            NFMsg.Vector3 xNowPos = new NFMsg.Vector3();
-            xNowPos.X = vPos.x;
-            xNowPos.Y = vPos.y;
-            xNowPos.Z = vPos.z;
-            xData.SourcePos.Add(xNowPos);
-
-            NFMsg.Vector3 xTargetPos = new NFMsg.Vector3();
-            xTargetPos.X = vTar.x;
-            xTargetPos.Y = vTar.y;
-            xTargetPos.Z = vTar.z;
-            xData.TargetPos.Add(xTargetPos);
+            NFMsg.PosSyncUnit posSyncUnit = new PosSyncUnit();
+            posSyncUnit.Pos = new NFMsg.Vector3();
+            posSyncUnit.Pos.X = vPos.x;
+            posSyncUnit.Pos.Y = vPos.y;
+            posSyncUnit.Pos.Z = vPos.z;
+            xData.SyncUnit.Add(posSyncUnit);
 
             mxBody.SetLength(0);
             xData.WriteTo(mxBody);
@@ -548,32 +542,24 @@ namespace NFrame
 
             //为了表现，客户端先走，后续同步
         }
+
         public void RequireMoveImmune(NFGUID objectID, UnityEngine.Vector3 vPos)
         {
-            NFMsg.ReqAckPlayerMove xData = new NFMsg.ReqAckPlayerMove();
+            NFMsg.ReqAckPlayerPosSync xData = new NFMsg.ReqAckPlayerPosSync();
             xData.Mover = mHelpModule.NFToPB(objectID);
-            xData.MoveType = 0;
-            NFMsg.Vector3 xTargetPos = new NFMsg.Vector3();
-            xTargetPos.X = vPos.x;
-            xTargetPos.Y = vPos.y;
-            xTargetPos.Z = vPos.z;
-            xData.TargetPos.Add(xTargetPos);
+
+            NFMsg.PosSyncUnit posSyncUnit = new PosSyncUnit();
+            posSyncUnit.Pos = new NFMsg.Vector3();
+            posSyncUnit.Pos.X = vPos.x;
+            posSyncUnit.Pos.Y = vPos.y;
+            posSyncUnit.Pos.Z = vPos.z;
+            xData.SyncUnit.Add(posSyncUnit);
 
             mxBody.SetLength(0);
             xData.WriteTo(mxBody);
 
 
             SendMsg((int)NFMsg.EGameMsgID.ReqMoveImmune, mxBody);
-        }
-        //申请状态机同步
-        public void RequireStateSync(NFGUID objectID, NFMsg.ReqAckPlayerMove xData)
-        {
-            mxBody.SetLength(0);
-            xData.WriteTo(mxBody);
-
-
-            SendMsg((int)NFMsg.EGameMsgID.ReqStateSync, mxBody);
-
         }
 
         //有可能是他副本的NPC移动,因此增加64对象ID

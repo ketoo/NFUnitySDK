@@ -43,17 +43,17 @@ public class NFHeroSync : MonoBehaviour
 
     private void Update()
     {
-		if (mxBodyIdent && mxBodyIdent.GetObjectID() != mLoginModule.mRoleID)
+        if (mxBodyIdent && mxBodyIdent.GetObjectID() != mLoginModule.mRoleID)
 		{
             NFHeroSyncBuffer.Keyframe keyframe = mxSyncBuffer.NextKeyframe();
             if (keyframe != null)
             {
-                mxHeroMotor.MoveTo(keyframe.Position);
-
                 NFAnimaStateType type = (NFrame.NFAnimaStateType)keyframe.status;
                 switch (type)
                 {
                     case NFAnimaStateType.Run:
+                    case NFAnimaStateType.Idle:
+                        mxHeroMotor.MoveTo(keyframe.Position);
                         break;
                     default:
                         break;
@@ -77,37 +77,54 @@ public class NFHeroSync : MonoBehaviour
         direction.Y = mxHeroMotor.GetMoveDrictor().y;
         direction.Z = mxHeroMotor.GetMoveDrictor().z;
 
-        NFMsg.ReqAckPlayerPosSync reqAckPlayerPosSync = new NFMsg.ReqAckPlayerPosSync();
-        reqAckPlayerPosSync.Mover = mHelpModule.NFToPB(mLoginModule.mRoleID);
-        reqAckPlayerPosSync.InterpolationTime = 0;
-        reqAckPlayerPosSync.Time = Time.frameCount;
-        reqAckPlayerPosSync.Status = (int)mAnimaStateMachine.CurState();
-        reqAckPlayerPosSync.Frame = Time.frameCount;
+        NFMsg.ReqAckPlayerPosSync playerPosSync = new NFMsg.ReqAckPlayerPosSync();
+        playerPosSync.Mover = mHelpModule.NFToPB(mLoginModule.mRoleID);
 
-        reqAckPlayerPosSync.Position = position;
-        reqAckPlayerPosSync.Direction = direction;
+        NFMsg.PosSyncUnit posSyncUnit = new NFMsg.PosSyncUnit();
+        posSyncUnit.Pos = position;
+        posSyncUnit.Direction = direction;
+        posSyncUnit.Status = (int)mAnimaStateMachine.CurState();
+        playerPosSync.SyncUnit.Add(posSyncUnit);
 
-        mxNetModule.RequireSyncPosition(reqAckPlayerPosSync);
+
+        mxNetModule.RequireSyncPosition(playerPosSync);
     }
 
     public void AddSyncData(NFMsg.ReqAckPlayerPosSync reqAckPlayerPosSync)
     {
-        Vector3 v = new Vector3();
-        v.x = reqAckPlayerPosSync.Position.X;
-        v.y = reqAckPlayerPosSync.Position.Y;
-        v.z = reqAckPlayerPosSync.Position.Z;
+        Clear();
 
-        Vector3 v1 = new Vector3();
-        v1.x = reqAckPlayerPosSync.Direction.X;
-        v1.y = reqAckPlayerPosSync.Direction.Y;
-        v1.z = reqAckPlayerPosSync.Direction.Z;
+        for (int i = 0; i < reqAckPlayerPosSync.SyncUnit.Count; ++i)
+        {
+            NFMsg.PosSyncUnit syncUnit = reqAckPlayerPosSync.SyncUnit[i];
+            Vector3 pos = new Vector3();
+            Vector3 dir = new Vector3();
+            pos.x = syncUnit.Pos.X;
+            pos.y = syncUnit.Pos.Y;
+            pos.z = syncUnit.Pos.Z;
 
-        var keyframe = new NFHeroSyncBuffer.Keyframe();
-        keyframe.InterpolationTime = reqAckPlayerPosSync.InterpolationTime;
-        keyframe.Position = v;
-        keyframe.Director = v1;
-        keyframe.status = reqAckPlayerPosSync.Status;
+            if (syncUnit.Direction != null)
+            {
+                dir.x = syncUnit.Direction.X;
+                dir.y = syncUnit.Direction.Y;
+                dir.z = syncUnit.Direction.Z;
+            }
 
-        mxSyncBuffer.AddKeyframe(keyframe);
+            var keyframe = new NFHeroSyncBuffer.Keyframe();
+            keyframe.Position = pos;
+            keyframe.Director = dir;
+            keyframe.status = syncUnit.Status;
+
+            if (mxSyncBuffer)
+            {
+                mxSyncBuffer.AddKeyframe(keyframe);
+            }
+        }
+    }
+
+    public void Clear()
+    {
+        mxSyncBuffer.Clear();
+        mxHeroMotor.Stop();
     }
 }

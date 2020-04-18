@@ -44,4 +44,10 @@ public class NFHeroSyncBuffer : MonoBehaviour
 
         _keyframes.Add(keyframe);
     }
+
+
+    public virtual void Clear()
+    {
+        _keyframes.Clear();
+    }
 }

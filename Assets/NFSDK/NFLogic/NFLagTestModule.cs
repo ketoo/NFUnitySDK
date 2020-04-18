@@ -95,8 +95,10 @@ namespace NFrame
             float time;
             if (mLagTestData.TryGetValue(xData.Index, out time))
             {
-                float lasTime = Time.realtimeSinceStartup - time;
-                gateLagTime = (int)(lasTime * 1000);
+                float lagTime = Time.realtimeSinceStartup - time;
+                gateLagTime = (int)(lagTime * 1000);
+
+                Debug.Log("gateLagTime:" + gateLagTime);
             }
         }
 
@@ -109,8 +111,11 @@ namespace NFrame
             float time;
             if (mLagTestData.TryGetValue(xData.Index, out time))
             {
-                float lasTime = Time.realtimeSinceStartup - time;
-                gameLagTime = (int)(lasTime * 1000);
+                float lagTime = Time.realtimeSinceStartup - time;
+                gameLagTime = (int)(lagTime * 1000);
+
+                Debug.Log("gameLagTime:" + gameLagTime);
+
                 mLagTestData.Remove(xData.Index);
             }
         }

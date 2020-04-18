@@ -18,7 +18,7 @@ namespace NFrame
     {
         public enum Event : int
         {
-            SwapScene = 1,
+            SwapScene = 100,
             PlayerMove,
         };
 
@@ -86,6 +86,7 @@ namespace NFrame
             mHelpModule = mPluginManager.FindModule<NFHelpModule>();
             mNetEventModule = mPluginManager.FindModule<NFNetEventModule>();
             mUIModule = mPluginManager.FindModule<NFUIModule>();
+            mLoginModule = mPluginManager.FindModule<NFLoginModule>();
 
         }
 
@@ -106,7 +107,6 @@ namespace NFrame
             mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckObjectLeave, EGMI_ACK_OBJECT_LEAVE);
             mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckMove, EGMI_ACK_MOVE);
             mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckMoveImmune, EGMI_ACK_MOVE_IMMUNE);
-            mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckStateSync, EGMI_ACK_STATE_SYNC);
             mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckPosSync, EGMI_ACK_POS_SYNC);
 
             mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckPropertyInt, EGMI_ACK_PROPERTY_INT);
@@ -139,10 +139,7 @@ namespace NFrame
 
         }
 
-        public override void AfterInit()
-        {
-        }
-
+     
         public override void Execute()
         {
         }
@@ -150,6 +147,7 @@ namespace NFrame
         public override void BeforeShut()
         {
         }
+
         public override void Shut()
         {
         }
@@ -1043,16 +1041,16 @@ namespace NFrame
 
             NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
 
-            NFMsg.ReqAckPlayerMove xData = NFMsg.ReqAckPlayerMove.Parser.ParseFrom(xMsg.MsgData);
+            NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
 
-            if (xData.TargetPos.Count <= 0)
+            if (xData.SyncUnit.Count <= 0)
             {
                 return;
             }
 
             float fSpeed = mKernelModule.QueryPropertyInt(mHelpModule.PBToNF(xData.Mover), NFrame.NPC.MOVE_SPEED) / 100.0f;
 
-            mSceneModule.MoveTo(mHelpModule.PBToNF(xData.Mover), new UnityEngine.Vector3(xData.TargetPos[0].X, xData.TargetPos[0].Y, xData.TargetPos[0].Z), fSpeed, true);
+            //mSceneModule.MoveTo(mHelpModule.PBToNF(xData.Mover), new UnityEngine.Vector3(xData.TargetPos[0].X, xData.TargetPos[0].Y, xData.TargetPos[0].Z), fSpeed, true);
         }
 
         private void EGMI_ACK_MOVE_IMMUNE(int id, MemoryStream stream)
@@ -1060,9 +1058,9 @@ namespace NFrame
             Debug.Log("EGMI_ACK_MOVE_IMMUNE " + Time.time);
             NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
 
-            NFMsg.ReqAckPlayerMove xData = NFMsg.ReqAckPlayerMove.Parser.ParseFrom(xMsg.MsgData);
+            NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
 
-            if (xData.TargetPos.Count <= 0)
+            if (xData.SyncUnit.Count <= 0)
             {
                 return;
             }
@@ -1085,15 +1083,15 @@ namespace NFrame
                 return;
             }
 
-            NFMsg.Vector3 vector = xData.TargetPos[0];
 
             //TODO
             //GC----------
+            /*
             UnityEngine.Vector3 v = new UnityEngine.Vector3();
             v.x = vector.X;
             v.y = vector.Y;
             v.z = vector.Z;
-
+            */
             //xHeroSync.AddSyncData(v);
 
             //float fSpeed = mKernelModule.QueryPropertyInt(xMover, NFrame.NPC.MOVE_SPEED) / 100.0f;
@@ -1102,77 +1100,22 @@ namespace NFrame
 
         }
 
-        private void EGMI_ACK_STATE_SYNC(int id, MemoryStream stream)
-        {
-            Debug.Log("EGMI_ACK_STATE_SYNC " + Time.time);
-            NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
-
-            NFMsg.ReqAckPlayerMove xData = NFMsg.ReqAckPlayerMove.Parser.ParseFrom(xMsg.MsgData);
-
-            if (xData.TargetPos.Count <= 0)
-            {
-                return;
-            }
-
-            NFGUID xGUID = mHelpModule.PBToNF(xData.Mover);
-            NFIObject xObject = mKernelModule.GetObject(xGUID);
-            if (xObject == null)
-            {
-                return;
-            }
-            if (xObject != null)
-            {
-
-                GameObject go = mSceneModule.GetObject(xGUID);
-                if (go != null)
-                {
-                    NFAnimaStateMachine xStateMachineMng = go.GetComponent<NFAnimaStateMachine>();
-                    if (xStateMachineMng != null)
-                    {
-                        NFAnimaStateType eNewState = (NFAnimaStateType)(xData.MoveType);
-                        float fSpeed = xData.Speed;
-                        int nTime = xData.Time;
-
-                        UnityEngine.Vector3 vNowPos = new UnityEngine.Vector3();
-                        UnityEngine.Vector3 vTargetPos = new UnityEngine.Vector3();
-                        UnityEngine.Vector3 vMoveDirection = new UnityEngine.Vector3();
-
-                        if (xData.SourcePos != null && xData.SourcePos.Count > 0)
-                        {
-                            vNowPos.x = xData.SourcePos[0].X;
-                            vNowPos.y = xData.SourcePos[0].Y;
-                            vNowPos.z = xData.SourcePos[0].Z;
-                        }
-                        if (xData.TargetPos != null && xData.TargetPos.Count > 0)
-                        {
-                            vTargetPos.x = xData.TargetPos[0].X;
-                            vTargetPos.y = xData.TargetPos[0].Y;
-                            vTargetPos.z = xData.TargetPos[0].Z;
-                        }
-                        if (xData.MoveDirection != null && xData.MoveDirection.Count > 0)
-                        {
-                            vMoveDirection.x = xData.MoveDirection[0].X;
-                            vMoveDirection.y = xData.MoveDirection[0].Y;
-                            vMoveDirection.z = xData.MoveDirection[0].Z;
-                        }
-
-                        xStateMachineMng.InputStateData(eNewState, (NFAnimaStateType)xData.LastState, fSpeed, nTime, vNowPos, vTargetPos, vMoveDirection);
-                    }
-                }
-            }
-        }
-
         private void EGMI_ACK_POS_SYNC(int id, MemoryStream stream)
         {
-            Debug.Log("EGMI_ACK_POS_SYNC " + Time.time);
             NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
 
             NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
+
 
             NFGUID xMover = mHelpModule.PBToNF(xData.Mover);
             if (xMover.IsNull())
             {
                 Debug.LogError("xMover " + Time.time);
+                return;
+            }
+
+            if (xMover == mLoginModule.mRoleID)
+            {
                 return;
             }
 
@@ -1203,10 +1146,22 @@ namespace NFrame
             GameObject xGameObject = mSceneModule.GetObject(xUser);
             if (xGameObject)
             {
+                NFHeroSync xHeroSync = xGameObject.GetComponent<NFHeroSync>();
+                if (!xHeroSync)
+                {
+                    Debug.LogError("xHeroSync " + Time.time);
+                    return;
+                }
+
+                //xHeroSync.Clear();
+
                 //NFHeroSkill xHeroSkill = xGameObject.GetComponent<NFHeroSkill>();
                 //xHeroSkill.AckSkill(xUser, xData.UseIndex, xData.SkillId.ToStringUtf8(), xData.EffectData.ToList<NFMsg.EffectData>());
             }
+        }
 
+        public override void AfterInit()
+        {
         }
     }
 }

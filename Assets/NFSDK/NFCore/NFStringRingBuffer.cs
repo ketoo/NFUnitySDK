@@ -138,11 +138,14 @@ namespace NFSDK
 
         public bool Pop(byte[] dst, int size, bool readOnly = false)
         {
-            Console.WriteLine("Pop:" + size);
-
             if (size <= 0 || Size() < size)
             {
                 return false;
+            }
+
+            if (!readOnly)
+            {
+                Console.WriteLine("Pop:" + size);
             }
 
             if (m_rear > m_front)

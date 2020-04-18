@@ -104,7 +104,7 @@ namespace NFrame
 			if (mKey != null && mKey.Length > 0)
 			{
 				//verify token
-                //RequireVerifyWorldKey(mAccount, mKey);
+                RequireVerifyWorldKey(mAccount, mKey);
 			}
         }
 
@@ -129,7 +129,7 @@ namespace NFrame
                     mKernelModule.DestroyObject(xDataList.ObjectVal(i));
                 }
 
-                mUIModule.DestroyAllUI();
+                mUIModule.CloseAllUI();
                 mUIModule.ShowUI<NFUILogin>();
             }
         }

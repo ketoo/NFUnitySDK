@@ -42,7 +42,7 @@ namespace NFrame
 
             return vector;
         }
-        public NFVector2 PBToNF(NFMsg.Vector2 xVector)
+        public NFSDK.NFVector2 PBToNF(NFMsg.Vector2 xVector)
         {
             NFVector2 xData = new NFVector2(xVector.X, xVector.Y);
 
@@ -59,7 +59,7 @@ namespace NFrame
             return vector;
         }
 
-        public NFVector3 PBToNF(NFMsg.Vector3 xVector)
+        public NFSDK.NFVector3 PBToNF(NFMsg.Vector3 xVector)
         {
             NFVector3 xData = new NFVector3(xVector.X, xVector.Y, xVector.Z);
 

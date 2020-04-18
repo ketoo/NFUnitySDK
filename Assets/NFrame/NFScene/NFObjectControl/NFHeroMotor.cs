@@ -153,20 +153,19 @@ public sealed class NFHeroMotor : BaseCharacterController
     {
         moveToPos = vPos;
         moveDirection = (vPos - this.transform.position).normalized;
-        mBodyIdent.LookAt(vPos);
     }
 
     public void MoveTo(Vector3 vPos)
     {
+        vPos.y = this.transform.position.y;
         moveToPos = vPos;
         moveDirection = (vPos - this.transform.position).normalized;
-        mBodyIdent.LookAt(vPos);
-
 
         if (mLoginModule.mRoleID == mxGUID)
         {
             mHeroSync.SendSyncMessage();
         }
+
 
         mAnima.PlayAnimaState(NFAnimaStateType.Run, -1);
     }
@@ -220,6 +219,7 @@ public sealed class NFHeroMotor : BaseCharacterController
     {
         base.Awake();
         _walkSpeed = 1.5f;
+        angularSpeed = 0f;
 
         mKernelModule = NFPluginManager.Instance().FindModule<NFIKernelModule>();
 
@@ -243,18 +243,23 @@ public sealed class NFHeroMotor : BaseCharacterController
 
         mBodyIdent.SetShadowVisible(isGrounded);
 
-        if (Vector3.Distance(moveToPos, Vector3.zero) < 0.1f)
+        if (!moveToPos.isZero())
         {
-            Stop();
-        }
-        else if (Mathf.Abs(moveToPos.x - this.transform.position.x) < 0.1f && Mathf.Abs(moveToPos.z - this.transform.position.z) < 0.1f)
-        {
-            Stop();
-        }
-        else
-        {
-            moveDirection = (moveToPos - this.transform.position).normalized;
-            mBodyIdent.LookAt(moveToPos);
+            if (Mathf.Abs(moveToPos.x - this.transform.position.x) < 0.1f && Mathf.Abs(moveToPos.z - this.transform.position.z) < 0.1f)
+            {
+                //now running
+                //if (mAnimaStateMachine.CurState() == NFAnimaStateType.Run
+                //    || mAnimaStateMachine.CurState() == NFAnimaStateType.Walk)
+                {
+                    //sometimes, the object will swap to skill animation from running animation before we swap to idle
+                    Stop();
+                }
+            }
+            else
+            {
+                moveDirection = (moveToPos - this.transform.position).normalized;
+                mBodyIdent.LookAt(moveToPos);
+            }
         }
     }
 
@@ -280,7 +285,6 @@ public sealed class NFHeroMotor : BaseCharacterController
 
     void OnDestroy()
 	{
-
 	}
 
 }
