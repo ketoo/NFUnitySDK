@@ -78,12 +78,12 @@ public class NFHeroSync : MonoBehaviour
         direction.Z = mxHeroMotor.GetMoveDrictor().z;
 
         NFMsg.ReqAckPlayerPosSync playerPosSync = new NFMsg.ReqAckPlayerPosSync();
-        playerPosSync.Mover = mHelpModule.NFToPB(mLoginModule.mRoleID);
 
         NFMsg.PosSyncUnit posSyncUnit = new NFMsg.PosSyncUnit();
         posSyncUnit.Pos = position;
         posSyncUnit.Direction = direction;
         posSyncUnit.Status = (int)mAnimaStateMachine.CurState();
+        posSyncUnit.Mover = mHelpModule.NFToPB(mLoginModule.mRoleID);
         playerPosSync.SyncUnit.Add(posSyncUnit);
 
 
