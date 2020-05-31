@@ -526,13 +526,13 @@ namespace NFrame
         public void RequireMove(NFGUID objectID, int nType, UnityEngine.Vector3 vPos, UnityEngine.Vector3 vTar)
         {
             NFMsg.ReqAckPlayerPosSync xData = new NFMsg.ReqAckPlayerPosSync();
-            xData.Mover = mHelpModule.NFToPB(objectID);
 
             NFMsg.PosSyncUnit posSyncUnit = new PosSyncUnit();
             posSyncUnit.Pos = new NFMsg.Vector3();
             posSyncUnit.Pos.X = vPos.x;
             posSyncUnit.Pos.Y = vPos.y;
             posSyncUnit.Pos.Z = vPos.z;
+            posSyncUnit.Mover = mHelpModule.NFToPB(objectID);
             xData.SyncUnit.Add(posSyncUnit);
 
             mxBody.SetLength(0);
@@ -546,13 +546,13 @@ namespace NFrame
         public void RequireMoveImmune(NFGUID objectID, UnityEngine.Vector3 vPos)
         {
             NFMsg.ReqAckPlayerPosSync xData = new NFMsg.ReqAckPlayerPosSync();
-            xData.Mover = mHelpModule.NFToPB(objectID);
 
             NFMsg.PosSyncUnit posSyncUnit = new PosSyncUnit();
             posSyncUnit.Pos = new NFMsg.Vector3();
             posSyncUnit.Pos.X = vPos.x;
             posSyncUnit.Pos.Y = vPos.y;
             posSyncUnit.Pos.Z = vPos.z;
+            posSyncUnit.Mover = mHelpModule.NFToPB(objectID);
             xData.SyncUnit.Add(posSyncUnit);
 
             mxBody.SetLength(0);
