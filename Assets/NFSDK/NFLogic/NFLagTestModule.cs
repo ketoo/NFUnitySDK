@@ -98,7 +98,7 @@ namespace NFrame
                 float lagTime = Time.realtimeSinceStartup - time;
                 gateLagTime = (int)(lagTime * 1000);
 
-                Debug.Log("gateLagTime:" + gateLagTime);
+                //Debug.Log("gateLagTime:" + gateLagTime);
             }
         }
 
@@ -114,7 +114,7 @@ namespace NFrame
                 float lagTime = Time.realtimeSinceStartup - time;
                 gameLagTime = (int)(lagTime * 1000);
 
-                Debug.Log("gameLagTime:" + gameLagTime);
+                //ebug.Log("gameLagTime:" + gameLagTime);
 
                 mLagTestData.Remove(xData.Index);
             }

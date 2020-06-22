@@ -5,10 +5,11 @@ using UnityEngine;
 public class NFHeroSyncBuffer : MonoBehaviour
 {
     protected List<Keyframe> _keyframes = new List<Keyframe>();
-
+    //pool manager
     public class Keyframe
     {
         public float InterpolationTime;
+        public Vector3 LastPos;
         public Vector3 Position;
         public Vector3 Director;
         public int status;
@@ -49,5 +50,10 @@ public class NFHeroSyncBuffer : MonoBehaviour
     public virtual void Clear()
     {
         _keyframes.Clear();
+    }
+
+    public int Size()
+    {
+        return _keyframes.Count;
     }
 }

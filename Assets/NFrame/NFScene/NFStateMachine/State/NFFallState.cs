@@ -17,8 +17,8 @@ public class NFFallState : NFIState
         : base(gameObject, eState, xStateMachine, fHeartBeatTime, fExitTime, input)
     {
         xHeroMotor = gameObject.GetComponent<NFHeroMotor>();
-        mLoginModule = NFPluginManager.Instance().FindModule<NFLoginModule>();
-        mSceneModule = NFPluginManager.Instance().FindModule<NFSceneModule>();
+        mLoginModule = NFRoot.Instance().GetPluginManager().FindModule<NFLoginModule>();
+        mSceneModule = NFRoot.Instance().GetPluginManager().FindModule<NFSceneModule>();
     }
 
 

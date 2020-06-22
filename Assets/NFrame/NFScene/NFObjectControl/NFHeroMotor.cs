@@ -28,6 +28,8 @@ public sealed class NFHeroMotor : BaseCharacterController
     private NFHeroInput mHeroInput;
     private NFHeroSync mHeroSync;
 
+    public delegate bool MeetGoalCalllBack();
+    MeetGoalCalllBack meetGoalCasllBack;
     //=============
     #region EDITOR EXPOSED FIELDS
 
@@ -144,9 +146,18 @@ public sealed class NFHeroMotor : BaseCharacterController
 
     public void Stop()
     {
+        bool b = false;
         moveDirection = Vector3.zero;
         moveToPos = Vector3.zero;
-        mAnima.PlayAnimaState(NFAnimaStateType.Idle, -1);
+        if (meetGoalCasllBack != null)
+        {
+            b = meetGoalCasllBack();
+        }
+
+        if (!b)
+        {
+            mAnima.PlayAnimaState(NFAnimaStateType.Idle, -1);
+        }
     }
 
     public void MoveToAttackTarget(Vector3 vPos, NFGUID id)
@@ -155,15 +166,17 @@ public sealed class NFHeroMotor : BaseCharacterController
         moveDirection = (vPos - this.transform.position).normalized;
     }
 
-    public void MoveTo(Vector3 vPos)
+    public void MoveTo(Vector3 vPos, MeetGoalCalllBack callBack = null)
     {
+        meetGoalCasllBack = callBack;
+
         vPos.y = this.transform.position.y;
         moveToPos = vPos;
         moveDirection = (vPos - this.transform.position).normalized;
 
         if (mLoginModule.mRoleID == mxGUID)
         {
-            mHeroSync.SendSyncMessage();
+            mNetModule.RequireMove(mLoginModule.mRoleID, 0, moveToPos);
         }
 
 
@@ -221,13 +234,13 @@ public sealed class NFHeroMotor : BaseCharacterController
         _walkSpeed = 1.5f;
         angularSpeed = 0f;
 
-        mKernelModule = NFPluginManager.Instance().FindModule<NFIKernelModule>();
+        mKernelModule = NFRoot.Instance().GetPluginManager().FindModule<NFIKernelModule>();
 
-        mSceneModule = NFPluginManager.Instance().FindModule<NFSceneModule>();
-        mLoginModule = NFPluginManager.Instance().FindModule<NFLoginModule>();
-        mNetModule = NFPluginManager.Instance().FindModule<NFNetModule>();
+        mSceneModule = NFRoot.Instance().GetPluginManager().FindModule<NFSceneModule>();
+        mLoginModule = NFRoot.Instance().GetPluginManager().FindModule<NFLoginModule>();
+        mNetModule = NFRoot.Instance().GetPluginManager().FindModule<NFNetModule>();
 
-        mUIModule = NFPluginManager.Instance().FindModule<NFUIModule>();
+        mUIModule = NFRoot.Instance().GetPluginManager().FindModule<NFUIModule>();
 
         mAnima = GetComponent<NFAnimatStateController>();
     }
@@ -285,6 +298,9 @@ public sealed class NFHeroMotor : BaseCharacterController
 
     void OnDestroy()
 	{
+		int nX = (int)transform.position.x;
+		int nY = (int)transform.position.y;
+		//mSceneModule.RemoveTile (nX, nY, mxGUID);
 	}
 
 }

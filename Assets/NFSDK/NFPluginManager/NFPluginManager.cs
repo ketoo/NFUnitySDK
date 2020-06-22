@@ -7,18 +7,8 @@ namespace NFSDK
 {
     public class NFPluginManager : NFIPluginManager
     {
-
-		private static NFIPluginManager _instance = null;
-		public static NFIPluginManager Instance()
-        {
-			return _instance;
-        }
-
-
         public NFPluginManager()
         {
-            mPluginManager = this;
-			_instance = this;
         }
         //------------- 接口 -------------------//
 

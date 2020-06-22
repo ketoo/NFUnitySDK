@@ -6,6 +6,7 @@ using System.Xml;
 using System.Collections;
 using System.IO;
 using UnityEngine;
+using System.Globalization;
 
 namespace NFSDK
 {
@@ -24,7 +25,7 @@ namespace NFSDK
 
         public override void Init()
         {
-            mxLogicClassModule = FindModule<NFIClassModule>();
+            mxLogicClassModule = mPluginManager.FindModule<NFIClassModule>();
             mstrRootPath = mxLogicClassModule.GetDataPath();
         }
 
@@ -184,7 +185,7 @@ namespace NFSDK
                                 case NFDataList.VARIANT_TYPE.VTYPE_FLOAT:
                                     {
                                         NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_FLOAT);
-                                        xValue.Set(float.Parse(xAttribute.Value));
+                                        xValue.Set(float.Parse(xAttribute.Value, CultureInfo.InvariantCulture.NumberFormat));
                                         NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
                                         property.SetUpload(xProperty.GetUpload());
                                     }

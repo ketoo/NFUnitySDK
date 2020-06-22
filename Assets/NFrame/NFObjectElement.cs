@@ -54,7 +54,7 @@ public class NFObjectElement
 			NFGUID ident = objectList.ObjectVal(i);
             string id = ident.nHead64.ToString() + "_" + ident.nData64.ToString();
 
-            NFLoginModule xLoginModule = kernel.FindModule<NFLoginModule>();
+            NFLoginModule xLoginModule = kernel.mPluginManager.FindModule<NFLoginModule>();
             if (ident == xLoginModule.mRoleID)
             {
                 id = "++" + id;

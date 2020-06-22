@@ -27,7 +27,7 @@ public class NFAnimaStateMachine : MonoBehaviour
 
     public void Awake()
     {
-		NFIPluginManager pluginManager = NFPluginManager.Instance();
+		NFIPluginManager pluginManager = NFRoot.Instance().GetPluginManager();
 
         xBodyIdent = GetComponent<NFBodyIdent>();
 

@@ -34,16 +34,16 @@ namespace NFSDK
 
 		public override void Awake() 
 		{ 
-			mKernelModule = FindModule<NFIKernelModule>();
-			mElementModule = FindModule<NFIElementModule>();
+			mKernelModule = mPluginManager.FindModule<NFIKernelModule>();
+			mElementModule = mPluginManager.FindModule<NFIElementModule>();
 
-			mNetModule = FindModule<NFNetModule>();
-            mEventModule = FindModule<NFIEventModule>();
-            mHelpModule = FindModule<NFHelpModule>();
+			mNetModule = mPluginManager.FindModule<NFNetModule>();
+            mEventModule = mPluginManager.FindModule<NFIEventModule>();
+            mHelpModule = mPluginManager.FindModule<NFHelpModule>();
 
-			mLoginModule = FindModule<NFLoginModule>();
+			mLoginModule = mPluginManager.FindModule<NFLoginModule>();
 
-			mUIModule = FindModule<NFUIModule >();
+			mUIModule = mPluginManager.FindModule<NFUIModule >();
         }
 
 		public override void Init()

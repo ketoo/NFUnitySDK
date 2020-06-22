@@ -17,5 +17,21 @@ namespace NFSDK
 
         public abstract Int64 GetInitTime();
         public abstract Int64 GetNowTime();
-    };
+
+
+		public T FindModule<T>() where T : NFIModule
+		{
+			return _FindModule<T>();
+		}
+
+		public NFIModule FindModule(string strModuleName)
+		{
+			return _FindModule(strModuleName);
+		}
+
+		public void RemoveModule<T>() where T : NFIModule
+		{
+			_RemoveModule<T>();
+		}
+	};
 }

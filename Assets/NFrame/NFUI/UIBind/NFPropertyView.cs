@@ -28,10 +28,10 @@ public class NFPropertyView : MonoBehaviour {
 	// Use this for initialization
 	private void Awake()
 	{
-		mkernelModule = NFPluginManager.Instance().FindModule<NFIKernelModule>();
-		mClassModule = NFPluginManager.Instance().FindModule<NFIClassModule>();
-		mLoginModule = NFPluginManager.Instance().FindModule<NFLoginModule>();
-		mElementModule = NFPluginManager.Instance().FindModule<NFIElementModule>();
+		mkernelModule = NFRoot.Instance().GetPluginManager().FindModule<NFIKernelModule>();
+		mClassModule = NFRoot.Instance().GetPluginManager().FindModule<NFIClassModule>();
+		mLoginModule = NFRoot.Instance().GetPluginManager().FindModule<NFLoginModule>();
+		mElementModule = NFRoot.Instance().GetPluginManager().FindModule<NFIElementModule>();
 	}
 
     private void OnDestroy()

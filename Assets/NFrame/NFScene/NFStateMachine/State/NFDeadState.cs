@@ -15,7 +15,7 @@ public class NFDeadState : NFIState
     public NFDeadState(GameObject gameObject, NFAnimaStateType eState, NFAnimaStateMachine xStateMachine, float fHeartBeatTime, float fExitTime, bool input = false)
         : base(gameObject, eState, xStateMachine, fHeartBeatTime, fExitTime, input)
     {
-        mUIModule = NFPluginManager.Instance().FindModule<NFUIModule>();
+        mUIModule = NFRoot.Instance().GetPluginManager().FindModule<NFUIModule>();
     }
 
     public override void Enter(GameObject gameObject, int index)

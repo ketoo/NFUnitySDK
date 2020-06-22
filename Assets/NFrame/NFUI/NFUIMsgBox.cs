@@ -34,12 +34,12 @@ public class NFUIMsgBox : NFUIDialog
 
     public override void Init()
 	{
-		mEventModule = NFPluginManager.Instance().FindModule<NFIEventModule>();
+		mEventModule = NFRoot.Instance().GetPluginManager().FindModule<NFIEventModule>();
 
-		mNetModule = NFPluginManager.Instance().FindModule<NFNetModule>();
-        mLoginModule = NFPluginManager.Instance().FindModule<NFLoginModule>();
-        mUIModule = NFPluginManager.Instance().FindModule<NFUIModule>();
-		mHelpModule = NFPluginManager.Instance().FindModule<NFHelpModule>();
+		mNetModule = NFRoot.Instance().GetPluginManager().FindModule<NFNetModule>();
+        mLoginModule = NFRoot.Instance().GetPluginManager().FindModule<NFLoginModule>();
+        mUIModule = NFRoot.Instance().GetPluginManager().FindModule<NFUIModule>();
+		mHelpModule = NFRoot.Instance().GetPluginManager().FindModule<NFHelpModule>();
 
         mAcceptButton.onClick.AddListener(OnAcceptClick);
         mRejectButton.onClick.AddListener(OnRejectClick);

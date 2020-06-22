@@ -25,7 +25,7 @@ public class NFUIGMTool : NFUIDialog
 
 	public override void Init()
 	{
-        NFIPluginManager xPluginManager = NFPluginManager.Instance();
+        NFIPluginManager xPluginManager = NFRoot.Instance().GetPluginManager();
         mKernelModule = xPluginManager.FindModule<NFIKernelModule>();
 	}
 

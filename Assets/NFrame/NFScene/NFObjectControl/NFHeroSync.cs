@@ -13,6 +13,7 @@ public class NFHeroSync : MonoBehaviour
 
 	private NFBodyIdent mxBodyIdent;
     private NFAnimaStateMachine mAnimaStateMachine;
+    private NFAnimatStateController mAnimatStateController;
 
     private NFNetModule mxNetModule;
 	private NFLoginModule mLoginModule;
@@ -30,16 +31,28 @@ public class NFHeroSync : MonoBehaviour
         mxSyncBuffer = GetComponent<NFHeroSyncBuffer>();
         mxBodyIdent = GetComponent<NFBodyIdent>();
         mAnimaStateMachine = GetComponent<NFAnimaStateMachine>();
+        mAnimatStateController = GetComponent<NFAnimatStateController>();
 
-        mxNetModule = NFPluginManager.Instance().FindModule<NFNetModule>();
-        mLoginModule = NFPluginManager.Instance().FindModule<NFLoginModule>();
-        mHelpModule = NFPluginManager.Instance().FindModule<NFHelpModule>();
+        mxNetModule = NFRoot.Instance().GetPluginManager().FindModule<NFNetModule>();
+        mLoginModule = NFRoot.Instance().GetPluginManager().FindModule<NFLoginModule>();
+        mHelpModule = NFRoot.Instance().GetPluginManager().FindModule<NFHelpModule>();
     }
 
     bool CheckState()
     {
 		return true;
 	}
+
+    private bool MeetGoalCallBack()
+    {
+        if (mxSyncBuffer.Size() > 0)
+        {
+            Update();
+            return true;
+        }
+
+        return false;
+    }
 
     private void Update()
     {
@@ -53,7 +66,13 @@ public class NFHeroSync : MonoBehaviour
                 {
                     case NFAnimaStateType.Run:
                     case NFAnimaStateType.Idle:
-                        mxHeroMotor.MoveTo(keyframe.Position);
+                        if (keyframe.Position != Vector3.zero)
+                        {
+                            mxHeroMotor.MoveTo(keyframe.Position, MeetGoalCallBack);
+                        }
+                        break;
+                    case NFAnimaStateType.Stun:
+                        mAnimatStateController.PlayAnimaState(NFAnimaStateType.Stun, 0);
                         break;
                     default:
                         break;
@@ -78,9 +97,9 @@ public class NFHeroSync : MonoBehaviour
         direction.Z = mxHeroMotor.GetMoveDrictor().z;
 
         NFMsg.ReqAckPlayerPosSync playerPosSync = new NFMsg.ReqAckPlayerPosSync();
-        playerPosSync.Mover = mHelpModule.NFToPB(mLoginModule.mRoleID);
 
         NFMsg.PosSyncUnit posSyncUnit = new NFMsg.PosSyncUnit();
+        posSyncUnit.Mover = mHelpModule.NFToPB(mLoginModule.mRoleID);
         posSyncUnit.Pos = position;
         posSyncUnit.Direction = direction;
         posSyncUnit.Status = (int)mAnimaStateMachine.CurState();
@@ -90,41 +109,53 @@ public class NFHeroSync : MonoBehaviour
         mxNetModule.RequireSyncPosition(playerPosSync);
     }
 
-    public void AddSyncData(NFMsg.ReqAckPlayerPosSync reqAckPlayerPosSync)
+
+    public void AddSyncData(NFMsg.PosSyncUnit syncUnit)
     {
         Clear();
 
-        for (int i = 0; i < reqAckPlayerPosSync.SyncUnit.Count; ++i)
+        Vector3 now = new Vector3();
+        Vector3 pos = new Vector3();
+        Vector3 dir = new Vector3();
+
+        if (syncUnit.Direction != null)
         {
-            NFMsg.PosSyncUnit syncUnit = reqAckPlayerPosSync.SyncUnit[i];
-            Vector3 pos = new Vector3();
-            Vector3 dir = new Vector3();
+            now.x = syncUnit.Now.X;
+            now.y = syncUnit.Now.Y;
+            now.z = syncUnit.Now.Z;
+        }
+
+        if (syncUnit.Pos != null)
+        {
             pos.x = syncUnit.Pos.X;
             pos.y = syncUnit.Pos.Y;
             pos.z = syncUnit.Pos.Z;
+        }
 
-            if (syncUnit.Direction != null)
-            {
-                dir.x = syncUnit.Direction.X;
-                dir.y = syncUnit.Direction.Y;
-                dir.z = syncUnit.Direction.Z;
-            }
+        if (syncUnit.Direction != null)
+        {
+            dir.x = syncUnit.Direction.X;
+            dir.y = syncUnit.Direction.Y;
+            dir.z = syncUnit.Direction.Z;
+        }
 
-            var keyframe = new NFHeroSyncBuffer.Keyframe();
-            keyframe.Position = pos;
-            keyframe.Director = dir;
-            keyframe.status = syncUnit.Status;
+        var keyframe = new NFHeroSyncBuffer.Keyframe();
+        keyframe.LastPos = now;
+        keyframe.Position = pos;
+        keyframe.Director = dir;
+        keyframe.status = syncUnit.Status;
+        keyframe.InterpolationTime = syncUnit.Time;
 
-            if (mxSyncBuffer)
-            {
-                mxSyncBuffer.AddKeyframe(keyframe);
-            }
+        if (mxSyncBuffer)
+        {
+            Debug.Log(keyframe.InterpolationTime + " move " + this.transform.position.ToString() + " TO " + keyframe.Position.ToString());
+
+            mxSyncBuffer.AddKeyframe(keyframe);
         }
     }
 
     public void Clear()
     {
         mxSyncBuffer.Clear();
-        mxHeroMotor.Stop();
     }
 }

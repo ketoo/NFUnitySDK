@@ -21,11 +21,11 @@ public class NFIdleState : NFIState
     public NFIdleState(GameObject gameObject, NFAnimaStateType eState, NFAnimaStateMachine xStateMachine, float fHeartBeatTime, float fExitTime, bool input = false)
         : base(gameObject, eState, xStateMachine, fHeartBeatTime, fExitTime, input)
     {
-        NFIPluginManager pluginManager = NFPluginManager.Instance();
+        NFIPluginManager pluginManager = NFRoot.Instance().GetPluginManager();
 
         mKernelModule = pluginManager.FindModule<NFIKernelModule>();
-        mLoginModule = NFPluginManager.Instance().FindModule<NFLoginModule>();
-        mSceneModule = NFPluginManager.Instance().FindModule<NFSceneModule>();
+        mLoginModule = NFRoot.Instance().GetPluginManager().FindModule<NFLoginModule>();
+        mSceneModule = NFRoot.Instance().GetPluginManager().FindModule<NFSceneModule>();
     }
 
     private bool Fall()

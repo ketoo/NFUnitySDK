@@ -34,10 +34,10 @@ public class NFHeroInput : MonoBehaviour
         mBodyIdent = GetComponent<NFBodyIdent>();
         mHeroMotor = GetComponent<NFHeroMotor>();
 
-        mUIModule = NFPluginManager.Instance().FindModule<NFUIModule>();
-        mLoginModule = NFPluginManager.Instance().FindModule<NFLoginModule>();
+        mUIModule = NFRoot.Instance().GetPluginManager().FindModule<NFUIModule>();
+        mLoginModule = NFRoot.Instance().GetPluginManager().FindModule<NFLoginModule>();
 
-        mKernelModule = NFPluginManager.Instance().FindModule<NFIKernelModule>();
+        mKernelModule = NFRoot.Instance().GetPluginManager().FindModule<NFIKernelModule>();
 
         mKernelModule.RegisterPropertyCallback(mBodyIdent.GetObjectID(), NFrame.Player.MOVE_SPEED, PropertyMoveSpeedHandler);
         mKernelModule.RegisterPropertyCallback(mBodyIdent.GetObjectID(), NFrame.Player.ATK_SPEED, PropertyAttackSpeedHandler);

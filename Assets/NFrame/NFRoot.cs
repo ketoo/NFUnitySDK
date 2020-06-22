@@ -50,6 +50,11 @@ public class NFRoot : MonoBehaviour
         this.mGameMode = mode;
     }
 
+    public NFIPluginManager GetPluginManager()
+    {
+        return mPluginManager;
+    }
+
     private void Awake()
 	{
 		mPluginManager = new NFPluginManager();

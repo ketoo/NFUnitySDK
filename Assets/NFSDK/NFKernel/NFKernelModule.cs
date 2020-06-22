@@ -43,8 +43,8 @@ namespace NFSDK
 
         public override void Init()
         {
-            mxElementModule = FindModule<NFIElementModule>();
-            mxLogicClassModule = FindModule<NFIClassModule>();
+            mxElementModule = mPluginManager.FindModule<NFIElementModule>();
+            mxLogicClassModule = mPluginManager.FindModule<NFIClassModule>();
         }
 
         public override void AfterInit()

@@ -35,14 +35,14 @@ public class NFUIMain : NFUIDialog
 
     private void Awake()
     {
-        NFIPluginManager xPluginManager = NFPluginManager.Instance();
+        NFIPluginManager xPluginManager = NFRoot.Instance().GetPluginManager();
         mNetModule = xPluginManager.FindModule<NFNetModule>();
         mLoginModule = xPluginManager.FindModule<NFLoginModule>();
         mUIModule = xPluginManager.FindModule<NFUIModule>();
         mEventModule = xPluginManager.FindModule<NFIEventModule>();
 
-        mKernelModule = NFPluginManager.Instance().FindModule<NFIKernelModule>();
-        mElementModule = NFPluginManager.Instance().FindModule<NFIElementModule>();
+        mKernelModule = NFRoot.Instance().GetPluginManager().FindModule<NFIKernelModule>();
+        mElementModule = NFRoot.Instance().GetPluginManager().FindModule<NFIElementModule>();
 
     }
 

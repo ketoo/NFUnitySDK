@@ -13,7 +13,7 @@ public class NFLanguage : MonoBehaviour
 
 	void Awake()
 	{
-		mLanguageModule = NFPluginManager.Instance().FindModule<NFLanguageModule>();
+		mLanguageModule = NFRoot.Instance().GetPluginManager().FindModule<NFLanguageModule>();
 		mLanguageModule.AddLanguageUI (this.gameObject);
 	}
 

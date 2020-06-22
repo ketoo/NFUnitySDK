@@ -154,7 +154,7 @@ public class NFUIJoystick : NFUIDialog
 
     private void Awake()
     {
-        NFIPluginManager xPluginManager = NFPluginManager.Instance();
+        NFIPluginManager xPluginManager = NFRoot.Instance().GetPluginManager();
 
         mLoginModule = xPluginManager.FindModule<NFLoginModule>();
         mUIModule = xPluginManager.FindModule<NFUIModule>();

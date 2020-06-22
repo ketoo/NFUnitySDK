@@ -1038,7 +1038,7 @@ namespace NFrame
         private void EGMI_ACK_MOVE(int id, MemoryStream stream)
         {
             Debug.Log("Move " + Time.time);
-
+     
             NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
 
             NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
@@ -1048,66 +1048,10 @@ namespace NFrame
                 return;
             }
 
-            float fSpeed = mKernelModule.QueryPropertyInt(mHelpModule.PBToNF(xData.Mover), NFrame.NPC.MOVE_SPEED) / 100.0f;
+            NFMsg.PosSyncUnit syncUnit = xData.SyncUnit[0];
 
-            //mSceneModule.MoveTo(mHelpModule.PBToNF(xData.Mover), new UnityEngine.Vector3(xData.TargetPos[0].X, xData.TargetPos[0].Y, xData.TargetPos[0].Z), fSpeed, true);
-        }
+            NFGUID xMover = mHelpModule.PBToNF(syncUnit.Mover);
 
-        private void EGMI_ACK_MOVE_IMMUNE(int id, MemoryStream stream)
-        {
-            Debug.Log("EGMI_ACK_MOVE_IMMUNE " + Time.time);
-            NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
-
-            NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
-
-            if (xData.SyncUnit.Count <= 0)
-            {
-                return;
-            }
-
-            NFGUID xMover = mHelpModule.PBToNF(xData.Mover);
-            if (xMover.IsNull())
-            {
-                return;
-            }
-
-            GameObject xGameObject = mSceneModule.GetObject(xMover);
-            if (!xGameObject)
-            {
-                return;
-            }
-
-            NFHeroSync xHeroSync = xGameObject.GetComponent<NFHeroSync>();
-            if (!xHeroSync)
-            {
-                return;
-            }
-
-
-            //TODO
-            //GC----------
-            /*
-            UnityEngine.Vector3 v = new UnityEngine.Vector3();
-            v.x = vector.X;
-            v.y = vector.Y;
-            v.z = vector.Z;
-            */
-            //xHeroSync.AddSyncData(v);
-
-            //float fSpeed = mKernelModule.QueryPropertyInt(xMover, NFrame.NPC.MOVE_SPEED) / 100.0f;
-            //fSpeed *= 1.5f;
-            //mSceneModule.MoveImmuneBySpeed(PBToNF(xData.mover), new Vector3(xData.target_pos[0].x, xData.target_pos[0].y, xData.target_pos[0].z), fSpeed, true);
-
-        }
-
-        private void EGMI_ACK_POS_SYNC(int id, MemoryStream stream)
-        {
-            NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
-
-            NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
-
-
-            NFGUID xMover = mHelpModule.PBToNF(xData.Mover);
             if (xMover.IsNull())
             {
                 Debug.LogError("xMover " + Time.time);
@@ -1126,14 +1070,104 @@ namespace NFrame
                 return;
             }
 
-            NFHeroSync xHeroSync = xGameObject.GetComponent<NFHeroSync>();
-            if (!xHeroSync)
+            NFHeroMotor xHeroMotor = xGameObject.GetComponent<NFHeroMotor>();
+            if (!xHeroMotor)
             {
                 Debug.LogError("xHeroSync " + Time.time);
                 return;
             }
 
-            xHeroSync.AddSyncData(xData);
+            UnityEngine.Vector3 v = new UnityEngine.Vector3();
+            v.x = syncUnit.Pos.X;
+            v.y = syncUnit.Pos.Y;
+            v.z = syncUnit.Pos.Z;
+            xHeroMotor.MoveTo(v);
+        }
+
+        private void EGMI_ACK_MOVE_IMMUNE(int id, MemoryStream stream)
+        {
+            Debug.Log("EGMI_ACK_MOVE_IMMUNE " + Time.time);
+            NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
+
+            NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
+ 
+            if (xData.SyncUnit.Count <= 0)
+            {
+                return;
+            }
+            NFMsg.PosSyncUnit syncUnit = xData.SyncUnit[0];
+
+            NFGUID xMover = mHelpModule.PBToNF(syncUnit.Mover);
+
+            if (xMover.IsNull())
+            {
+                Debug.LogError("xMover " + Time.time);
+                return;
+            }
+
+            if (xMover == mLoginModule.mRoleID)
+            {
+                return;
+            }
+
+            GameObject xGameObject = mSceneModule.GetObject(xMover);
+            if (!xGameObject)
+            {
+                Debug.LogError("xGameObject " + Time.time);
+                return;
+            }
+
+            NFHeroMotor xHeroMotor = xGameObject.GetComponent<NFHeroMotor>();
+            if (!xHeroMotor)
+            {
+                Debug.LogError("xHeroSync " + Time.time);
+                return;
+            }
+
+            UnityEngine.Vector3 v = new UnityEngine.Vector3();
+            v.x = syncUnit.Pos.X;
+            v.y = syncUnit.Pos.Y;
+            v.z = syncUnit.Pos.Z;
+            xHeroMotor.MoveToImmune(v, 0.01f);
+        }
+
+        private void EGMI_ACK_POS_SYNC(int id, MemoryStream stream)
+        {
+            NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
+
+            NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
+
+            for (int i = 0; i < xData.SyncUnit.Count; ++i)
+            {
+                NFMsg.PosSyncUnit syncUnit = xData.SyncUnit[i];
+                NFGUID xMover = mHelpModule.PBToNF(syncUnit.Mover);
+                if (xMover.IsNull())
+                {
+                    Debug.LogError("xMover " + Time.time);
+                    return;
+                }
+
+                if (xMover == mLoginModule.mRoleID)
+                {
+                    return;
+                }
+
+                GameObject xGameObject = mSceneModule.GetObject(xMover);
+                if (!xGameObject)
+                {
+                    Debug.LogError("xGameObject " + Time.time);
+                    return;
+                }
+
+                NFHeroSync xHeroSync = xGameObject.GetComponent<NFHeroSync>();
+                if (!xHeroSync)
+                {
+                    Debug.LogError("xHeroSync " + Time.time);
+                    return;
+                }
+
+                xHeroSync.AddSyncData(syncUnit);
+            }
         }
 
         private void EGMI_ACK_SKILL_OBJECTX(int id, MemoryStream stream)
@@ -1153,7 +1187,7 @@ namespace NFrame
                     return;
                 }
 
-                //xHeroSync.Clear();
+                xHeroSync.Clear();
 
                 //NFHeroSkill xHeroSkill = xGameObject.GetComponent<NFHeroSkill>();
                 //xHeroSkill.AckSkill(xUser, xData.UseIndex, xData.SkillId.ToStringUtf8(), xData.EffectData.ToList<NFMsg.EffectData>());

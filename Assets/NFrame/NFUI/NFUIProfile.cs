@@ -29,17 +29,17 @@ public class NFUIProfile : NFUIDialog
 
     private void Awake()
     {
-        mEventModule = NFPluginManager.Instance().FindModule<NFIEventModule>();
-        mKernelModule = NFPluginManager.Instance().FindModule<NFIKernelModule>();
-        mElementModule = NFPluginManager.Instance().FindModule<NFIElementModule>();
-        mClassModule = NFPluginManager.Instance().FindModule<NFIClassModule>();
+        mEventModule = NFRoot.Instance().GetPluginManager().FindModule<NFIEventModule>();
+        mKernelModule = NFRoot.Instance().GetPluginManager().FindModule<NFIKernelModule>();
+        mElementModule = NFRoot.Instance().GetPluginManager().FindModule<NFIElementModule>();
+        mClassModule = NFRoot.Instance().GetPluginManager().FindModule<NFIClassModule>();
 
-        mSceneModule = NFPluginManager.Instance().FindModule<NFSceneModule>();
-        mLanguageModule = NFPluginManager.Instance().FindModule<NFLanguageModule>();
-        mNetModule = NFPluginManager.Instance().FindModule<NFNetModule>();
-        mLoginModule = NFPluginManager.Instance().FindModule<NFLoginModule>();
-        mUIModule = NFPluginManager.Instance().FindModule<NFUIModule>();
-        mHelpModule = NFPluginManager.Instance().FindModule<NFHelpModule>();
+        mSceneModule = NFRoot.Instance().GetPluginManager().FindModule<NFSceneModule>();
+        mLanguageModule = NFRoot.Instance().GetPluginManager().FindModule<NFLanguageModule>();
+        mNetModule = NFRoot.Instance().GetPluginManager().FindModule<NFNetModule>();
+        mLoginModule = NFRoot.Instance().GetPluginManager().FindModule<NFLoginModule>();
+        mUIModule = NFRoot.Instance().GetPluginManager().FindModule<NFUIModule>();
+        mHelpModule = NFRoot.Instance().GetPluginManager().FindModule<NFHelpModule>();
 
     }
 

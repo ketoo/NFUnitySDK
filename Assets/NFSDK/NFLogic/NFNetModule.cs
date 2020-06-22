@@ -523,12 +523,12 @@ namespace NFrame
         }
 
         //WSAD移动
-        public void RequireMove(NFGUID objectID, int nType, UnityEngine.Vector3 vPos, UnityEngine.Vector3 vTar)
+        public void RequireMove(NFGUID objectID, int nType, UnityEngine.Vector3 vPos)
         {
             NFMsg.ReqAckPlayerPosSync xData = new NFMsg.ReqAckPlayerPosSync();
-            xData.Mover = mHelpModule.NFToPB(objectID);
 
             NFMsg.PosSyncUnit posSyncUnit = new PosSyncUnit();
+            posSyncUnit.Mover = mHelpModule.NFToPB(objectID);
             posSyncUnit.Pos = new NFMsg.Vector3();
             posSyncUnit.Pos.X = vPos.x;
             posSyncUnit.Pos.Y = vPos.y;
@@ -546,9 +546,9 @@ namespace NFrame
         public void RequireMoveImmune(NFGUID objectID, UnityEngine.Vector3 vPos)
         {
             NFMsg.ReqAckPlayerPosSync xData = new NFMsg.ReqAckPlayerPosSync();
-            xData.Mover = mHelpModule.NFToPB(objectID);
 
             NFMsg.PosSyncUnit posSyncUnit = new PosSyncUnit();
+            posSyncUnit.Mover = mHelpModule.NFToPB(objectID);
             posSyncUnit.Pos = new NFMsg.Vector3();
             posSyncUnit.Pos.X = vPos.x;
             posSyncUnit.Pos.Y = vPos.y;
