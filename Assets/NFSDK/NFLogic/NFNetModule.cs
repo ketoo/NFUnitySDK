@@ -533,6 +533,7 @@ namespace NFrame
             posSyncUnit.Pos.X = vPos.x;
             posSyncUnit.Pos.Y = vPos.y;
             posSyncUnit.Pos.Z = vPos.z;
+            posSyncUnit.Mover = mHelpModule.NFToPB(objectID);
             xData.SyncUnit.Add(posSyncUnit);
 
             mxBody.SetLength(0);
@@ -553,6 +554,7 @@ namespace NFrame
             posSyncUnit.Pos.X = vPos.x;
             posSyncUnit.Pos.Y = vPos.y;
             posSyncUnit.Pos.Z = vPos.z;
+            posSyncUnit.Mover = mHelpModule.NFToPB(objectID);
             xData.SyncUnit.Add(posSyncUnit);
 
             mxBody.SetLength(0);

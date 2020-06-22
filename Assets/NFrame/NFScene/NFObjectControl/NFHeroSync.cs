@@ -103,6 +103,7 @@ public class NFHeroSync : MonoBehaviour
         posSyncUnit.Pos = position;
         posSyncUnit.Direction = direction;
         posSyncUnit.Status = (int)mAnimaStateMachine.CurState();
+        posSyncUnit.Mover = mHelpModule.NFToPB(mLoginModule.mRoleID);
         playerPosSync.SyncUnit.Add(posSyncUnit);
 
 
