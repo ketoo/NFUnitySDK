@@ -80,6 +80,7 @@ namespace NFrame
 		public static readonly String DEF_VALUE = "DEF_VALUE";// int
 		public static readonly String DEF_WIND = "DEF_WIND";// int
 		public static readonly String DIZZY_GATE = "DIZZY_GATE";// int
+		public static readonly String EVASION = "EVASION";// int
 		public static readonly String HPREGEN = "HPREGEN";// int
 		public static readonly String LUCK = "LUCK";// int
 		public static readonly String MAGIC_GATE = "MAGIC_GATE";// int
@@ -92,7 +93,6 @@ namespace NFrame
 		public static readonly String PHYSICAL_GATE = "PHYSICAL_GATE";// int
 		public static readonly String REFLECTDAMAGE = "REFLECTDAMAGE";// int
 		public static readonly String SKILL_GATE = "SKILL_GATE";// int
-		public static readonly String SPREGEN = "SPREGEN";// int
 		public static readonly String SUCKBLOOD = "SUCKBLOOD";// int
 		// Record
 		public class CommValue
@@ -106,7 +106,7 @@ namespace NFrame
 			public const int MAXMP = 4;//int
 			public const int MAXSP = 5;//int
 			public const int HPREGEN = 6;//int
-			public const int SPREGEN = 7;//int
+			public const int EVASION = 7;//int
 			public const int MPREGEN = 8;//int
 			public const int ATK_VALUE = 9;//int
 			public const int DEF_VALUE = 10;//int
@@ -365,6 +365,7 @@ namespace NFrame
 		public static readonly String DEF_VALUE = "DEF_VALUE";// int
 		public static readonly String DEF_WIND = "DEF_WIND";// int
 		public static readonly String DIZZY_GATE = "DIZZY_GATE";// int
+		public static readonly String EVASION = "EVASION";// int
 		public static readonly String HPREGEN = "HPREGEN";// int
 		public static readonly String LUCK = "LUCK";// int
 		public static readonly String MAGIC_GATE = "MAGIC_GATE";// int
@@ -377,7 +378,6 @@ namespace NFrame
 		public static readonly String PHYSICAL_GATE = "PHYSICAL_GATE";// int
 		public static readonly String REFLECTDAMAGE = "REFLECTDAMAGE";// int
 		public static readonly String SKILL_GATE = "SKILL_GATE";// int
-		public static readonly String SPREGEN = "SPREGEN";// int
 		public static readonly String SUCKBLOOD = "SUCKBLOOD";// int
 		// Include Property, come from CooldownRecord 
 		// Record
@@ -392,7 +392,7 @@ namespace NFrame
 			public const int MAXMP = 4;//int
 			public const int MAXSP = 5;//int
 			public const int HPREGEN = 6;//int
-			public const int SPREGEN = 7;//int
+			public const int EVASION = 7;//int
 			public const int MPREGEN = 8;//int
 			public const int ATK_VALUE = 9;//int
 			public const int DEF_VALUE = 10;//int
@@ -491,6 +491,7 @@ namespace NFrame
 		public static readonly String Level = "Level";// int
 		public static readonly String MAXEXP = "MAXEXP";// int
 		public static readonly String MP = "MP";// int
+		public static readonly String NoticeID = "NoticeID";// int
 		public static readonly String OnlineCount = "OnlineCount";// int
 		public static readonly String OnlineTime = "OnlineTime";// object
 		public static readonly String Race = "Race";// int
@@ -520,6 +521,7 @@ namespace NFrame
 		public static readonly String DEF_VALUE = "DEF_VALUE";// int
 		public static readonly String DEF_WIND = "DEF_WIND";// int
 		public static readonly String DIZZY_GATE = "DIZZY_GATE";// int
+		public static readonly String EVASION = "EVASION";// int
 		public static readonly String HPREGEN = "HPREGEN";// int
 		public static readonly String LUCK = "LUCK";// int
 		public static readonly String MAGIC_GATE = "MAGIC_GATE";// int
@@ -532,7 +534,6 @@ namespace NFrame
 		public static readonly String PHYSICAL_GATE = "PHYSICAL_GATE";// int
 		public static readonly String REFLECTDAMAGE = "REFLECTDAMAGE";// int
 		public static readonly String SKILL_GATE = "SKILL_GATE";// int
-		public static readonly String SPREGEN = "SPREGEN";// int
 		public static readonly String SUCKBLOOD = "SUCKBLOOD";// int
 		// Include Property, come from CooldownRecord 
 		// Record
@@ -578,6 +579,11 @@ namespace NFrame
 			public const int IntensifyLevel = 4;//int
 			public const int Date = 5;//int
 			public const int Equipped = 6;//int
+			public const int Stone1 = 7;//string
+			public const int Stone2 = 8;//string
+			public const int Stone3 = 9;//string
+			public const int Stone4 = 10;//string
+			public const int UserData = 11;//string
 
 		}
 		public class CommValue
@@ -591,7 +597,7 @@ namespace NFrame
 			public const int MAXMP = 4;//int
 			public const int MAXSP = 5;//int
 			public const int HPREGEN = 6;//int
-			public const int SPREGEN = 7;//int
+			public const int EVASION = 7;//int
 			public const int MPREGEN = 8;//int
 			public const int ATK_VALUE = 9;//int
 			public const int DEF_VALUE = 10;//int

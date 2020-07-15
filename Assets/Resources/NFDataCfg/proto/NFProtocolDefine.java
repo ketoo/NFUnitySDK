@@ -74,6 +74,7 @@ package nframe;
 		public static final String DEF_VALUE = "DEF_VALUE";// int
 		public static final String DEF_WIND = "DEF_WIND";// int
 		public static final String DIZZY_GATE = "DIZZY_GATE";// int
+		public static final String EVASION = "EVASION";// int
 		public static final String HPREGEN = "HPREGEN";// int
 		public static final String LUCK = "LUCK";// int
 		public static final String MAGIC_GATE = "MAGIC_GATE";// int
@@ -86,7 +87,6 @@ package nframe;
 		public static final String PHYSICAL_GATE = "PHYSICAL_GATE";// int
 		public static final String REFLECTDAMAGE = "REFLECTDAMAGE";// int
 		public static final String SKILL_GATE = "SKILL_GATE";// int
-		public static final String SPREGEN = "SPREGEN";// int
 		public static final String SUCKBLOOD = "SUCKBLOOD";// int
 		// Record
 		public class CommValue
@@ -100,7 +100,7 @@ package nframe;
 			public static final int MAXMP = 4;//int
 			public static final int MAXSP = 5;//int
 			public static final int HPREGEN = 6;//int
-			public static final int SPREGEN = 7;//int
+			public static final int EVASION = 7;//int
 			public static final int MPREGEN = 8;//int
 			public static final int ATK_VALUE = 9;//int
 			public static final int DEF_VALUE = 10;//int
@@ -405,6 +405,7 @@ package nframe;
 		public static final String Level = "Level";// int
 		public static final String MAXEXP = "MAXEXP";// int
 		public static final String MP = "MP";// int
+		public static final String NoticeID = "NoticeID";// int
 		public static final String OnlineCount = "OnlineCount";// int
 		public static final String OnlineTime = "OnlineTime";// object
 		public static final String Race = "Race";// int
@@ -458,6 +459,11 @@ package nframe;
 			public static final int IntensifyLevel = 4;//int
 			public static final int Date = 5;//int
 			public static final int Equipped = 6;//int
+			public static final int Stone1 = 7;//string
+			public static final int Stone2 = 8;//string
+			public static final int Stone3 = 9;//string
+			public static final int Stone4 = 10;//string
+			public static final int UserData = 11;//string
 
 		}
 

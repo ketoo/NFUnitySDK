@@ -72,6 +72,7 @@
 		public static DEF_VALUE = "DEF_VALUE";// int
 		public static DEF_WIND = "DEF_WIND";// int
 		public static DIZZY_GATE = "DIZZY_GATE";// int
+		public static EVASION = "EVASION";// int
 		public static HPREGEN = "HPREGEN";// int
 		public static LUCK = "LUCK";// int
 		public static MAGIC_GATE = "MAGIC_GATE";// int
@@ -84,7 +85,6 @@
 		public static PHYSICAL_GATE = "PHYSICAL_GATE";// int
 		public static REFLECTDAMAGE = "REFLECTDAMAGE";// int
 		public static SKILL_GATE = "SKILL_GATE";// int
-		public static SPREGEN = "SPREGEN";// int
 		public static SUCKBLOOD = "SUCKBLOOD";// int
 		// Record
 		public static CommValue = 
@@ -98,7 +98,7 @@
 			"MAXMP":4,
 			"MAXSP":5,
 			"HPREGEN":6,
-			"SPREGEN":7,
+			"EVASION":7,
 			"MPREGEN":8,
 			"ATK_VALUE":9,
 			"DEF_VALUE":10,
@@ -356,6 +356,7 @@
 		public static DEF_VALUE = "DEF_VALUE";// int
 		public static DEF_WIND = "DEF_WIND";// int
 		public static DIZZY_GATE = "DIZZY_GATE";// int
+		public static EVASION = "EVASION";// int
 		public static HPREGEN = "HPREGEN";// int
 		public static LUCK = "LUCK";// int
 		public static MAGIC_GATE = "MAGIC_GATE";// int
@@ -368,7 +369,6 @@
 		public static PHYSICAL_GATE = "PHYSICAL_GATE";// int
 		public static REFLECTDAMAGE = "REFLECTDAMAGE";// int
 		public static SKILL_GATE = "SKILL_GATE";// int
-		public static SPREGEN = "SPREGEN";// int
 		public static SUCKBLOOD = "SUCKBLOOD";// int
 		// Include Property, come from CooldownRecord 
 		// Record
@@ -384,7 +384,7 @@
 			"MAXMP":4,
 			"MAXSP":5,
 			"HPREGEN":6,
-			"SPREGEN":7,
+			"EVASION":7,
 			"MPREGEN":8,
 			"ATK_VALUE":9,
 			"DEF_VALUE":10,
@@ -482,6 +482,7 @@
 		public static Level = "Level";// int
 		public static MAXEXP = "MAXEXP";// int
 		public static MP = "MP";// int
+		public static NoticeID = "NoticeID";// int
 		public static OnlineCount = "OnlineCount";// int
 		public static OnlineTime = "OnlineTime";// object
 		public static Race = "Race";// int
@@ -511,6 +512,7 @@
 		public static DEF_VALUE = "DEF_VALUE";// int
 		public static DEF_WIND = "DEF_WIND";// int
 		public static DIZZY_GATE = "DIZZY_GATE";// int
+		public static EVASION = "EVASION";// int
 		public static HPREGEN = "HPREGEN";// int
 		public static LUCK = "LUCK";// int
 		public static MAGIC_GATE = "MAGIC_GATE";// int
@@ -523,7 +525,6 @@
 		public static PHYSICAL_GATE = "PHYSICAL_GATE";// int
 		public static REFLECTDAMAGE = "REFLECTDAMAGE";// int
 		public static SKILL_GATE = "SKILL_GATE";// int
-		public static SPREGEN = "SPREGEN";// int
 		public static SUCKBLOOD = "SUCKBLOOD";// int
 		// Include Property, come from CooldownRecord 
 		// Record
@@ -565,7 +566,12 @@
 			"RandPropertyValue":3,
 			"IntensifyLevel":4,
 			"Date":5,
-			"Equipped":6
+			"Equipped":6,
+			"Stone1":7,
+			"Stone2":8,
+			"Stone3":9,
+			"Stone4":10,
+			"UserData":11
 		}
 		// Include Record, come from EffectData 
 		public static CommValue = 
@@ -579,7 +585,7 @@
 			"MAXMP":4,
 			"MAXSP":5,
 			"HPREGEN":6,
-			"SPREGEN":7,
+			"EVASION":7,
 			"MPREGEN":8,
 			"ATK_VALUE":9,
 			"DEF_VALUE":10,
