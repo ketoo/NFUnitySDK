@@ -155,9 +155,15 @@ namespace NFSDK
             else
             {
                 int tempOffset = Capacity() - m_front;
-
-                Array.Copy(m_data, m_front, dst, 0, tempOffset);
-                Array.Copy(m_data, 0, dst, tempOffset, size - tempOffset);
+                if (tempOffset >= size)
+                {
+                    Array.Copy(m_data, m_front, dst, 0, size);
+                }
+                else
+                {
+                    Array.Copy(m_data, m_front, dst, 0, tempOffset);
+                    Array.Copy(m_data, 0, dst, tempOffset, size - tempOffset);
+                }
             }
 
             if (!readOnly)
@@ -172,6 +178,7 @@ namespace NFSDK
         {
             Console.WriteLine("-----------size:" + Size().ToString() + " capacity:" + Capacity() + " m_front:" + m_front + " m_rear:" + m_rear);
         }
+
         private void resize()
         {
             byte[] tmp = new byte[m_capacity * 2];

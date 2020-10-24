@@ -6,6 +6,7 @@ using NFrame;
 
 public class NFBodyIdent : MonoBehaviour 
 {
+    public bool headBar = true;
 	public string ObjectID;
 	public string cnfID;
 	public Sprite iCon;
@@ -14,7 +15,7 @@ public class NFBodyIdent : MonoBehaviour
 	public Transform xHealthBar = null;
     public Transform xWeapon = null;
     public Transform xFirePoint = null;
-    public Transform xBullet = null;
+    public Transform xHitVFX = null;
 
     public Transform xBeHitPoint = null;
 	public Transform xHeadPoint = null;
@@ -111,7 +112,7 @@ public class NFBodyIdent : MonoBehaviour
     {
         if (xRenderBase != null)
         {
-            xRenderBase.gameObject.SetActive(xRenderObject.gameObject.activeSelf);
+            //xRenderBase.gameObject.SetActive(xRenderObject.gameObject.activeSelf);
         }
 
         if (xShadow != null && xShadow.gameObject.activeSelf == true && xRenderObject != null)
@@ -130,7 +131,7 @@ public class NFBodyIdent : MonoBehaviour
         else
         {
             Vector3 vector = new Vector3(v.x, this.transform.position.y, v.z);
-            //this.transform.LookAt(vector);
+            this.transform.LookAt(vector);
         }
     }
 
@@ -139,7 +140,10 @@ public class NFBodyIdent : MonoBehaviour
         if (xShadow != null)
         {
             //当显示的时候，应该慢慢显示出来
-            xShadow.gameObject.SetActive(b);
+            if (xRenderObject)
+            {
+                xShadow.gameObject.SetActive(b && xRenderObject.gameObject.activeSelf);
+            }
         }
     }
 }

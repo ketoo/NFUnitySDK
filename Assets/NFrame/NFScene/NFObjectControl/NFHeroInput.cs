@@ -14,6 +14,7 @@ public class NFHeroInput : MonoBehaviour
     private NFIKernelModule mKernelModule;
 
     private NFAnimaStateMachine mStateMachineMng;
+    private NFAnimatStateController mAnimatStateController;
     private NFHeroMotor mHeroMotor;
     private NFBodyIdent mBodyIdent;
 
@@ -31,6 +32,7 @@ public class NFHeroInput : MonoBehaviour
     void Start()
     {
         mStateMachineMng = GetComponent<NFAnimaStateMachine>();
+        mAnimatStateController = GetComponent<NFAnimatStateController>();
         mBodyIdent = GetComponent<NFBodyIdent>();
         mHeroMotor = GetComponent<NFHeroMotor>();
 
@@ -67,6 +69,16 @@ public class NFHeroInput : MonoBehaviour
         //idle
         //jumpland
         //run
+        if (mStateMachineMng.CurState() != NFAnimaStateType.Idle
+            && mStateMachineMng.CurState() != NFAnimaStateType.Idle1
+            && mStateMachineMng.CurState() != NFAnimaStateType.Idle2
+            && mStateMachineMng.CurState() != NFAnimaStateType.Run
+            && mStateMachineMng.CurState() != NFAnimaStateType.Walk)
+        {
+            return false;
+        }
+
+
         return true;
     }
 
@@ -75,28 +87,27 @@ public class NFHeroInput : MonoBehaviour
         if (mLoginModule.mRoleID == mBodyIdent.GetObjectID())
         {
             // Handle your custom input here...
+            //手动的时候，如果AI在追逐中，是不需要输入的
             {
+                if (mKernelModule.QueryPropertyInt(mBodyIdent.GetObjectID(), NFrame.Player.HP) > 0)
                 {
-                    if (mKernelModule.QueryPropertyInt(mBodyIdent.GetObjectID(), NFrame.Player.HP) > 0)
-                    {
 
-                        //人工ui输入的，需要和摄像机进行校正才是世界坐标
-                        // Transform moveDirection vector to be relative to camera view direction
-                        if (Camera.main)
+                    //人工ui输入的，需要和摄像机进行校正才是世界坐标
+                    // Transform moveDirection vector to be relative to camera view direction
+                    if (Camera.main)
+                    {
+                        if (direction != Vector3.zero)
                         {
-                            if (direction != Vector3.zero)
+                            if (CheckMove())
                             {
-                                if (CheckMove())
-                                {
-                                    Vector3 vDirection = direction.relativeTo(Camera.main.transform);
-                                    mHeroMotor.MoveTo(this.transform.position + vDirection.normalized * 2);
-                                }
+                                Vector3 vDirection = direction.relativeTo(Camera.main.transform);
+                                mHeroMotor.MoveTo(this.transform.position + vDirection.normalized * 0.5f);
                             }
                         }
                     }
                 }
             }
-        }
+        }   
     }
 
     void JoyOnPointerDownHandler(Vector3 direction)
@@ -123,7 +134,7 @@ public class NFHeroInput : MonoBehaviour
 
     float fLastEventTime = 0f;
     Vector3 fLastEventdirection;
-    public void Update()
+    public void FixedUpdate()
     {
         if (mJoystick == null)
         {
@@ -137,7 +148,7 @@ public class NFHeroInput : MonoBehaviour
             }
         }
 
-        if (fLastEventTime > 0f && Time.time > (fLastEventTime + 0.2f))
+        if (fLastEventTime > 0f && Time.time > (fLastEventTime + 0.1f))
         {
             fLastEventTime = Time.time;
 

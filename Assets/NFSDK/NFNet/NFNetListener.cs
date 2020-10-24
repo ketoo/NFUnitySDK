@@ -146,30 +146,32 @@ namespace NFSDK
 			{
 				head.Reset();
 
-				mPacket.Pop(head.GetHeadBytes(), ConstDefine.NF_PACKET_HEAD_SIZE, true);
-				if (head.DeCode())
-				{
-					if (head.unDataLen == mPacket.Size())
+				if (mPacket.Pop(head.GetHeadBytes(), ConstDefine.NF_PACKET_HEAD_SIZE, true))
+                {
+					if (head.DeCode())
 					{
-						body_and_head.Clear();
-						body_and_head.Push(mPacket, (int)head.unDataLen);
-
-						if (false == OnDataReceived(body_and_head))
+						if (head.unDataLen == mPacket.Size())
 						{
-							OnClientDisconnect(new NFNetEventParams());
-						}
-					}
-					else if (mPacket.Size() > head.unDataLen)
-					{
-						body_and_head.Clear();
-						body_and_head.Push(mPacket, (int)head.unDataLen);
+							body_and_head.Clear();
+							body_and_head.Push(mPacket, (int)head.unDataLen);
 
-						if (false == OnDataReceived(body_and_head))
+							if (false == OnDataReceived(body_and_head))
+							{
+								OnClientDisconnect(new NFNetEventParams());
+							}
+						}
+						else if (mPacket.Size() > head.unDataLen)
 						{
-							OnClientDisconnect(new NFNetEventParams());
-						}
+							body_and_head.Clear();
+							body_and_head.Push(mPacket, (int)head.unDataLen);
 
-						OnDataReceived();
+							if (false == OnDataReceived(body_and_head))
+							{
+								OnClientDisconnect(new NFNetEventParams());
+							}
+
+							OnDataReceived();
+						}
 					}
 				}
 			}
@@ -179,26 +181,28 @@ namespace NFSDK
 		{
 			head.Reset();
 
-			sb.Pop(head.GetHeadBytes(), ConstDefine.NF_PACKET_HEAD_SIZE);
-
-			if (head.DeCode() && head.unDataLen == sb.Size() + ConstDefine.NF_PACKET_HEAD_SIZE)
-			{
-				Int32 nBodyLen = (Int32)sb.Size();
-				if (nBodyLen > 0)
+			if (sb.Pop(head.GetHeadBytes(), ConstDefine.NF_PACKET_HEAD_SIZE))
+            {
+				if (head.DeCode() && head.unDataLen == sb.Size() + ConstDefine.NF_PACKET_HEAD_SIZE)
 				{
-					dataReceivedBodyStream.SetLength(0);
-					dataReceivedBodyStream.Position = 0;
-					sb.ToMemoryStream(dataReceivedBodyStream);
+					Int32 nBodyLen = (Int32)sb.Size();
+					if (nBodyLen > 0)
+					{
+						dataReceivedBodyStream.SetLength(0);
+						dataReceivedBodyStream.Position = 0;
+						sb.ToMemoryStream(dataReceivedBodyStream);
 
-					OnMessageEvent(head, dataReceivedBodyStream);
+						OnMessageEvent(head, dataReceivedBodyStream);
 
-					return true;
-				}
-				else
-				{
-					//space packet, thats impossible
+						return true;
+					}
+					else
+					{
+						//space packet, thats impossible
+					}
 				}
 			}
+
 
 			return false;
 		}

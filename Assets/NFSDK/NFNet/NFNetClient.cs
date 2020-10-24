@@ -127,45 +127,51 @@ namespace NFSDK
 
         public void Execute()
         {
-			
+
             while (mxEvents.Count > 0)
             {
                 lock (mxEvents)
                 {
-                    NFNetEventType eventType = mxEvents.Dequeue();
-
-                    eventParams.Reset();
-                    eventParams.eventType = eventType;
-                    eventParams.client = this;
-                    eventParams.socket = mxClient;
-
-                    if (eventType == NFNetEventType.Connected)
+                    if (mxEvents.Count > 0)
                     {
-                        mxNetListener.OnClientConnect(eventParams);
-                    }
-                    else if (eventType == NFNetEventType.Disconnected)
-                    {
-						mxNetListener.OnClientDisconnect(eventParams);
+                        NFNetEventType eventType = mxEvents.Dequeue();
 
-                        mxReader.Close();
-                        mxWriter.Close();
-                        mxClient.Close();
+                        eventParams.Reset();
+                        eventParams.eventType = eventType;
+                        eventParams.client = this;
+                        eventParams.socket = mxClient;
 
-                    }
-                    else if (eventType == NFNetEventType.DataReceived)
-                    {
-                        lock (mxPackets)
+                        if (eventType == NFNetEventType.Connected)
                         {
-                            eventParams.packet = mxPackets.Dequeue();
-                        
-                            mxNetListener.OnDataReceived(eventParams);
-
-                            mxPacketPool.Enqueue(eventParams.packet);
+                            mxNetListener.OnClientConnect(eventParams);
                         }
-                    }
-                    else if (eventType == NFNetEventType.ConnectionRefused)
-                    {
+                        else if (eventType == NFNetEventType.Disconnected)
+                        {
+                            mxNetListener.OnClientDisconnect(eventParams);
 
+                            mxReader.Close();
+                            mxWriter.Close();
+                            mxClient.Close();
+
+                        }
+                        else if (eventType == NFNetEventType.DataReceived)
+                        {
+                            lock (mxPackets)
+                            {
+                                if (mxPackets.Count > 0)
+                                {
+                                    eventParams.packet = mxPackets.Dequeue();
+
+                                    mxNetListener.OnDataReceived(eventParams);
+
+                                    mxPacketPool.Enqueue(eventParams.packet);
+                                }
+                            }
+                        }
+                        else if (eventType == NFNetEventType.ConnectionRefused)
+                        {
+
+                        }
                     }
                 }
             }
@@ -285,7 +291,6 @@ namespace NFSDK
             catch (Exception e) { e.ToString(); }
             try { if (mxClient != null) mxClient.Close(); }
             catch (Exception e) { e.ToString(); }
-
         }
 
         public void SendBytes(byte[] bytes, int length)

@@ -82,6 +82,8 @@ namespace NFSDK
                 return xElement.QueryInt(strPropertyName);
             }
 
+            UnityEngine.Debug.LogError("ERROR: " + strConfigName + " HAS NO " + strPropertyName);
+
             return 0;
         }
 
@@ -93,6 +95,8 @@ namespace NFSDK
                 return xElement.QueryFloat(strPropertyName);
             }
 
+            UnityEngine.Debug.LogError("ERROR: " + strConfigName + " HAS NO " + strPropertyName);
+
             return 0.0;
         }
 
@@ -103,6 +107,8 @@ namespace NFSDK
             {
                 return xElement.QueryString(strPropertyName);
             }
+
+            UnityEngine.Debug.LogError("ERROR: " + strConfigName + " HAS NO " + strPropertyName);
 
             return NFDataList.NULL_STRING;
         }
@@ -176,18 +182,33 @@ namespace NFSDK
                             {
                                 case NFDataList.VARIANT_TYPE.VTYPE_INT:
                                     {
-                                        NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_INT);
-                                        xValue.Set(int.Parse(xAttribute.Value));
-                                        NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
-                                        property.SetUpload(xProperty.GetUpload());
+                                        try
+                                        {
+                                            NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_INT);
+                                            xValue.Set(int.Parse(xAttribute.Value));
+                                            NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
+                                            property.SetUpload(xProperty.GetUpload());
+                                        }
+                                        catch
+                                        {
+                                            Debug.LogError("ID:" + strID.Value + " Property Name:" + xAttribute.Name + " Value:" + xAttribute.Value);
+                                        }
                                     }
                                     break;
                                 case NFDataList.VARIANT_TYPE.VTYPE_FLOAT:
                                     {
-                                        NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_FLOAT);
-                                        xValue.Set(float.Parse(xAttribute.Value, CultureInfo.InvariantCulture.NumberFormat));
-                                        NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
-                                        property.SetUpload(xProperty.GetUpload());
+                                        try
+                                        {
+                                            NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_FLOAT);
+                                            xValue.Set(float.Parse(xAttribute.Value, CultureInfo.InvariantCulture.NumberFormat));
+                                            NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
+                                            property.SetUpload(xProperty.GetUpload());
+                                        }
+                                        catch
+                                        {
+
+                                            Debug.LogError("ID:" + strID.Value + " Property Name:" + xAttribute.Name + " Value:" + xAttribute.Value);
+                                        }
                                     }
                                     break;
                                 case NFDataList.VARIANT_TYPE.VTYPE_STRING:
@@ -200,26 +221,50 @@ namespace NFSDK
                                     break;
                                 case NFDataList.VARIANT_TYPE.VTYPE_OBJECT:
                                     {
-                                        NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_OBJECT);
-                                        xValue.Set(new NFGUID(0, int.Parse(xAttribute.Value)));
-                                        NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
-                                        property.SetUpload(xProperty.GetUpload());
+                                        try
+                                        {
+                                            NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_OBJECT);
+                                            xValue.Set(new NFGUID(0, int.Parse(xAttribute.Value)));
+                                            NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
+                                            property.SetUpload(xProperty.GetUpload());
+                                        }
+                                        catch
+                                        {
+
+                                            Debug.LogError("ID:" + strID.Value + " Property Name:" + xAttribute.Name + " Value:" + xAttribute.Value);
+                                        }
                                     }
                                     break;
                                 case NFDataList.VARIANT_TYPE.VTYPE_VECTOR2:
                                     {
-                                        NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_VECTOR2);
-                                        //xValue.Set(new NFGUID(0, int.Parse(xAttribute.Value)));
-                                        NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
-                                        property.SetUpload(xProperty.GetUpload());
+                                        try
+                                        {
+                                            NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_VECTOR2);
+                                            //xValue.Set(new NFGUID(0, int.Parse(xAttribute.Value)));
+                                            NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
+                                            property.SetUpload(xProperty.GetUpload());
+                                        }
+                                        catch
+                                        {
+
+                                            Debug.LogError("ID:" + strID.Value + " Property Name:" + xAttribute.Name + " Value:" + xAttribute.Value);
+                                        }
                                     }
                                     break;
                                 case NFDataList.VARIANT_TYPE.VTYPE_VECTOR3:
                                     {
-                                        NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_VECTOR3);
-                                        //xValue.Set(new NFGUID(0, int.Parse(xAttribute.Value)));
-                                        NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
-                                        property.SetUpload(xProperty.GetUpload());
+                                        try
+                                        {
+                                            NFDataList.TData xValue = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_VECTOR3);
+                                            //xValue.Set(new NFGUID(0, int.Parse(xAttribute.Value)));
+                                            NFIProperty property = xElement.GetPropertyManager().AddProperty(xAttribute.Name, xValue);
+                                            property.SetUpload(xProperty.GetUpload());
+
+                                        }
+                                        catch
+                                        {
+                                            Debug.LogError("ID:" + strID.Value + " Property Name:" + xAttribute.Name + " Value:" + xAttribute.Value);
+                                        }
                                     }
                                     break;
                                 default:

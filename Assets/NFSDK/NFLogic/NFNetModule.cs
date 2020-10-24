@@ -97,14 +97,15 @@ namespace NFrame
             }
         }
 
+        public void DisconnectFromServer()
+        {
+            mNetClient.Disconnect();
+        }
+
         public NFNetState GetState()
         {
             return mNetClient.GetState();
         }
-
-        public void ConnectServerByDns(string dns, int port)
-		{
-		}
 
 		public void AddReceiveCallBack(int eMsg, NFSDK.NFNetListener.MsgDelegation netHandler)
         {
@@ -114,6 +115,31 @@ namespace NFrame
 		public void AddNetEventCallBack(NFSDK.NFNetListener.EventDelegation netHandler)
         {
 			mNetListener.RegisteredNetEventHandler(netHandler);
+        }
+
+        public void SendMsg(int unMsgID)
+        {
+
+            if (mNetClient != null)
+            {
+                //NFMsg.MsgBase
+                mxData.PlayerId = mHelpModule.NFToPB(mLoginModule.mRoleID);
+
+                mxBody.SetLength(0);
+                mxData.WriteTo(mxBody);
+
+                mxHead.unMsgID = (UInt16)unMsgID;
+                mxHead.unDataLen = (UInt32)mxBody.Length + (UInt32)ConstDefine.NF_PACKET_HEAD_SIZE;
+
+                byte[] bodyByte = mxBody.ToArray();
+                byte[] headByte = mxHead.EnCode();
+
+                Array.Clear(sendBytes, 0, ConstDefine.NF_PACKET_BUFF_SIZE);
+                headByte.CopyTo(sendBytes, 0);
+                bodyByte.CopyTo(sendBytes, headByte.Length);
+
+                mNetClient.SendBytes(sendBytes, bodyByte.Length + headByte.Length);
+            }
         }
 
         public void SendMsg(int unMsgID, MemoryStream stream)
@@ -533,7 +559,6 @@ namespace NFrame
             posSyncUnit.Pos.X = vPos.x;
             posSyncUnit.Pos.Y = vPos.y;
             posSyncUnit.Pos.Z = vPos.z;
-            posSyncUnit.Mover = mHelpModule.NFToPB(objectID);
             xData.SyncUnit.Add(posSyncUnit);
 
             mxBody.SetLength(0);
@@ -554,14 +579,14 @@ namespace NFrame
             posSyncUnit.Pos.X = vPos.x;
             posSyncUnit.Pos.Y = vPos.y;
             posSyncUnit.Pos.Z = vPos.z;
-            posSyncUnit.Mover = mHelpModule.NFToPB(objectID);
+            posSyncUnit.Type = NFMsg.PosSyncUnit.Types.EMoveType.EetTeleport;
             xData.SyncUnit.Add(posSyncUnit);
 
             mxBody.SetLength(0);
             xData.WriteTo(mxBody);
 
 
-            SendMsg((int)NFMsg.EGameMsgID.ReqMoveImmune, mxBody);
+            SendMsg((int)NFMsg.EGameMsgID.ReqMove, mxBody);
         }
 
         //有可能是他副本的NPC移动,因此增加64对象ID
@@ -590,14 +615,6 @@ namespace NFrame
 
 
             SendMsg((int)NFMsg.EGameMsgID.ReqSkillObjectx, mxBody);
-        }
-
-        public void RequireSyncPosition(NFMsg.ReqAckPlayerPosSync reqAckPlayerPosSync)
-        {
-            mxBody.SetLength(0);
-            reqAckPlayerPosSync.WriteTo(mxBody);
-
-            SendMsg((int)NFMsg.EGameMsgID.ReqPosSync, mxBody);
         }
 
         public void RequireSwapScene(int nTransferType, int nSceneID, int nLineIndex)

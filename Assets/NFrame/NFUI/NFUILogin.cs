@@ -51,7 +51,7 @@ public class NFUILogin : NFUIDialog
     }
     
     // Logic Event
-	public void OnLoginSuccess(NFDataList valueList)
+	public void OnLoginSuccess(int eventId, NFDataList valueList)
     {
 		//mUIModule.ShowUI<NFUISelectServer>();
 

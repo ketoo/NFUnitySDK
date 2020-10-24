@@ -23,10 +23,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 7400000, guid: dffa50cfe77e0434bbfa71245b3dd529, type: 3}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -36,10 +38,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 7400000, guid: 1cb8ed3cbba15f0479fbae54e0a963df, type: 3}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -49,10 +53,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 7400000, guid: b1a5e04ae51004842aba06704a6c2903, type: 3}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -62,10 +68,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -75,10 +83,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -88,10 +98,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -101,10 +113,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 7400004, guid: 0d9d26e2162aa4d11ab075b34c029673, type: 3}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -114,10 +128,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 7400004, guid: 0d9d26e2162aa4d11ab075b34c029673, type: 3}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -127,10 +143,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -140,10 +158,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -153,10 +173,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -166,10 +188,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -179,10 +203,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -192,10 +218,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -205,10 +233,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -218,10 +248,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -231,10 +263,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -244,10 +278,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -257,10 +293,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -270,10 +308,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -283,10 +323,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -296,10 +338,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -309,10 +353,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -322,10 +368,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -335,10 +383,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -348,10 +398,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -361,10 +413,12 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []
   - IsFoldout: 1
@@ -374,9 +428,41 @@ MonoBehaviour:
     AnimationClip: {fileID: 0}
     fCurTime: 0
     fSpeed: 1
+    visible: 1
     EffectStructList: []
     AudioStructList: []
     BulletStructList: []
     DamageStructList: []
+    ActiveStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 90
+    fTime: 2.4000006
+    NextType: 0
+    AnimationClip: {fileID: 7400000, guid: dffa50cfe77e0434bbfa71245b3dd529, type: 3}
+    fCurTime: 0
+    fSpeed: 1
+    visible: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    ActiveStructList: []
+    MovementStructList: []
+    CameraStructList: []
+  - IsFoldout: 1
+    Type: 91
+    fTime: 2.4000006
+    NextType: 0
+    AnimationClip: {fileID: 7400000, guid: dffa50cfe77e0434bbfa71245b3dd529, type: 3}
+    fCurTime: 0
+    fSpeed: 1
+    visible: 1
+    EffectStructList: []
+    AudioStructList: []
+    BulletStructList: []
+    DamageStructList: []
+    ActiveStructList: []
     MovementStructList: []
     CameraStructList: []

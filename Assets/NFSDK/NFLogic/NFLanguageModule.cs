@@ -58,7 +58,7 @@ namespace NFrame
 			foreach (var x in mxUIGO)
 			{
 				GameObject go = x.Key;
-				NFLanguage xLanguage = go.GetComponent<NFLanguage>();
+				NFUILanguage xLanguage = go.GetComponent<NFUILanguage>();
 				if (xLanguage)
 				{
 					xLanguage.RefreshUIData();

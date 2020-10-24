@@ -15,7 +15,8 @@ namespace NFrame
     {    
 		public enum Event : int
         {
-			Connected = 0,
+			StartToConnect = 0,
+			Connected,
             Disconnected,
             ConnectionRefused,
 
@@ -25,6 +26,9 @@ namespace NFrame
             WorldList,
             ServerList,
             SelectServerSuccess,
+            VerifyKeySuccess,
+            EnterGameSuccess,
+            SwapSceneSuccess,
         };
 
 
@@ -35,7 +39,8 @@ namespace NFrame
         public ArrayList mGameServerList = new ArrayList();
 
 
-		public NFGUID mRoleID = new NFGUID();
+        public static int autoReconnectGameID = 0;
+        public NFGUID mRoleID = new NFGUID();
         public string mRoleName;
         public ArrayList mRoleList = new ArrayList();
 
@@ -99,7 +104,7 @@ namespace NFrame
         {
         }
 
-		public void OnConnected(NFDataList valueList)
+		public void OnConnected(int eventId, NFDataList valueList)
         {
 			if (mKey != null && mKey.Length > 0)
 			{
@@ -108,7 +113,7 @@ namespace NFrame
 			}
         }
 
-		public void OnDisconnected(NFDataList valueList)
+		public void OnDisconnected(int eventId, NFDataList valueList)
         {
 			if (mKey != null)
             {
@@ -129,8 +134,8 @@ namespace NFrame
                     mKernelModule.DestroyObject(xDataList.ObjectVal(i));
                 }
 
-                mUIModule.CloseAllUI();
-                mUIModule.ShowUI<NFUILogin>();
+                //mUIModule.DestroyAllUI();
+                //mUIModule.ShowUI<NFUILogin>();
             }
         }
         
@@ -434,14 +439,14 @@ namespace NFrame
 
 
         // Logic Event
-        public void OnLoginSuccess(NFDataList valueList)
+        public void OnLoginSuccess(int eventId, NFDataList valueList)
         {
             //mUIModule.ShowUI<NFUISelectServer>();
 
             RequireWorldList();
         }
 
-        public void OnWorldList(NFDataList valueList)
+        public void OnWorldList(int eventId, NFDataList valueList)
         {
             Debug.Log("OnWorldList" + mWorldServerList.Count);
 
@@ -453,33 +458,42 @@ namespace NFrame
             }
         }
 
-        public void OnSelectServer(NFDataList valueList)
+        public void OnSelectServer(int eventId, NFDataList valueList)
         {
             RequireRoleList();
         }
 
-        public void OnServerList(NFDataList valueList)
+        public void OnServerList(int eventId, NFDataList valueList)
         {
             ArrayList serverList = mGameServerList;
 
-            Debug.Log("OnServerList" + serverList.Count);
+            Debug.Log("OnServerList:" + serverList.Count);
 
-
-            foreach (NFMsg.ServerInfo info in serverList)
+            if (autoReconnectGameID > 0)
             {
-                RequireSelectServer(info.ServerId);
-                break;
+                RequireSelectServer(autoReconnectGameID);
             }
+            else
+            {
+                System.Random rd = new System.Random();
+                int index = rd.Next(0, serverList.Count);
+                NFMsg.ServerInfo info = (ServerInfo)serverList[index];
+
+                RequireSelectServer(0);
+            }
+
+            autoReconnectGameID = 0;
         }
+
         // Logic Event
-        public void OnRoleList(NFDataList valueList)
+        public void OnRoleList(int eventId, NFDataList valueList)
         {
             ArrayList roleList = mRoleList;
 
             foreach (NFMsg.RoleLiteInfo info in roleList)
             {
                 OnRoleClick(0);
-                break;
+                return;
             }
 
             OnCreateRoleClick();

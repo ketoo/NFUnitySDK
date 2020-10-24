@@ -23,7 +23,7 @@ namespace NFSDK
 			if (null != mHandlerDel)
 			{
 				//mHandlerDel(mSelf, mnEventID, mArgValueList, valueList);
-				mHandlerDel(valueList);
+				mHandlerDel(mnEventID, valueList);
 			}
 		}
 

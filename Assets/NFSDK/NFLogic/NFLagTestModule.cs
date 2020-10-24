@@ -21,6 +21,9 @@ namespace NFrame
         public int gameLagTime = 0;
         public int netLagTime = 0;
 
+        List<int> gateLagTimeList = new List<int>();
+        List<int> gameLagTimeList = new List<int>();
+
         public NFLagTestModule(NFIPluginManager pluginManager)
 		{
 			mPluginManager = pluginManager;
@@ -50,13 +53,14 @@ namespace NFrame
                 lastTime = Time.realtimeSinceStartup;
 
                 SendLagTest();
-                PingTest();
+                //PingTest();
             }
-
+            /*
             if (null != ping && ping.isDone)
             {
                 netLagTime = ping.time;
             }
+            */
         }
 
 		public override void BeforeShut()
@@ -98,7 +102,20 @@ namespace NFrame
                 float lagTime = Time.realtimeSinceStartup - time;
                 gateLagTime = (int)(lagTime * 1000);
 
-                //Debug.Log("gateLagTime:" + gateLagTime);
+                if (gateLagTimeList.Count > 10)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("gateLagTime:");
+                    foreach (var item in gateLagTimeList)
+                    {
+                        sb.Append(item);
+                        sb.Append(",");
+                    }
+
+                    Debug.Log(sb.ToString());
+
+                    gateLagTimeList.Clear();
+                }
             }
         }
 
@@ -114,7 +131,22 @@ namespace NFrame
                 float lagTime = Time.realtimeSinceStartup - time;
                 gameLagTime = (int)(lagTime * 1000);
 
-                //ebug.Log("gameLagTime:" + gameLagTime);
+                gateLagTimeList.Add(gateLagTime);
+
+                if (gameLagTimeList.Count > 10)
+                {
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append("gameLagTime:");
+                    foreach (var item in gateLagTimeList)
+                    {
+                        sb.Append(item);
+                        sb.Append(",");
+                    }
+
+                    Debug.Log(sb.ToString());
+
+                    gameLagTimeList.Clear();
+                }
 
                 mLagTestData.Remove(xData.Index);
             }

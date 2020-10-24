@@ -4,7 +4,7 @@ using System.Collections;
 using NFrame;
 using NFSDK;
 
-public class NFLanguage : MonoBehaviour 
+public class NFUILanguage : MonoBehaviour 
 {
 	//maybe for text, maybe for sprite(sprite_name)
 	public string strText;
@@ -41,7 +41,7 @@ public class NFLanguage : MonoBehaviour
 		Text xText = GetComponent<Text> ();
 		if (xText) 
 		{
-			xText.text = strData;
+			xText.text = strData.Replace("\\n", "\n");
 		} 
 		else		
 		{

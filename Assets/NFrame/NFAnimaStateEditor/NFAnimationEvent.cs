@@ -80,7 +80,7 @@ namespace NFrame
 
         public void NoDamageEvent(GameObject self, GameObject target, NFAnimaStateType eAnimaType, int index)
         {
-            Debug.Log("No Damage " + self.ToString() + " " + target.ToString() + " " + index.ToString());
+            //Debug.Log("No Damage " + self.ToString() + " " + target.ToString() + " " + index.ToString());
 
             for (int i = 0; i < NoDamageAnimaList.Count; ++i)
             {
@@ -90,7 +90,7 @@ namespace NFrame
 
         public void OnDamageEvent(GameObject self, GameObject target, NFAnimaStateType eAnimaType, int index)
 		{
-			Debug.Log("On Damage " + self.ToString() + " " + target.ToString() + " " + index.ToString());
+			//Debug.Log("On Damage " + self.ToString() + " " + target.ToString() + " " + index.ToString());
 
 			for (int i = 0; i < OnDamageAnimaList.Count; ++i)
 			{

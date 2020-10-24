@@ -166,7 +166,7 @@ public sealed class NFHeroMotor : BaseCharacterController
         moveDirection = (vPos - this.transform.position).normalized;
     }
 
-    public void MoveTo(Vector3 vPos, MeetGoalCalllBack callBack = null)
+    public void MoveTo(Vector3 vPos, bool fromServer = false, MeetGoalCalllBack callBack = null)
     {
         meetGoalCasllBack = callBack;
 
@@ -174,7 +174,7 @@ public sealed class NFHeroMotor : BaseCharacterController
         moveToPos = vPos;
         moveDirection = (vPos - this.transform.position).normalized;
 
-        if (mLoginModule.mRoleID == mxGUID)
+        if (mLoginModule.mRoleID == mxGUID && !fromServer)
         {
             mNetModule.RequireMove(mLoginModule.mRoleID, 0, moveToPos);
         }
@@ -185,7 +185,7 @@ public sealed class NFHeroMotor : BaseCharacterController
 
     public void MoveToImmune(Vector3 vPos, float fTime, bool bFaceToPos = true)
     {
-        if (bFaceToPos)
+        if (bFaceToPos && mBodyIdent)
         {
             mBodyIdent.LookAt(vPos);
         }
@@ -300,7 +300,6 @@ public sealed class NFHeroMotor : BaseCharacterController
 	{
 		int nX = (int)transform.position.x;
 		int nY = (int)transform.position.y;
-		//mSceneModule.RemoveTile (nX, nY, mxGUID);
 	}
 
 }

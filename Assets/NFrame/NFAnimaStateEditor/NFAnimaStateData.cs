@@ -27,17 +27,19 @@ namespace NFrame
 		[Tooltip("播放的动画片断")]
 		public AnimationClip AnimationClip;
 
-        [Tooltip("动画预览专用")]
+		[Tooltip("动画预览专用")]
         public float fCurTime = 0.0f;
 
         public float fSpeed = 1f;
+        public bool visible = true;
 
 
-        [Tooltip("此动作上挂的特效列表")]
+		[Tooltip("此动作上挂的特效列表")]
 		public List<EffectStruct> EffectStructList;
 		public List<AudioStruct> AudioStructList;
 		public List<BulletStruct> BulletStructList;
 		public List<DamageStruct> DamageStructList;
+		public List<ActiveStruct> ActiveStructList;
 
 		public List<MovementStruct> MovementStructList;
 		public List<CameraStruct> CameraStructList;
@@ -60,6 +62,7 @@ namespace NFrame
 		public Vector3 Offset;
 		public Vector3 Rotate;
 		public bool IsFollow;
+		public bool IsFollowRoot = false;
 		public float DelayTime;
 		public float LifeTime;
 	}
@@ -75,6 +78,17 @@ namespace NFrame
 		public float LifeTime;
 	}
 
+	[System.Serializable]
+	public class ActiveStruct : EffectBase
+	{
+		[HideInInspector] public bool isFoldout;
+
+		[HideInInspector] public bool isEnabled = true; //是否启用此子特效,在一个特效下包含多个子特效时可直接通过此项来有选择的显示，多用于美术调试效果用
+
+		public GameObject gameObject;
+		public bool isActive = false;
+		public float DelayTime;
+	}
 
 	[System.Serializable]
 	public class BulletStruct : EffectBase

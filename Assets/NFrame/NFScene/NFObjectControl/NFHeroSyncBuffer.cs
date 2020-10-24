@@ -8,7 +8,7 @@ public class NFHeroSyncBuffer : MonoBehaviour
     //pool manager
     public class Keyframe
     {
-        public float InterpolationTime;
+        public int InterpolationTime;
         public Vector3 LastPos;
         public Vector3 Position;
         public Vector3 Director;
@@ -27,12 +27,25 @@ public class NFHeroSyncBuffer : MonoBehaviour
         return null;
     }
 
+    public Keyframe LastKeyframe()
+    {
+        if (_keyframes.Count > 0)
+        {
+            Keyframe keyframe = _keyframes[_keyframes.Count - 1];
+            _keyframes.Clear();
+
+            return keyframe;
+        }
+
+        return null;
+    }
+
     public virtual void AddKeyframe(Keyframe keyframe)
     {
         _keyframes.Add(keyframe);
     }
 
-    public virtual void AddKeyframe(float interpolationTime, Vector3 position, Vector3 director)
+    public virtual void AddKeyframe(int interpolationTime, Vector3 position, Vector3 director)
     {
         // prevent long first frame if some keyframes was skipped before the first frame
 

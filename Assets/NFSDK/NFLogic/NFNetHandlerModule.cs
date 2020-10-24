@@ -32,7 +32,10 @@ namespace NFrame
 
         private NFIKernelModule mKernelModule;
         private NFIClassModule mClassModule;
-
+        private NFIElementModule mElementModule;
+        private NFIEventModule mEventModule;
+        
+        private NFLanguageModule mLanguageModule;
         private NFHelpModule mHelpModule;
         private NFNetModule mNetModule;
         private NFNetEventModule mNetEventModule;
@@ -80,7 +83,10 @@ namespace NFrame
         {
             mClassModule = mPluginManager.FindModule<NFIClassModule>();
             mKernelModule = mPluginManager.FindModule<NFIKernelModule>();
-
+            mElementModule = mPluginManager.FindModule<NFIElementModule>();
+            mEventModule = mPluginManager.FindModule<NFIEventModule>();
+            
+            mLanguageModule = mPluginManager.FindModule<NFLanguageModule>();
             mSceneModule = mPluginManager.FindModule<NFSceneModule>();
             mNetModule = mPluginManager.FindModule<NFNetModule>();
             mHelpModule = mPluginManager.FindModule<NFHelpModule>();
@@ -106,8 +112,6 @@ namespace NFrame
             mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckObjectEntry, EGMI_ACK_OBJECT_ENTRY);
             mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckObjectLeave, EGMI_ACK_OBJECT_LEAVE);
             mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckMove, EGMI_ACK_MOVE);
-            mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckMoveImmune, EGMI_ACK_MOVE_IMMUNE);
-            mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckPosSync, EGMI_ACK_POS_SYNC);
 
             mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckPropertyInt, EGMI_ACK_PROPERTY_INT);
             mNetModule.AddReceiveCallBack((int)NFMsg.EGameMsgID.AckPropertyFloat, EGMI_ACK_PROPERTY_FLOAT);
@@ -139,7 +143,10 @@ namespace NFrame
 
         }
 
-     
+        public override void AfterInit()
+        {
+        }
+
         public override void Execute()
         {
         }
@@ -174,6 +181,7 @@ namespace NFrame
 
             Debug.Log("EGMI_ACK_ENTER_GAME " + xData.EventCode.ToString());
 
+            mEventModule.DoEvent((int)NFLoginModule.Event.EnterGameSuccess);
             //mSceneModule.LoadScene((int)xData.event_code);
             //可以播放过图动画场景
         }
@@ -186,6 +194,7 @@ namespace NFrame
 
             Debug.Log("SWAP_SCENE: " + xData.SceneId + " " + xData.X + "," + xData.Y + "," + xData.Z);
 
+            mEventModule.DoEvent((int)NFLoginModule.Event.SwapSceneSuccess);
             /*
             NFMsg.AckMiningTitle xTileData = null;
             if (null != xData.Data && xData.Data.Length > 0)
@@ -270,7 +279,7 @@ namespace NFrame
                 NFMsg.ObjectRecordList xObjectRecordList = xData.MultiPlayerRecord[i];
                 NFGUID xObjectID = mHelpModule.PBToNF(xObjectRecordList.PlayerId);
 
-                //Debug.Log ("new record enter Object: " + xObjectID.ToString () );
+                Debug.Log ("new record enter Object: " + xObjectID.ToString () );
 
                 ObjectDataBuff xDataBuff;
                 if (mxObjectDataBuff.TryGetValue(xObjectID, out xDataBuff))
@@ -295,6 +304,8 @@ namespace NFrame
                 NFMsg.ObjectPropertyList xPropertyData = xData.MultiPlayerProperty[i];
                 NFGUID xObjectID = mHelpModule.PBToNF(xPropertyData.PlayerId);
 
+                Debug.Log("new property enter Object: " + xObjectID.ToString());
+
                 ObjectDataBuff xDataBuff;
                 if (mxObjectDataBuff.TryGetValue(xObjectID, out xDataBuff))
                 {
@@ -317,7 +328,7 @@ namespace NFrame
 
         private void AttachObjectData(NFGUID self)
         {
-            //Debug.Log ("AttachObjectData : " + self.ToString () );
+            Debug.Log ("AttachObjectData : " + self.ToString () );
 
             ObjectDataBuff xDataBuff;
             if (mxObjectDataBuff.TryGetValue(self, out xDataBuff))
@@ -955,6 +966,18 @@ namespace NFrame
                  xRecord = xRecordManager.AddRecord(strRecordName, 512, varListDesc, xStaticRecord.GetTagData());
              }
 
+             if (self.IsNull())
+             {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < varListData.Count(); ++i)
+                {
+                    stringBuilder.Append(varListData.GetData(i).ToString());
+                    stringBuilder.Append(";");
+                }
+
+                Debug.Log(strRecordName + " add row:" + stringBuilder.ToString());
+             }
+
              xRecord.AddRow(xAddStruct.Row, varListData);
          }
 
@@ -1048,107 +1071,22 @@ namespace NFrame
                 return;
             }
 
-            NFMsg.PosSyncUnit syncUnit = xData.SyncUnit[0];
-
-            NFGUID xMover = mHelpModule.PBToNF(syncUnit.Mover);
-
-            if (xMover.IsNull())
-            {
-                Debug.LogError("xMover " + Time.time);
-                return;
-            }
-
-            if (xMover == mLoginModule.mRoleID)
-            {
-                return;
-            }
-
-            GameObject xGameObject = mSceneModule.GetObject(xMover);
-            if (!xGameObject)
-            {
-                Debug.LogError("xGameObject " + Time.time);
-                return;
-            }
-
-            NFHeroMotor xHeroMotor = xGameObject.GetComponent<NFHeroMotor>();
-            if (!xHeroMotor)
-            {
-                Debug.LogError("xHeroSync " + Time.time);
-                return;
-            }
-
-            UnityEngine.Vector3 v = new UnityEngine.Vector3();
-            v.x = syncUnit.Pos.X;
-            v.y = syncUnit.Pos.Y;
-            v.z = syncUnit.Pos.Z;
-            xHeroMotor.MoveTo(v);
-        }
-
-        private void EGMI_ACK_MOVE_IMMUNE(int id, MemoryStream stream)
-        {
-            Debug.Log("EGMI_ACK_MOVE_IMMUNE " + Time.time);
-            NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
-
-            NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
- 
-            if (xData.SyncUnit.Count <= 0)
-            {
-                return;
-            }
-            NFMsg.PosSyncUnit syncUnit = xData.SyncUnit[0];
-
-            NFGUID xMover = mHelpModule.PBToNF(syncUnit.Mover);
-
-            if (xMover.IsNull())
-            {
-                Debug.LogError("xMover " + Time.time);
-                return;
-            }
-
-            if (xMover == mLoginModule.mRoleID)
-            {
-                return;
-            }
-
-            GameObject xGameObject = mSceneModule.GetObject(xMover);
-            if (!xGameObject)
-            {
-                Debug.LogError("xGameObject " + Time.time);
-                return;
-            }
-
-            NFHeroMotor xHeroMotor = xGameObject.GetComponent<NFHeroMotor>();
-            if (!xHeroMotor)
-            {
-                Debug.LogError("xHeroSync " + Time.time);
-                return;
-            }
-
-            UnityEngine.Vector3 v = new UnityEngine.Vector3();
-            v.x = syncUnit.Pos.X;
-            v.y = syncUnit.Pos.Y;
-            v.z = syncUnit.Pos.Z;
-            xHeroMotor.MoveToImmune(v, 0.01f);
-        }
-
-        private void EGMI_ACK_POS_SYNC(int id, MemoryStream stream)
-        {
-            NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
-
-            NFMsg.ReqAckPlayerPosSync xData = NFMsg.ReqAckPlayerPosSync.Parser.ParseFrom(xMsg.MsgData);
-
             for (int i = 0; i < xData.SyncUnit.Count; ++i)
             {
+
                 NFMsg.PosSyncUnit syncUnit = xData.SyncUnit[i];
+
                 NFGUID xMover = mHelpModule.PBToNF(syncUnit.Mover);
+
                 if (xMover.IsNull())
                 {
                     Debug.LogError("xMover " + Time.time);
                     return;
                 }
 
-                if (xMover == mLoginModule.mRoleID)
+                if (xMover == mLoginModule.mRoleID && syncUnit.Type == PosSyncUnit.Types.EMoveType.EmtWalk)
                 {
+                    //平常自己行走不需要同步
                     return;
                 }
 
@@ -1159,14 +1097,36 @@ namespace NFrame
                     return;
                 }
 
+                NFHeroMotor xHeroMotor = xGameObject.GetComponent<NFHeroMotor>();
+                if (!xHeroMotor)
+                {
+                    Debug.LogError("xHeroSync " + Time.time);
+                    return;
+                }
+
                 NFHeroSync xHeroSync = xGameObject.GetComponent<NFHeroSync>();
                 if (!xHeroSync)
                 {
                     Debug.LogError("xHeroSync " + Time.time);
                     return;
                 }
+                UnityEngine.Vector3 v = new UnityEngine.Vector3();
+                v.x = syncUnit.Pos.X;
+                v.y = syncUnit.Pos.Y;
+                v.z = syncUnit.Pos.Z;
 
-                xHeroSync.AddSyncData(syncUnit);
+                if (syncUnit.Type == PosSyncUnit.Types.EMoveType.EmtWalk)
+                {
+                    xHeroSync.AddSyncData(xData.Sequence, syncUnit);
+                }
+                else if (syncUnit.Type == PosSyncUnit.Types.EMoveType.EetSpeedy)
+                {
+                    xHeroMotor.MoveToImmune(v, 0.1f);
+                }
+                else if (syncUnit.Type == PosSyncUnit.Types.EMoveType.EetTeleport)
+                {
+                    xHeroMotor.MoveToImmune(v, 0.001f);
+                }
             }
         }
 
@@ -1192,10 +1152,6 @@ namespace NFrame
                 //NFHeroSkill xHeroSkill = xGameObject.GetComponent<NFHeroSkill>();
                 //xHeroSkill.AckSkill(xUser, xData.UseIndex, xData.SkillId.ToStringUtf8(), xData.EffectData.ToList<NFMsg.EffectData>());
             }
-        }
-
-        public override void AfterInit()
-        {
         }
     }
 }

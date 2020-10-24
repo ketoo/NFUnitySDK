@@ -164,6 +164,8 @@ namespace NFrame
 
         void FixAllAnims()
 		{
+            //remove all animation event
+
 
 			foreach (NFAnimaStateType myCode in Enum.GetValues(typeof(NFAnimaStateType)))
 			{
@@ -187,6 +189,7 @@ namespace NFrame
 					_ass.AudioStructList = new List<AudioStruct>();
 					_ass.BulletStructList = new List<BulletStruct>();
 					_ass.DamageStructList = new List<DamageStruct>();
+					_ass.ActiveStructList = new List<ActiveStruct>();
 					_ass.MovementStructList = new List<MovementStruct>();
 					_ass.CameraStructList = new List<CameraStruct>();
 					mData.AnimationSkillList.Add(_ass);
@@ -232,8 +235,8 @@ namespace NFrame
                 String strClipPath = AssetDatabase.GetAssetPath(_ass.AnimationClip);
                 AnimationClip anim = AssetDatabase.LoadAssetAtPath(strClipPath, typeof(AnimationClip)) as AnimationClip;
 
-                //Debug.Log(_ass.AnimationClip.name + " " + strClipPath);
-                var objs = AssetDatabase.LoadAllAssetsAtPath(strClipPath);
+				//Debug.Log(_ass.AnimationClip.name + " " + strClipPath);
+				var objs = AssetDatabase.LoadAllAssetsAtPath(strClipPath);
                 foreach (var o in objs)
                 {
                     if (o is AnimationClip && _ass.AnimationClip.name == o.name)
@@ -243,11 +246,12 @@ namespace NFrame
                     }
                 }
 
-                if (anim == null)
+				
+				if (anim == null)
                 {
-                    //didn't set a animation we will set idle as the default animation
-                    //we don't need to do this as if we do like this there will run out a bug (cann't swap the same animation)
-                    /*
+					//didn't set a animation we will set idle as the default animation
+					//we don't need to do this as if we do like this there will run out a bug (cann't swap the same animation)
+					/*
                     for (int index = 0; index < mData.AnimationSkillList.Count; index++)
                     {
                         AnimationSkillStruct tempAss = mData.AnimationSkillList[index];
@@ -258,9 +262,16 @@ namespace NFrame
                         }
                     }
                     */
-                }
+				}
+                else
+                {
+                    //clear all animation events from model
 
-                bool bFind = false;
+					List<AnimationEvent> animationEvents = new List<AnimationEvent>();
+					UnityEditor.AnimationUtility.SetAnimationEvents(anim, animationEvents.ToArray());
+				}
+
+				bool bFind = false;
                 for (int j = 0; j < state_machine.states.Length; j ++)
                 {
                     ChildAnimatorState childAnimatorState = state_machine.states[j];
@@ -299,8 +310,8 @@ namespace NFrame
             IdleState.AddTransition(runState);
             */
 
-            string prefabPath = "/Prefabs/Object/" + mASC.gameObject.name;
-            PrefabUtility.ApplyObjectOverride(mASC.gameObject, prefabPath, InteractionMode.AutomatedAction);
+            string prefabPath = "/Prefabs/Object" + mASC.gameObject.name;
+			PrefabUtility.ApplyObjectOverride(mASC.gameObject, prefabPath, InteractionMode.AutomatedAction);
         }
 
         void DrawAnimation()
@@ -337,9 +348,13 @@ namespace NFrame
                         mManulPlayType = _ass.Type;
                     }
 
-                    _ass.fSpeed = EditorGUILayout.FloatField("Play Speed:", _ass.fSpeed);
+					EditorGUILayout.BeginHorizontal();
+					_ass.fSpeed = EditorGUILayout.FloatField("Play Speed:", _ass.fSpeed);
+                    _ass.visible = EditorGUILayout.Toggle("Visible:", _ass.visible);
 
-                    EditorGUILayout.BeginHorizontal();
+					EditorGUILayout.EndHorizontal();
+
+					EditorGUILayout.BeginHorizontal();
                     if (GUILayout.Button("Play"))
                     {
                         //mASC.SetAnimator(mASC.GetComponent<Animator>());
@@ -364,7 +379,12 @@ namespace NFrame
                         }
                     }
 
-                    EditorGUILayout.EndHorizontal();
+					if (GUILayout.Button("FIX ANIM"))
+					{
+						FixAllAnims();
+					}
+
+					EditorGUILayout.EndHorizontal();
 
                     _ass.AnimationClip = (AnimationClip)EditorGUILayout.ObjectField("AnimaitonClip:", _ass.AnimationClip, typeof(AnimationClip), true);
 
@@ -434,8 +454,14 @@ namespace NFrame
                         _es.isFoldout = true;
                         mData.AnimationSkillList[i].CameraStructList.Add(_es);
                     }
+					if (GUILayout.Button("ADD Active"))
+					{
+						ActiveStruct _es = new ActiveStruct();
+						_es.isActive = false;
+						mData.AnimationSkillList[i].ActiveStructList.Add(_es);
+					}
 
-                    EditorGUILayout.EndHorizontal();
+					EditorGUILayout.EndHorizontal();
 
                     if (mData.AnimationSkillList.Count > 0)
                     {
@@ -445,7 +471,8 @@ namespace NFrame
                         DrawDamage(i);
                         DrawBullet(i);
                         DrawCamera(i);
-                    }
+                        DrawActive(i);
+					}
                     EditorGUILayout.EndVertical();
                 }
             }
@@ -493,7 +520,18 @@ namespace NFrame
 
 					_eff.Offset = EditorGUILayout.Vector3Field("Offset", _eff.Offset);
 					_eff.Rotate = EditorGUILayout.Vector3Field("Rotate", _eff.Rotate);
-					_eff.IsFollow = EditorGUILayout.Toggle("Is Follow", _eff.IsFollow);
+                    if (_eff.IsFollow)
+                    {
+						EditorGUILayout.BeginHorizontal();
+						_eff.IsFollow = EditorGUILayout.Toggle("Is Follow", _eff.IsFollow);
+						_eff.IsFollowRoot = EditorGUILayout.Toggle("Is FollowRoot", _eff.IsFollowRoot);
+						EditorGUILayout.EndHorizontal();
+					}
+                    else
+                    {
+						_eff.IsFollow = EditorGUILayout.Toggle("Is Follow", _eff.IsFollow);
+					}
+
 					_eff.DelayTime = EditorGUILayout.FloatField("Delay Time", _eff.DelayTime);
 					_eff.LifeTime = EditorGUILayout.FloatField("Life Time", _eff.LifeTime);
 
@@ -817,10 +855,61 @@ namespace NFrame
 		}
 
 
-        /// <summary>
-        /// 预览播放状态下的更新
-        /// </summary>
-        private void update(float delta)
+		void DrawActive(int id)
+		{
+			if (!(id < mData.AnimationSkillList.Count))
+				return;
+
+			for (int i = 0; i < mData.AnimationSkillList[id].ActiveStructList.Count; i++)
+			{
+				ActiveStruct _eff = mData.AnimationSkillList[id].ActiveStructList[i];
+
+				EditorGUI.indentLevel++;
+				EditorGUILayout.BeginVertical(EditorStyles.helpBox);
+
+				string _titleName = "Active" + (i + 1).ToString();
+				EditorGUILayout.BeginHorizontal();
+				//此子特效的界面折叠
+				_eff.isFoldout = EditorGUILayout.Foldout(_eff.isFoldout, _titleName);
+				GUILayout.FlexibleSpace();
+				//此子特效是否可用
+				_eff.isEnabled = EditorGUILayout.Toggle("", _eff.isEnabled);
+
+				if (GUILayout.Button("DELETE"))
+				{
+					mData.AnimationSkillList[id].ActiveStructList.Remove(_eff);
+					return;
+				}
+
+				EditorGUILayout.EndHorizontal();
+
+				mData.AnimationSkillList[id].ActiveStructList[i] = _eff;
+
+				if (_eff.isFoldout)
+				{
+					EditorGUI.BeginDisabledGroup(!_eff.isEnabled);
+					_eff.DelayTime = EditorGUILayout.FloatField("Delay Time", _eff.DelayTime);
+					if (_eff.DelayTime > mData.AnimationSkillList[id].fTime)
+					{
+						_eff.DelayTime = mData.AnimationSkillList[id].fTime;
+					}
+
+					_eff.gameObject = (GameObject)EditorGUILayout.ObjectField("GameObject", _eff.gameObject, typeof(GameObject), true);
+					_eff.isActive = EditorGUILayout.Toggle("IsActive", _eff.isActive);
+
+					mData.AnimationSkillList[id].ActiveStructList[i] = _eff;
+				}
+				EditorGUI.EndDisabledGroup();
+
+
+				EditorGUILayout.EndVertical();
+				EditorGUI.indentLevel--;
+			}
+		}
+		/// <summary>
+		/// 预览播放状态下的更新
+		/// </summary>
+		private void update(float delta)
         {
             if (Application.isPlaying || mAnimator == null)
             {

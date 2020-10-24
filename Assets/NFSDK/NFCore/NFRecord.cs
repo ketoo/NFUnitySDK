@@ -43,8 +43,13 @@ namespace NFSDK
 			
 			return false;
 		}
-		
-		public override int GetRows()
+
+        public override int GetUsedRows()
+        {
+            return mhtRecordVec.Count;
+        }
+
+        public override int GetRows()
         {
 			return mnRow;
         }
@@ -80,8 +85,9 @@ namespace NFSDK
 			{
 				return AddRow(nRow, mVarRecordType);
 			}
-			
-			return -1;
+
+            UnityEngine.Debug.LogError(this.mstrRecordName + " AddRow Failed:" + nRow.ToString());
+            return -1;
         }
 
         public override int AddRow(int nRow, NFDataList var)
@@ -99,8 +105,9 @@ namespace NFSDK
 					return nRow;
 				}
 			}
-			
-			
+
+
+            UnityEngine.Debug.LogError(this.mstrRecordName + " AddRow Failed:" + nRow.ToString());
             return -1;
         }
 
@@ -110,9 +117,9 @@ namespace NFSDK
 			if(nRow >= 0 && nRow < mnRow)
 			{
 				if (!mhtRecordVec.ContainsKey(nRow))
-				{
-					AddRow(nRow);
-				}
+                {
+                    return -1;
+                }
 				
 				mhtRecordVec[nRow] = var;
 				return nRow;
@@ -125,9 +132,9 @@ namespace NFSDK
 			if(nRow >= 0 && nRow < mnRow)
 			{
 				if (!mhtRecordVec.ContainsKey(nRow))
-				{
-					AddRow(nRow);
-				}
+                {
+                    return false;
+                }
 				NFDataList valueList = (NFDataList)mhtRecordVec[nRow];
 				if (valueList.GetType(nCol) == NFDataList.VARIANT_TYPE.VTYPE_INT)
 				{
@@ -158,9 +165,9 @@ namespace NFSDK
 			if(nRow >= 0 && nRow < mnRow)
 			{
 				if (!mhtRecordVec.ContainsKey(nRow))
-				{
-					AddRow(nRow);
-				}
+                {
+                    return false;
+                }
 				NFDataList valueList = (NFDataList)mhtRecordVec[nRow];
 				if (valueList.GetType(nCol) == NFDataList.VARIANT_TYPE.VTYPE_FLOAT)
 				{
@@ -193,9 +200,9 @@ namespace NFSDK
 			if(nRow >= 0 && nRow < mnRow)
 			{
 				if (!mhtRecordVec.ContainsKey(nRow))
-				{
-					AddRow(nRow);
-				}
+                {
+                    return false;
+                }
 				NFDataList valueList = (NFDataList)mhtRecordVec[nRow];
 				if (valueList.GetType(nCol) == NFDataList.VARIANT_TYPE.VTYPE_STRING)
 				{
@@ -227,9 +234,9 @@ namespace NFSDK
 			if(nRow >= 0 && nRow < mnRow)
 			{
 				if (!mhtRecordVec.ContainsKey(nRow))
-				{
-					AddRow(nRow);
-				}
+                {
+                    return false;
+                }
 				NFDataList valueList = (NFDataList)mhtRecordVec[nRow];
 				if (valueList.GetType(nCol) == NFDataList.VARIANT_TYPE.VTYPE_OBJECT)
 				{
@@ -262,7 +269,7 @@ namespace NFSDK
             {
                 if (!mhtRecordVec.ContainsKey(nRow))
                 {
-                    AddRow(nRow);
+                    return false;
                 }
                 NFDataList valueList = (NFDataList)mhtRecordVec[nRow];
                 if (valueList.GetType(nCol) == NFDataList.VARIANT_TYPE.VTYPE_VECTOR2)
@@ -296,7 +303,7 @@ namespace NFSDK
             {
                 if (!mhtRecordVec.ContainsKey(nRow))
                 {
-                    AddRow(nRow);
+                    return false;
                 }
                 NFDataList valueList = (NFDataList)mhtRecordVec[nRow];
                 if (valueList.GetType(nCol) == NFDataList.VARIANT_TYPE.VTYPE_VECTOR3)

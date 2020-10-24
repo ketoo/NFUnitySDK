@@ -63,7 +63,7 @@ namespace NFSDK
 		public override void BeforeShut() {  }
 		public override void Shut() {}
 
-		protected void SwapSceneEventHandler(NFDataList valueList)
+		protected void SwapSceneEventHandler(int eventId, NFDataList valueList)
 		{
 			string strSceneID = valueList.StringVal(0);
 			NFVector3 vPos = valueList.Vector3Val(1);
@@ -607,13 +607,10 @@ namespace NFSDK
 
 
             NFMsg.ESceneType nType = (NFMsg.ESceneType)mElementModule.QueryPropertyInt(nSceneID.ToString(), NFrame.Scene.Type);
-            if (nType == NFMsg.ESceneType.NormalScene)
-            {
-                mUIModule.CloseAllUI();
-                mUIModule.ShowUI<NFUIMain>();
-                mUIModule.ShowUI<NFUIEstateBar>();
-                mUIModule.ShowUI<NFUIJoystick>();
-            }
+            mUIModule.CloseAllUI();
+            mUIModule.ShowUI<NFUIMain>();
+            mUIModule.ShowUI<NFUIEstateBar>();
+            mUIModule.ShowUI<NFUIJoystick>();
 
             Debug.Log("LoadSceneEnd: " + nSceneID + " " + nType);
 

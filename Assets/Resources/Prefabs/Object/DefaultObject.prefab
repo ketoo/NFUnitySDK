@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 54682555893305772}
   - component: {fileID: 136516835629691930}
   m_Layer: 0
-  m_Name: Hero001
+  m_Name: DefaultObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50,6 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19ba7833f0a0548778ed1a8a07d6dbe1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  headBar: 1
   ObjectID: 8-1533541732197000000
   cnfID: NPC_HERO_Dwarf_Warrior
   iCon: {fileID: 21300080, guid: e61eb5417c2084fb1a1d08d17c884d46, type: 3}
@@ -57,7 +58,7 @@ MonoBehaviour:
   xHealthBar: {fileID: 0}
   xWeapon: {fileID: 0}
   xFirePoint: {fileID: 0}
-  xBullet: {fileID: 0}
+  xHitVFX: {fileID: 0}
   xBeHitPoint: {fileID: 0}
   xHeadPoint: {fileID: 4841529361172168}
   xRenderObject: {fileID: 699227915424115082}

@@ -38,6 +38,9 @@ namespace NFrame
 		SpecialSkill2 = 51,//技能2
 		SkillThump = 52,//大招
 
+		Idle1 = 90,
+		Idle2 = 91,
+
 		NONE = 100,
 	}
 }

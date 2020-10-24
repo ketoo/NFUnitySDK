@@ -31,6 +31,7 @@ namespace NFSDK
         public abstract void SetUpload(bool upload);
         public abstract bool GetUpload();
         public abstract bool IsUsed(int nRow);
+        public abstract int GetUsedRows();
         public abstract int GetRows();
         public abstract int GetCols();
 		public abstract NFDataList.VARIANT_TYPE GetColType(int nCol);

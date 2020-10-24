@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Animations;
-using NFrame;
-using System.IO;
-using UnityEditor;
+
+#if DG_Tweening
+using DG.Tweening;
+#endif
 
 namespace NFrame
 {
@@ -15,6 +15,8 @@ namespace NFrame
 		private Animator mAnimator;
 		private NFAnimationEvent mxAnimationEvent = new NFAnimationEvent();
 		private NFAnimaStateType meLastPlayID = NFAnimaStateType.NONE;
+
+		private List<GameObject> effectList = new List<GameObject>();
 
         //for buff and debuff
         private float mfMoveSpeed = 1.0f;
@@ -72,25 +74,61 @@ namespace NFrame
 			PlayAnimaState(NFAnimaStateType.Idle, -1);
 		}
 
-		//the use should pass a position when the bullet need a pos
-		public int PlayAnimaState(NFAnimaStateType eAnimaType, int index)
+		public int PlayAnimaState(NFAnimaStateType eAnimaType, int index, bool force = false)
 		{
-            return PlayAnimaState(eAnimaType, Vector3.zero, null, index);
-		}
+            foreach (GameObject go in effectList)
+            {
+                if (go != null)
+                {
+					Destroy(go);
+                }
+            }
 
-        public int PlayAnimaState(NFAnimaStateType eAnimaType, GameObject gameObject, int index)
-        {
-            return PlayAnimaState(eAnimaType, Vector3.zero, gameObject, index);
-        }
+			effectList.Clear();
 
-        public int PlayAnimaState(NFAnimaStateType eAnimaType, Vector3 v, GameObject gameObject, int index)
-		{
-			if (meLastPlayID == eAnimaType)
+            if (eAnimaType == NFAnimaStateType.Idle)
 			{
-				return -1;
+				float f = Random.Range(0, 100);
+                if (f < 15.0f)
+                {
+					for (int i = 0; i < mxSkillData.AnimationSkillList.Count; ++i)
+					{
+						AnimationSkillStruct xAnimationSkillStruct = mxSkillData.AnimationSkillList[i];
+					    if (xAnimationSkillStruct.Type == NFAnimaStateType.Idle1)
+						{
+							if (xAnimationSkillStruct.AnimationClip != null)
+							{
+								eAnimaType = NFAnimaStateType.Idle1;
+								break;
+							}
+						}
+					}
+				}
+                else if (f < 30.0f)
+                {
+					for (int i = 0; i < mxSkillData.AnimationSkillList.Count; ++i)
+					{
+						AnimationSkillStruct xAnimationSkillStruct = mxSkillData.AnimationSkillList[i];
+						if (xAnimationSkillStruct.Type == NFAnimaStateType.Idle1)
+						{
+							if (xAnimationSkillStruct.AnimationClip != null)
+							{
+								eAnimaType = NFAnimaStateType.Idle2;
+								break;
+							}
+						}
+					}
+				}
+			}
+			else
+            {
+				if (eAnimaType == meLastPlayID && !force)
+                {
+					return - 1;
+                }
 			}
 
-            if (mBodyIdent == null)
+			if (mBodyIdent == null)
             {
                 mBodyIdent = GetComponent<NFBodyIdent>();
                 if (mBodyIdent.xRenderObject)
@@ -99,9 +137,10 @@ namespace NFrame
                 }
             }
 
-            meLastPlayID = eAnimaType;
-
 			mxAnimationEvent.OnEndAnimaEvent(this.gameObject, meLastPlayID, index);
+
+			meLastPlayID = eAnimaType;
+
 			mxAnimationEvent.OnStartAnimaEvent(this.gameObject, eAnimaType, index);
 
 			for (int i = 0; i < mxSkillData.AnimationSkillList.Count; ++i)
@@ -109,10 +148,18 @@ namespace NFrame
 				AnimationSkillStruct xAnimationSkillStruct = mxSkillData.AnimationSkillList[i];
 				if (xAnimationSkillStruct.Type == eAnimaType)
 				{
+					if (mBodyIdent.xRenderObject)
+                    {
+						mBodyIdent.xRenderObject.gameObject.SetActive(xAnimationSkillStruct.visible);
+					}
+
 					if (xAnimationSkillStruct.AnimationClip != null)
 					{
 						//mAnimator.Play(eAnimaType.ToString());
-						mAnimator.CrossFade(eAnimaType.ToString(), 0.1f);
+						if (mAnimator)
+						{
+							mAnimator.CrossFade(eAnimaType.ToString(), 0.1f);
+						}
 					}
 					else
 					{
@@ -143,7 +190,7 @@ namespace NFrame
 						if (es.Bullet != null)
 						{
 							es.Index = index;
-							StartCoroutine(WaitPlayBullet(es, v));
+							StartCoroutine(WaitPlayBullet(es));
 						}
 					}
 
@@ -153,7 +200,16 @@ namespace NFrame
 						StartCoroutine(WaitPlayMovement(es));
 					}
 
-                    if (xAnimationSkillStruct.DamageStructList.Count > 0)
+					if (xAnimationSkillStruct.ActiveStructList.Count > 0)
+					{
+						foreach (ActiveStruct es in xAnimationSkillStruct.ActiveStructList)
+						{
+							es.Index = index;
+							StartCoroutine(WaitPlayActive(es));
+						}
+					}
+
+					if (xAnimationSkillStruct.DamageStructList.Count > 0)
                     {
                         foreach (DamageStruct es in xAnimationSkillStruct.DamageStructList)
                         {
@@ -182,21 +238,20 @@ namespace NFrame
 						StartCoroutine(WaitPlayCamera(es));
 					}
 
-					if (xAnimationSkillStruct.AnimationClip)
+					if (xAnimationSkillStruct.Type != NFAnimaStateType.Idle)
 					{
-                        if (!xAnimationSkillStruct.AnimationClip.isLooping)
-                        {
-                            StartCoroutine(WaitPlayNextAnim(xAnimationSkillStruct.fTime, xAnimationSkillStruct.NextType, -1));
-                        }
-                    }
-                    else
-                    {
-                        if (xAnimationSkillStruct.Type != NFAnimaStateType.Idle
-                            && xAnimationSkillStruct.Type != xAnimationSkillStruct.NextType)
-                        {
-                            StartCoroutine(WaitPlayNextAnim(xAnimationSkillStruct.fTime, xAnimationSkillStruct.NextType, -1));
-                        }
-                    }
+						if (xAnimationSkillStruct.AnimationClip)
+						{
+							if (!xAnimationSkillStruct.AnimationClip.isLooping)
+							{
+								StartCoroutine(WaitPlayNextAnim(xAnimationSkillStruct.fTime, xAnimationSkillStruct.NextType, -1));
+							}
+						}
+						else if(xAnimationSkillStruct.Type != xAnimationSkillStruct.NextType)
+						{
+							StartCoroutine(WaitPlayNextAnim(xAnimationSkillStruct.fTime, xAnimationSkillStruct.NextType, -1));
+						}
+					}
 
 					//get time
 					if (eAnimaType != NFAnimaStateType.Idle)
@@ -230,7 +285,14 @@ namespace NFrame
 			Transform _parent = null;
 
             if (es.IsFollow)
-                _parent = mBodyIdent.xRenderObject;
+			{
+				_parent = mBodyIdent.xRenderObject;
+				if (es.IsFollowRoot)
+                {
+					_parent = mBodyIdent.gameObject.transform;
+				}
+            }
+            
 
             if (es.VirtualPointName != "None")
 			{
@@ -239,7 +301,7 @@ namespace NFrame
 				{
 					_pos = _targetTrans.position + es.Offset;
 
-                    if (es.IsFollow)
+                    if (es.IsFollow && !es.IsFollowRoot)
                         _parent = _targetTrans;
 
                 }
@@ -250,13 +312,31 @@ namespace NFrame
 			}
 			else
 			{
-				_pos = transform.position + es.Offset;
+                if (!es.IsFollow)
+                {
+					_pos = transform.position + es.Offset;
+				}
 			}
 
 			_rotation.eulerAngles += es.Rotate;
+			//_rotation.eulerAngles += mBodyIdent.xRenderObject.transform.forward;
 
-			GameObject _eff = GameObject.Instantiate<GameObject>(es.Effect, _pos, _rotation, _parent);
+			//GameObject _eff = GameObject.Instantiate<GameObject>(es.Effect, _pos, _rotation, _parent);
+
+            GameObject _eff = GameObject.Instantiate<GameObject>(es.Effect);
+			_eff.transform.parent = _parent;
+			_eff.transform.position = _pos;
+			if (es.IsFollow)
+			{
+				_eff.transform.localPosition = es.Offset;
+			}
+
+			_eff.transform.localRotation = _rotation;
+
 			_eff.SetActive(true);
+
+			effectList.Add(_eff);
+
 			Destroy(_eff, es.LifeTime);
 		}
 
@@ -276,9 +356,8 @@ namespace NFrame
 			{
 				vTargetPos = v;
 			}
-
+#if DG_Tweening
 			float fDis = Vector3.Distance(vTargetPos, bullet.transform.position);
-            /*
 			Tweener t = bullet.transform.DOMove(vTargetPos, fDis / es.Speed);
             t.SetEase(Ease.Linear);
             t.OnComplete(delegate ()
@@ -314,140 +393,94 @@ namespace NFrame
 				   Destroy(_startEff, es.TouchEffLifeTime);
 			   }
 		    });
-            */
+#endif
 			yield return new WaitForEndOfFrame();
-
-			/*
-			while (true)
-			{
-				float fDis = Vector3.Distance (vTargetPos, go.transform.position);
-				if (fDis > fMinDis) 
-				{
-					Vector3 _vec = vTargetPos - go.transform.position;
-					float fMoveDis = es.Speed * Time.deltaTime;
-					if (fMoveDis > fDis)
-					{
-						go.transform.position = vTargetPos;
-					} 
-					else 
-					{
-						go.transform.Translate (_vec.normalized * es.Speed * Time.deltaTime);
-					}
-				}
-
-				if (fDis < fMinDis)
-				{
-					Destroy (go);
-
-					if (es.TouchEffect)
-					{
-						GameObject _startEff = Instantiate (es.TouchEffect, vTargetPos, Quaternion.identity) as GameObject;
-						_startEff.SetActive (true);
-						Destroy (_startEff, es.TouchEffLifeTime);
-					}
-					if (es.TouchAudio)
-					{
-						AudioClip _startEff = Instantiate (es.TouchAudio, vTargetPos, Quaternion.identity) as AudioClip;
-						AudioSource.PlayClipAtPoint(_startEff, transform.position); 
-						Destroy (_startEff, es.TouchEffLifeTime);
-					}
-					yield break;
-				}
-
-				yield return new WaitForEndOfFrame ();
-			}
-			*/
 		}
+
+        void OnBulletTouchTargetComplete()
+        {
+
+        }
 
 		IEnumerator WaitMoveBulletToTarget(BulletStruct es, GameObject bullet, GameObject target)
 		{
-			BulletTrace xBulletTrace = new BulletTrace();
-			xBulletTrace.target = target;
-			xBulletTrace.bullet = bullet;
-			xBulletTrace.Index = es.Index;
-			xBulletTrace.gameID = this.gameObject.GetInstanceID();
-			xBulletTrace.movetype = es.moveType;
-			mxBulletTraceInfo.Add(xBulletTrace);
+            if (bullet != null
+                && target != null
+                && es != null)
+            {
 
-			float fMinDis = 0.3f;
-			Vector3 vTargetPos = target.transform.position;
-			while (true)
-			{
-				if (target == null)
-				{
-					Vector3 _vec = vTargetPos - bullet.transform.position;
-					float fDis = Vector3.Distance(vTargetPos, bullet.transform.position);
-					float fMoveDis = es.Speed * Time.deltaTime;
-					if (fMoveDis > fDis)
-					{
-						bullet.transform.position = vTargetPos;
-					}
-					else
-					{
-						bullet.transform.Translate(_vec.normalized * es.Speed * Time.deltaTime);
-					}
-				}
-				else
-				{
-					vTargetPos = target.transform.position;
-					float fDis = Vector3.Distance(vTargetPos, bullet.transform.position);
-					if (fDis > fMinDis)
-					{
-						Vector3 _vec = vTargetPos - bullet.transform.position;
-						float fMoveDis = es.Speed * Time.deltaTime;
-						if (fMoveDis > fDis)
-						{
-							bullet.transform.position = vTargetPos;
-						}
-						else
-						{
-							bullet.transform.Translate(_vec.normalized * es.Speed * Time.deltaTime);
-						}
-					}
-				}
+				BulletTrace xBulletTrace = new BulletTrace();
+				xBulletTrace.target = target;
+				xBulletTrace.bullet = bullet;
+				xBulletTrace.Index = es.Index;
+				xBulletTrace.gameID = this.gameObject.GetInstanceID();
+				xBulletTrace.movetype = es.moveType;
+				mxBulletTraceInfo.Add(xBulletTrace);
+         
+				Vector3 vTargetPos = target.transform.position;
+				float fDis = Vector3.Distance(vTargetPos, bullet.transform.position);
+				float fTime = fDis / es.Speed;
 
-				if (Vector3.Distance(bullet.transform.position, vTargetPos) < fMinDis)
-				{
-					if (target == null)
-					{
-						mxAnimationEvent.OnBulletTouchPositionEvent(bullet, vTargetPos, es.AnimationType, -1);
-					}
-					else
-					{
-						int arrayIndex = -1;
+#if DG_Tweening
+				Tweener tween = bullet.transform.DOMove(vTargetPos, fTime);//.OnComplete(OnBulletTouchTargetComplete);
 
-						for (int i = 0; i < mxBulletTraceInfo.Count; ++i)
-						{
-							if (mxBulletTraceInfo[i].bullet.GetInstanceID() == bullet.GetInstanceID())
+				float fMinDis = 0.3f;
+				while (true)
+				{
+                    if (target != null && bullet != null)
+                    {
+                        if (Vector3.Distance(vTargetPos, bullet.transform.position) < fMinDis)
+                        {
 							{
-								arrayIndex = i;
-								break;
+								int arrayIndex = -1;
+
+								for (int i = 0; i < mxBulletTraceInfo.Count; ++i)
+								{
+									if (mxBulletTraceInfo[i].bullet.GetInstanceID() == bullet.GetInstanceID())
+									{
+										arrayIndex = i;
+										break;
+									}
+								}
+
+								mxAnimationEvent.OnBulletTouchTargetEvent(bullet, target, 0, mxBulletTraceInfo[arrayIndex].Index);
+								mxBulletTraceInfo.RemoveAt(arrayIndex);
+							}
+
+							Destroy(bullet);
+
+							if (es.TouchEffect)
+							{
+								GameObject _startEff = GameObject.Instantiate<GameObject>(es.TouchEffect, vTargetPos, Quaternion.identity);
+								_startEff.SetActive(true);
+								Destroy(_startEff, es.TouchEffLifeTime);
+							}
+							if (es.TouchAudio)
+							{
+								AudioClip _startEff = GameObject.Instantiate<AudioClip>(es.TouchAudio, vTargetPos, Quaternion.identity);
+								AudioSource.PlayClipAtPoint(_startEff, transform.position);
+								Destroy(_startEff, es.TouchEffLifeTime);
 							}
 						}
-
-						mxAnimationEvent.OnBulletTouchTargetEvent(bullet, target, 0, mxBulletTraceInfo[arrayIndex].Index);
-						mxBulletTraceInfo.RemoveAt(arrayIndex);
+                        else
+                        {
+                            if (vTargetPos != target.transform.position)
+                            {
+								//tween.ChangeEndValue(target.transform.position, true);
+							}
+						}
 					}
+                    else
+                    {
+						break;
+                    }
 
-					Destroy(bullet);
-
-					if (es.TouchEffect)
-					{
-						GameObject _startEff = GameObject.Instantiate<GameObject>(es.TouchEffect, vTargetPos, Quaternion.identity);
-						_startEff.SetActive(true);
-						Destroy(_startEff, es.TouchEffLifeTime);
-					}
-					if (es.TouchAudio)
-					{
-						AudioClip _startEff = GameObject.Instantiate<AudioClip>(es.TouchAudio, vTargetPos, Quaternion.identity);
-						AudioSource.PlayClipAtPoint(_startEff, transform.position);
-						Destroy(_startEff, es.TouchEffLifeTime);
-					}
-					yield break;
+					yield return new WaitForEndOfFrame();
 				}
-
-				yield return new WaitForEndOfFrame();
+#endif
 			}
+
+			yield return null;
 		}
 
 		IEnumerator WaitPlayAudio(AudioStruct es)
@@ -477,9 +510,25 @@ namespace NFrame
 
 			if (Camera.main != null)
 			{
-				//Camera.main.transform.DOShakePosition(es.ShakeTime, es.Strength);
+
+#if DG_Tweening
+				Camera.main.transform.DOShakePosition(es.ShakeTime, es.Strength);
+#endif
 			}
 
+			yield return new WaitForEndOfFrame();
+
+		}
+
+		IEnumerator WaitPlayActive(ActiveStruct es)
+		{
+			//如果特效没有启用则不进行播放
+			if (es.isEnabled)
+				yield return new WaitForSeconds(es.DelayTime);
+			else
+				yield break;
+
+			es.gameObject.SetActive(es.isActive);
 			yield return new WaitForEndOfFrame();
 
 		}
@@ -558,7 +607,7 @@ namespace NFrame
 			vTargetPos = vForward * es.Distance + this.transform.position;
 
 			float fDis = Vector3.Distance(vTargetPos, this.transform.position);
-            /*
+#if DG_Tweening
 			Tweener t = this.transform.DOMove(vTargetPos, fDis / es.Speed);
 			t.OnComplete(delegate ()
 		   {
@@ -576,8 +625,7 @@ namespace NFrame
 				   Destroy(_startEff, es.TouchEffLifeTime);
 			   }
 		   });
-           */
-
+#endif
 			yield return new WaitForEndOfFrame();
 
 		}
@@ -595,8 +643,11 @@ namespace NFrame
             GameObject _bullet = GameObject.Instantiate<GameObject>(es.Bullet, pos, Quaternion.identity);
             _bullet.transform.position = firePoint.position;
             _bullet.SetActive(true);
+			_bullet.transform.LookAt(target.transform.position);
 
-            if (es.StartEffect)
+			Destroy(_bullet, es.StartEffLifeTime);
+
+			if (es.StartEffect)
             {
                 GameObject _startEff = GameObject.Instantiate<GameObject>(es.StartEffect, pos, Quaternion.identity);
                 _startEff.SetActive(true);
@@ -619,8 +670,9 @@ namespace NFrame
             GameObject _bullet = GameObject.Instantiate<GameObject>(es.Bullet, pos, Quaternion.identity);
             _bullet.transform.position = firePoint.position;
             _bullet.SetActive(true);
+			_bullet.transform.LookAt(v);
 
-            if (es.StartEffect)
+			if (es.StartEffect)
             {
                 GameObject _startEff = GameObject.Instantiate<GameObject>(es.StartEffect, pos, Quaternion.identity);
                 _startEff.SetActive(true);
@@ -637,7 +689,7 @@ namespace NFrame
             StartCoroutine(WaitMoveBulletToLine(es, _bullet, v));
         }
 
-        IEnumerator WaitPlayBullet(BulletStruct es, Vector3 v)
+        IEnumerator WaitPlayBullet(BulletStruct es)
 		{
 			//如果特效没有启用则不进行播放
 			if (es.isEnabled)
@@ -694,11 +746,15 @@ namespace NFrame
                                 firePoint = this.transform;
                             }
 
-                            PlayBulletToLine(es, firePoint, v);
+
+							Vector3 v = es.Distance * mBodyIdent.xRenderObject.transform.forward + mBodyIdent.transform.position;
+							PlayBulletToLine(es, firePoint, v);
                         }
                         else
-                        {
-                            if (firePoint.childCount > 0)
+						{
+							Vector3 v = es.Distance * mBodyIdent.xRenderObject.transform.forward + mBodyIdent.transform.position;
+
+							if (firePoint.childCount > 0)
                             {
                                 for (int j = 0; j < firePoint.childCount; ++j)
                                 {

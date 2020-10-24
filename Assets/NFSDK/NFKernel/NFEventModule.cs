@@ -15,15 +15,8 @@ namespace NFSDK
         public override void BeforeShut() { }
         public override void Shut() {  }
 
-        private static NFEventModule _instance = null;
-        public static NFEventModule Instance()
-        {
-            return _instance;
-        }
-
         public NFEventModule(NFIPluginManager pluginManager)
         {
-            _instance = this;
             mPluginManager = pluginManager;
             mhtEvent = new Dictionary<int, NFIEvent>();
 		}
