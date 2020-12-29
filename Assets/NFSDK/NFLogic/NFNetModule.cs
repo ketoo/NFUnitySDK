@@ -172,7 +172,7 @@ namespace NFrame
         }
       
         ////////////////////////////////////修改自身属性
-        public void RequirePropertyInt(NFGUID objectID, string strPropertyName, int newVar)
+        public void RequirePropertyInt(NFGUID objectID, string strPropertyName, Int64 newVar)
         {
             NFMsg.ObjectPropertyInt xData = new NFMsg.ObjectPropertyInt();
             xData.PlayerId = mHelpModule.NFToPB(objectID);
@@ -189,14 +189,14 @@ namespace NFrame
             SendMsg((int)NFMsg.EGameMsgID.AckPropertyInt, mxBody);
         }
 
-        public void RequirePropertyFloat(NFGUID objectID, string strPropertyName, float newVar)
+        public void RequirePropertyFloat(NFGUID objectID, string strPropertyName, double newVar)
         {
             NFMsg.ObjectPropertyFloat xData = new NFMsg.ObjectPropertyFloat();
             xData.PlayerId = mHelpModule.NFToPB(objectID);
 
             NFMsg.PropertyFloat xPropertyFloat = new NFMsg.PropertyFloat();
             xPropertyFloat.PropertyName = ByteString.CopyFromUtf8(strPropertyName);
-            xPropertyFloat.Data = newVar;
+            xPropertyFloat.Data = (float)newVar;
             xData.PropertyList.Add(xPropertyFloat);
 
             mxBody.SetLength(0);

@@ -31,10 +31,12 @@ namespace NFSDK
             AddModule<NFNetModule>(new NFNetModule(mPluginManager));
             AddModule<NFHelpModule>(new NFHelpModule(mPluginManager));
             AddModule<NFLanguageModule>(new NFLanguageModule(mPluginManager));
+            AddModule<NFUploadDataModule>(new NFUploadDataModule(mPluginManager));
         }
         public override void Uninstall()
         {
 
+            mPluginManager.RemoveModule<NFUploadDataModule>();
             mPluginManager.RemoveModule<NFNetEventModule>();
             mPluginManager.RemoveModule<NFLanguageModule>();
             mPluginManager.RemoveModule<NFHelpModule>();
