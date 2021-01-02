@@ -176,11 +176,25 @@ public sealed class NFHeroMotor : BaseCharacterController
 
         if (mLoginModule.mRoleID == mxGUID && !fromServer)
         {
-            mNetModule.RequireMove(mLoginModule.mRoleID, 0, moveToPos);
+            //mNetModule.RequireMove(mLoginModule.mRoleID, 0, moveToPos);
         }
 
 
         mAnima.PlayAnimaState(NFAnimaStateType.Run, -1);
+    }
+
+    public void MoveToImmune(Vector3 vPos, bool bFaceToPos = true)
+    {
+        if (bFaceToPos && mBodyIdent)
+        {
+            mBodyIdent.LookAt(vPos);
+        }
+
+        Stop();
+        StopAllCoroutines();
+        iTween.Stop();
+        this.gameObject.transform.position = vPos;
+        moveToPos = vPos;
     }
 
     public void MoveToImmune(Vector3 vPos, float fTime, bool bFaceToPos = true)
@@ -190,8 +204,9 @@ public sealed class NFHeroMotor : BaseCharacterController
             mBodyIdent.LookAt(vPos);
         }
 
-        moveToPos = vPos;
+        iTween.Stop();
         iTween.MoveTo(this.gameObject, vPos, fTime);
+        moveToPos = vPos;
     }
 
     protected override void HandleInput()
@@ -207,6 +222,18 @@ public sealed class NFHeroMotor : BaseCharacterController
     /// Overrides 'BaseCharacterController' OnValidate method,
     /// to perform this class editor exposed fields validation.
     /// </summary>
+
+    public void ResetHeight()
+    {
+        LayerMask groundMask = LayerMask.GetMask("Terrain");
+        RaycastHit hitInfo;
+        bool ret = Physics.Raycast(transform.position + Vector3.up * 50, Vector3.down, out hitInfo);
+        if (ret)
+        {
+            this.transform.position = hitInfo.point;
+
+        }
+    }
 
     public override void OnValidate()
     {

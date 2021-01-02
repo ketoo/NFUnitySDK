@@ -37,8 +37,9 @@ public class NFJumpLandState : NFIState
     public override void Execute(GameObject gameObject)
     {
 		base.Execute(gameObject);
-  
-	}
+
+        mAnimatStateController.PlayAnimaState(NFAnimaStateType.Idle, -1);
+    }
 
     public override void Exit(GameObject gameObject)
     {

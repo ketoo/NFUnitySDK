@@ -693,15 +693,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99b4b1e95613d4823821c95f15b8f71a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  sensitivity: 120
-  offset: {x: 0, y: 1, z: -9}
-  minOffset: {x: 0, y: 0, z: -12}
-  maxOffset: {x: 0, y: 0, z: -2}
-  rotationLimitsX: {x: 0, y: 0}
-  rotationLimitsY: {x: 0, y: 0}
-  limitXRotation: 0
-  limitYRotation: 0
+  gameMode: 2
 --- !u!1 &1367546649
 GameObject:
   m_ObjectHideFlags: 0

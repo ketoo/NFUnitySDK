@@ -36,6 +36,8 @@ public class NFAnimaStateMachine : MonoBehaviour
 		mLoginModule = pluginManager.FindModule<NFLoginModule>();
 
         AddState(NFAnimaStateType.Idle, new NFIdleState(this.gameObject, NFAnimaStateType.Idle, this, 1f, 0f, true));
+        AddState(NFAnimaStateType.Idle1, new NFIdleState(this.gameObject, NFAnimaStateType.Idle, this, 1f, 0f, true));
+        AddState(NFAnimaStateType.Idle2, new NFIdleState(this.gameObject, NFAnimaStateType.Idle, this, 1f, 0f, true));
 
         AddState(NFAnimaStateType.Run, new NFRunState(this.gameObject, NFAnimaStateType.Run, this, 1f, 0f, true));
         AddState(NFAnimaStateType.Walk, new NFWalkState(this.gameObject, NFAnimaStateType.Walk, this, 1f, 0f, true));

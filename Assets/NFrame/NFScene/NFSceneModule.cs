@@ -5,12 +5,14 @@ using NFrame;
 using NFSDK;
 using ECM.Components;
 using ECM.Controllers;
+using System;
 
 namespace NFSDK
 {
 	public class NFSceneModule : NFIModule
 	{
 		private static bool mbInitSend = false;
+        private static string mTitleData;
 
 		private NFIElementModule mElementModule;
 		private NFIKernelModule mKernelModule;
@@ -25,7 +27,28 @@ namespace NFSDK
 		private Dictionary<NFGUID, GameObject> mhtObject = new Dictionary<NFGUID, GameObject>();
 		private int mnScene = 0;
 		private bool mbLoadedScene = false;
-		private Dictionary<int, Dictionary<int, List<NFGUID>>> mxObjectList = new Dictionary<int, Dictionary<int, List<NFGUID>>>();
+
+
+        public enum PriorityLevel
+        {
+            SceneObject = 1,
+            SceneSound = 2,
+
+            SceneCamera = 700,
+            SceneScenario = 800,
+
+            SceneUI = 999,
+        }
+
+        public delegate void SceneLoadDelegation(int sceneId);
+        class SceneLoadDelegationObject
+        {
+            public List<SceneLoadDelegation> list = new List<SceneLoadDelegation>();
+        }
+        private Dictionary<PriorityLevel, SceneLoadDelegationObject> mhtSceneLoadDelegation = new Dictionary<PriorityLevel, SceneLoadDelegationObject>();
+
+
+
 
         public NFSceneModule(NFIPluginManager pluginManager)
         {
@@ -55,22 +78,39 @@ namespace NFSDK
             mKernelModule.RegisterClassCallBack(NFrame.Player.ThisName, OnClassPlayerEventHandler);
             mKernelModule.RegisterClassCallBack(NFrame.NPC.ThisName, OnClassNPCEventHandler);
 
-			mEventModule.RegisterCallback((int)NFNetHandlerModule.Event.SwapScene, SwapSceneEventHandler);
-   
 		}
 
-		public override void Execute() {}
-		public override void BeforeShut() {  }
-		public override void Shut() {}
+		public override void Execute()
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                local = true;
+            }
+        }
 
-		protected void SwapSceneEventHandler(int eventId, NFDataList valueList)
-		{
-			string strSceneID = valueList.StringVal(0);
-			NFVector3 vPos = valueList.Vector3Val(1);
+        public override void BeforeShut()
+        {
+            foreach (var item in mhtObject)
+            {
+                GameObject.DestroyImmediate(item.Value);
+            }
 
-			//TODO
-			UnityEngine.Application.LoadLevel(1);
-		}
+            mhtObject.Clear();
+        }
+
+		public override void Shut()
+        {
+        }
+
+        public void AddSceneLoadCallBack(PriorityLevel priorityLevel, SceneLoadDelegation handler)
+        {
+            if (!mhtSceneLoadDelegation.ContainsKey(priorityLevel))
+            {
+                mhtSceneLoadDelegation[priorityLevel] = new SceneLoadDelegationObject();
+            }
+
+            mhtSceneLoadDelegation[priorityLevel].list.Add(handler);
+        }
 
         public void InitPlayerComponent(NFGUID xID, GameObject self, bool bMainRole)
         {
@@ -93,7 +133,8 @@ namespace NFSDK
             {
                 self.AddComponent<NFHeroSync>();
             }
-           
+
+
 			NFHeroInput xInput = self.GetComponent<NFHeroInput>();
 			if (!xInput)
             {
@@ -136,6 +177,7 @@ namespace NFSDK
                 xHeroAnima.enabled = true;
             }
 
+            
             if (!self.GetComponent<NFAnimaStateMachine>())
             {
                 NFAnimaStateMachine xHeroAnima = self.AddComponent<NFAnimaStateMachine>();
@@ -144,17 +186,8 @@ namespace NFSDK
 
             if (bMainRole)
             {
-				
-                if (Camera.main)
-                {
-                    NFHeroCameraFollow xHeroCameraFollow = Camera.main.GetComponent<NFHeroCameraFollow>();
-                    if (!xHeroCameraFollow)
-                    {
-                        xHeroCameraFollow = Camera.main.GetComponentInParent<NFHeroCameraFollow>();
-                    }
 
-                    xHeroCameraFollow.target = self.transform;
-                }
+          
 
 
                 CapsuleCollider xHeroCapsuleCollider = self.GetComponent<CapsuleCollider>();
@@ -183,6 +216,27 @@ namespace NFSDK
 
                     xHeroCapsuleCollider.isTrigger = true;
                 }
+
+                /*
+                if (mKernelModule.QueryPropertyObject(xID, NFrame.NPC.MasterID) == mLoginModule.mRoleID)
+                {
+                    //your building or your clan member building
+                    if (!self.GetComponent<FogCharacter>())
+                    {
+                        FogCharacter fogCharacter = self.AddComponent<FogCharacter>();
+                        fogCharacter.enabled = true;
+                        fogCharacter.radius = 8;
+                    }
+                }
+                else
+                {
+                    if (!self.GetComponent<FogAgent>())
+                    {
+                        FogAgent fogAgent = self.AddComponent<FogAgent>();
+                        fogAgent.enabled = true;
+                    }
+                }
+                */
             }
         }
 
@@ -201,11 +255,11 @@ namespace NFSDK
             else if (eType == NFIObject.CLASS_EVENT_TYPE.OBJECT_CREATE_FINISH)
             {
 
-                string strHeroCnfID = mKernelModule.QueryPropertyString(self, NFrame.Player.ConfigID);
+                string strCnfID = mKernelModule.QueryPropertyString(self, NFrame.Player.ConfigID);
                 NFDataList.TData data = new NFDataList.TData(NFDataList.VARIANT_TYPE.VTYPE_STRING);
-                if (strHeroCnfID != "")
+                if (strCnfID != "")
                 {
-                    data.Set(strHeroCnfID);
+                    data.Set(strCnfID);
                 }
                 else
                 {
@@ -214,10 +268,10 @@ namespace NFSDK
 
 				if (data.StringVal().Length > 0)
 				{
-					OnConfigChangeHandler(self, NFrame.Player.ConfigID, data, data);
+					OnConfigIDChangeHandler(self, NFrame.Player.ConfigID, data, data);
 				}
 
-                mKernelModule.RegisterPropertyCallback(self, NFrame.Player.ConfigID, OnConfigChangeHandler);
+                mKernelModule.RegisterPropertyCallback(self, NFrame.Player.ConfigID, OnConfigIDChangeHandler);
                 mKernelModule.RegisterPropertyCallback(self, NFrame.Player.HP, OnHPChangeHandler);
             }
         }
@@ -225,6 +279,19 @@ namespace NFSDK
         private void OnClassNPCEventHandler(NFGUID self, int nContainerID, int nGroupID, NFIObject.CLASS_EVENT_TYPE eType, string strClassName, string strConfigIndex)
         {
             if (eType == NFIObject.CLASS_EVENT_TYPE.OBJECT_CREATE)
+            {
+                
+
+            }
+            else if (eType == NFIObject.CLASS_EVENT_TYPE.OBJECT_LOADDATA)
+            {
+
+            }
+            else if (eType == NFIObject.CLASS_EVENT_TYPE.OBJECT_DESTROY)
+            {
+                DestroyObject(self);
+            }
+            else if (eType == NFIObject.CLASS_EVENT_TYPE.OBJECT_CREATE_FINISH)
             {
                 string strConfigID = mKernelModule.QueryPropertyString(self, NFrame.NPC.ConfigID);
                 NFVector3 vec3 = mKernelModule.QueryPropertyVector3(self, NFrame.NPC.Position);
@@ -268,19 +335,6 @@ namespace NFSDK
                 }
 
                 InitPlayerComponent(self, xNPC, false);
-
-            }
-            else if (eType == NFIObject.CLASS_EVENT_TYPE.OBJECT_LOADDATA)
-            {
-
-            }
-            else if (eType == NFIObject.CLASS_EVENT_TYPE.OBJECT_DESTROY)
-            {
-                DestroyObject(self);
-            }
-            else if (eType == NFIObject.CLASS_EVENT_TYPE.OBJECT_CREATE_FINISH)
-            {
-                //NFCKernelModule.Instance.RegisterPropertyCallback(self, NFrame.Player.PrefabPath, OnClassPrefabEventHandler);
             }
         }
 
@@ -327,7 +381,7 @@ namespace NFSDK
             }
         }
 
-        private void OnConfigChangeHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar)
+        private void OnConfigIDChangeHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar)
         {
             Vector3 vec = GetRenderObjectPosition(self);
 
@@ -341,11 +395,11 @@ namespace NFSDK
                 vec.z = vec3.Z();
             }
 
-			string strHeroCnfID = newVar.StringVal();
-            string strPrefabPath = mElementModule.QueryPropertyString(strHeroCnfID, NPC.Prefab);
+			string strCnfID = newVar.StringVal();
+            string strPrefabPath = mElementModule.QueryPropertyString(strCnfID, NPC.Prefab);
             if (strPrefabPath.Length <= 0)
             {
-                strPrefabPath = mElementModule.QueryPropertyString("Enemy", NPC.Prefab);
+                strPrefabPath = mElementModule.QueryPropertyString("DefaultObject", NPC.Prefab);
             }
             GameObject xPlayer = CreateObject(self, strPrefabPath, vec, NFrame.Player.ThisName);
             if (xPlayer)
@@ -358,7 +412,7 @@ namespace NFSDK
                 {//不能没有
                     xBodyIdent.enabled = true;
                     xBodyIdent.SetObjectID(self);
-                    xBodyIdent.cnfID = strHeroCnfID;
+                    xBodyIdent.cnfID = strCnfID;
                 }
                 else
                 {
@@ -374,6 +428,17 @@ namespace NFSDK
                     InitPlayerComponent(self, xPlayer, false);
                 }
 
+                if (Camera.main&& self == mLoginModule.mRoleID)
+                {
+                    NFHeroCameraFollow xHeroCameraFollow = Camera.main.GetComponent<NFHeroCameraFollow>();
+                    if (!xHeroCameraFollow)
+                    {
+                        xHeroCameraFollow = Camera.main.GetComponentInParent<NFHeroCameraFollow>();
+                    }
+
+                    xHeroCameraFollow.SetPlayer(xPlayer.transform);
+                }
+
                 Debug.Log("Create Object successful" + NFrame.Player.ThisName + " " + vec.ToString() + " " + self.ToString());
             }
             else
@@ -382,27 +447,7 @@ namespace NFSDK
             }
 
         }
-        public bool IsMainRole(GameObject xGameObject)
-        {
-            if (null == xGameObject)
-            {
-                return false;
-            }
-         
-			if (GetObject(mLoginModule.mRoleID).GetInstanceID() == xGameObject.GetInstanceID())
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public int FindTargetObject(NFGUID ident, string strSkillConfigID, ref NFDataList valueList)
-        {
-
-            return valueList.Count();
-        }
-
+      
         public GameObject CreateObject(NFGUID ident, string strPrefabName, Vector3 vec, string strTag)
         {
             if (!mhtObject.ContainsKey(ident))
@@ -469,110 +514,44 @@ namespace NFSDK
             return false;
         }
 
-        public bool MoveTo(NFGUID ident, Vector3 vTar, float fSpeed, bool bRun)
-        {
-            if (fSpeed <= 0.01f)
-            {
-                return false;
-            }
-
-            if (mhtObject.ContainsKey(ident))
-            {
-                GameObject xGameObject = (GameObject)mhtObject[ident];
-                NFHeroMotor xMotor = xGameObject.GetComponent<NFHeroMotor>();
-                NFBodyIdent xBodyIdent = xGameObject.GetComponent<NFBodyIdent>();
-                if (xMotor && xBodyIdent)
-                {
-                    xBodyIdent.LookAt(vTar);
-                    xMotor.movement.Move(vTar - xGameObject.transform.position, Vector3.Distance(vTar, xGameObject.transform.position));
-                }
-            }
-
-            return false;
-        }
-
-        public bool MoveImmune(NFGUID ident, Vector3 vPos, float fTime, bool bFaceToPos)
-        {
-            if (mhtObject.ContainsKey(ident))
-            {
-                GameObject xGameObject = (GameObject)mhtObject[ident];
-                NFHeroMotor motor = xGameObject.GetComponent<NFHeroMotor>();
-                if (motor)
-                {
-                    motor.Stop();
-                    motor.MoveToImmune(vPos, fTime, bFaceToPos);
-                }
-            }
-
-            return false;
-        }
-
-        public bool MoveImmuneBySpeed(NFGUID ident, Vector3 vPos, float fSpeed, bool bFaceToPos)
-        {
-            if (fSpeed <= 0.01f)
-            {
-                return false;
-            }
-
-            if (mhtObject.ContainsKey(ident))
-            {
-                GameObject xGameObject = (GameObject)mhtObject[ident];
-                float fDis = Vector3.Distance(xGameObject.transform.position, vPos);
-                float fTime = fDis / fSpeed;
-                MoveImmune(ident, vPos, fTime, bFaceToPos);
-            }
-
-            return false;
-        }
 
         public int GetCurSceneID()
         {
             return mnScene;
         }
 
-        public void SetMainRoleAgentState(bool bActive)
-        {
-			if (!mhtObject.ContainsKey(mLoginModule.mRoleID))
-            {
-                return;
-            }
 
-			GameObject xGameObject = (GameObject)mhtObject[mLoginModule.mRoleID];
-            if (null == xGameObject)
-            {
-                return;
-            }
-
-            NFHeroMotor xMotor = xGameObject.GetComponent<NFHeroMotor>();
-            if (null == xMotor)
-            {
-                return;
-            }
-
-        }
-
+        static bool local = false;
         public void LoadScene(int nSceneID, float fX, float fY, float fZ, string strData)
         {
             mbLoadedScene = true;
             mnScene = nSceneID;
+			mTitleData = strData;
 
-			NFUILoading xUILoading = mUIModule.ShowUI<NFUILoading>();
+            mUIModule.CloseAllUI();
+            NFUILoading xUILoading = mUIModule.ShowUI<NFUILoading>();
             xUILoading.LoadLevel(nSceneID, new Vector3(fX, fY, fZ));
 
 			if (!mhtObject.ContainsKey(mLoginModule.mRoleID))
             {
                 return;
             }
-
-         
         }
 
         public void BeforeLoadSceneEnd(int nSceneID)
         {
             foreach (var v in mhtObject)
             {
-                NFVector3 vPos = mKernelModule.QueryPropertyVector3(v.Key, NFrame.NPC.Position);
-                v.Value.transform.position = new Vector3 (vPos.X(), vPos.Y() + 0.1f, vPos.Z());
+                NFHeroMotor heroMotor = v.Value.GetComponent<NFHeroMotor>();
+                heroMotor.ResetHeight();
+            }
+
+            NFSDK.NFIElement xElement = mElementModule.GetElement(nSceneID.ToString());
+            if (null != xElement)
+            {
+                string strName = xElement.QueryString(NFrame.Scene.SceneName);
+                int sceneType = (int)xElement.QueryInt(NFrame.Scene.Type);
+
             }
         }
 

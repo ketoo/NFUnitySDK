@@ -9,7 +9,6 @@ public class NFHeroSyncBuffer : MonoBehaviour
     public class Keyframe
     {
         public int InterpolationTime;
-        public Vector3 LastPos;
         public Vector3 Position;
         public Vector3 Director;
         public int status;

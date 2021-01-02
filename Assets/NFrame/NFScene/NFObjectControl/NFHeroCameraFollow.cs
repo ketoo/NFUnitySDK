@@ -8,29 +8,23 @@ public class NFHeroCameraFollow : MonoBehaviour
     [Header("Camera")]
     [Tooltip("Reference to the target GameObject.")]
     public Transform target;
-    [Tooltip("Multiplier for camera sensitivity.")]
-    [Range(0f, 300)]
-    public float sensitivity = 120f;
+    private float sensitivity = 120f;
     [Tooltip("Current relative offset to the target.")]
-    public Vector3 offset = new Vector3(0, 1, -6);
+    private Vector3 offset = new Vector3(0, 1, -10);
     [Tooltip("Minimum relative offset to the target GameObject.")]
-    public Vector3 minOffset = new Vector3(0, 0, -7);
+    private Vector3 minOffset = new Vector3(0, 0, -17);
 	[Tooltip("Maximum relative offset to the target GameObject.")]
-    public Vector3 maxOffset = new Vector3(0, 0, -2);
-	[Tooltip("Rotation limits for the X-axis in degrees. X represents the lowest and Y the highest value.")]
-    public Vector2 rotationLimitsX;
-    [Tooltip("Rotation limits for the Y-axis in degrees. X represents the lowest and Y the highest value.")]
-    public Vector2 rotationLimitsY;
-    [Tooltip("Whether the rotation on the X-axis should be limited.")]
-    public bool limitXRotation = false;
-    [Tooltip("Whether the rotation on the Y-axis should be limited.")]
-    public bool limitYRotation = false;
+    private Vector3 maxOffset = new Vector3(0, 0, -4);
+
 
     private Transform cameraTransform;
     private Vector2 cameraRotation;
 
     void Awake()
     {
+        cameraRotation.x = -45;
+        cameraRotation.y = 45;
+
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -46,7 +40,12 @@ public class NFHeroCameraFollow : MonoBehaviour
         cameraTransform = transform;
     }
 
-    // Update is called once per frame
+    public void SetPlayer(Transform transform)
+    {
+        target = transform;
+    }
+
+        // Update is called once per frame
     private void Update()
     {
 
@@ -55,26 +54,24 @@ public class NFHeroCameraFollow : MonoBehaviour
     // LateUpdate is called every frame, if the Behaviour is enabled
     private void LateUpdate()
     {
-        cameraRotation.x = -45;
-        cameraRotation.y = 45;
 
         if (target && Input.GetMouseButton(1))
         {
-            cameraRotation.x += Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime;
-            cameraRotation.y -= Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+            cameraRotation.x += Input.GetAxis("Mouse X") * sensitivity * 4 * Time.deltaTime;
+            cameraRotation.y -= Input.GetAxis("Mouse Y") * sensitivity * 4 * Time.deltaTime;
 
-            if(limitXRotation)
+            if (cameraRotation.y < 15)
             {
-                cameraRotation.x = Mathf.Clamp(cameraRotation.x, rotationLimitsX.x, rotationLimitsX.y);
+                cameraRotation.y = 15;
             }
-            if(limitYRotation)
+            if (cameraRotation.y > 75)
             {
-                cameraRotation.y = Mathf.Clamp(cameraRotation.y, rotationLimitsY.x, rotationLimitsY.y);
+                cameraRotation.y = 75;
             }
         }
         if (target)
         {
-            offset.z -= Input.GetAxis("Mouse ScrollWheel") * sensitivity * Time.deltaTime;
+            offset.z += Input.GetAxis("Mouse ScrollWheel") * sensitivity * Time.deltaTime;
             offset.z = Mathf.Clamp(offset.z, minOffset.z, maxOffset.z);
 
             Quaternion rotation = Quaternion.Euler(cameraRotation.y, cameraRotation.x, 0);

@@ -15,12 +15,13 @@ public class NFHeroSync : MonoBehaviour
     private NFAnimaStateMachine mAnimaStateMachine;
     private NFAnimatStateController mAnimatStateController;
 
-    private NFNetModule mxNetModule;
+    private NFNetModule mNetModule;
 	private NFLoginModule mLoginModule;
     private NFHelpModule mHelpModule;
     private NFIKernelModule mKernelModule;
 
-    private int syncMessageCount = 0;
+    private float SYNC_TIME = 0.05f;
+
     void Awake () 
 	{
 
@@ -34,7 +35,7 @@ public class NFHeroSync : MonoBehaviour
         mAnimaStateMachine = GetComponent<NFAnimaStateMachine>();
         mAnimatStateController = GetComponent<NFAnimatStateController>();
 
-        mxNetModule = NFRoot.Instance().GetPluginManager().FindModule<NFNetModule>();
+        mNetModule = NFRoot.Instance().GetPluginManager().FindModule<NFNetModule>();
         mLoginModule = NFRoot.Instance().GetPluginManager().FindModule<NFLoginModule>();
         mHelpModule = NFRoot.Instance().GetPluginManager().FindModule<NFHelpModule>();
         mKernelModule = NFRoot.Instance().GetPluginManager().FindModule<NFIKernelModule>();
@@ -56,41 +57,112 @@ public class NFHeroSync : MonoBehaviour
         return false;
     }
 
+    float moveSpeed = 2.0f;
+    int lastInterpolationTime = 0;
     private void FixedUpdate()
     {
+        ReportPos();
+
         if (mxBodyIdent && mxBodyIdent.GetObjectID() != mLoginModule.mRoleID)
 		{
             NFHeroSyncBuffer.Keyframe keyframe;
             if (mxSyncBuffer.Size() > 1)
             {
                 keyframe = mxSyncBuffer.LastKeyframe();
-                mxHeroMotor.walkSpeed *= mxSyncBuffer.Size();
-                mxHeroMotor.runSpeed *= mxSyncBuffer.Size();
             }
             else
             {
                 keyframe = mxSyncBuffer.NextKeyframe();
-                mxHeroMotor.walkSpeed = mKernelModule.QueryPropertyInt(mLoginModule.mRoleID, NFrame.Player.MOVE_SPEED) /  100;
-                mxHeroMotor.runSpeed = mKernelModule.QueryPropertyInt(mLoginModule.mRoleID, NFrame.Player.MOVE_SPEED) / 100;
             }
 
             if (keyframe != null)
             {
-                NFAnimaStateType type = (NFrame.NFAnimaStateType)keyframe.status;
-                switch (type)
+                mxHeroMotor.walkSpeed = moveSpeed;
+                mxHeroMotor.runSpeed = moveSpeed;
+
+                float dis = Vector3.Distance(keyframe.Position, mxHeroMotor.transform.position);
+                if (dis > 1f)
+                {
+                    mxHeroMotor.walkSpeed = dis / SYNC_TIME;
+                    mxHeroMotor.runSpeed = dis / SYNC_TIME;
+                }
+
+                lastInterpolationTime = keyframe.InterpolationTime;
+
+
+                NFAnimaStateType stateType = (NFrame.NFAnimaStateType)keyframe.status;
+                switch (stateType)
                 {
                     case NFAnimaStateType.Run:
-                    case NFAnimaStateType.Idle:
                         if (keyframe.Position != Vector3.zero)
                         {
                             mxHeroMotor.MoveTo(keyframe.Position, true, MeetGoalCallBack);
                         }
                         break;
+                    case NFAnimaStateType.Idle:
+                        if (UnityEngine.Vector3.Distance(keyframe.Position , mxHeroMotor.transform.position) > 0.1f)
+                        {
+                            mxHeroMotor.MoveTo(keyframe.Position, true, MeetGoalCallBack);
+                        }
+                        else
+                        {
+                            mxHeroMotor.Stop();
+                        }
+                        break;
                     case NFAnimaStateType.Stun:
                         mAnimatStateController.PlayAnimaState(NFAnimaStateType.Stun, 0);
                         break;
+                    case NFAnimaStateType.NONE:
+                        mxHeroMotor.transform.position = keyframe.Position;
+                        break;
                     default:
                         break;
+                }
+            }
+        }
+    }
+
+    Vector3 lastPos = Vector3.zero;
+    float lastReportTime = 0f;
+    bool canFixFrame = true;
+    void ReportPos()
+    {
+        if (lastReportTime <= 0f)
+        {
+            mNetModule.RequireSync(mLoginModule.mRoleID, mxHeroMotor.transform.position, (int)NFAnimaStateType.NONE);
+        }
+
+        if (Time.time > (SYNC_TIME + lastReportTime))
+        {
+            lastReportTime = Time.time;
+
+            if (mLoginModule.mRoleID == mxBodyIdent.GetObjectID())
+            {
+                if (lastPos != mxHeroMotor.transform.position)
+                {
+                    if (mxHeroMotor.moveToPos != Vector3.zero)
+                    {
+                        //是玩家自己移动
+                        lastPos = mxHeroMotor.moveToPos;
+                        canFixFrame = false;
+                    }
+                    else
+                    {
+                        //是其他技能导致的唯一，比如屠夫的钩子那种
+                        lastPos = mxHeroMotor.transform.position;
+                        canFixFrame = false;
+                    }
+
+                    mNetModule.RequireSync(mLoginModule.mRoleID, lastPos, (int)mAnimaStateMachine.CurState());
+                }
+                else
+                {
+                    //fix last pos
+                    if (canFixFrame)
+                    {
+                        canFixFrame = false;
+                        mNetModule.RequireSync(mLoginModule.mRoleID, lastPos, (int)mAnimaStateMachine.CurState());
+                    }
                 }
             }
         }
