@@ -962,23 +962,30 @@ namespace NFrame
                  string strClassName = mKernelModule.QueryPropertyString(self, NFrame.IObject.ClassName);
                  NFIClass xLogicClass = mClassModule.GetElement(strClassName);
                  NFIRecord xStaticRecord = xLogicClass.GetRecordManager().GetRecord(strRecordName);
-
-                 xRecord = xRecordManager.AddRecord(strRecordName, 512, varListDesc, xStaticRecord.GetTagData());
-             }
-
-             if (self.IsNull())
-             {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < varListData.Count(); ++i)
+                if (xStaticRecord != null)
                 {
-                    stringBuilder.Append(varListData.GetData(i).ToString());
-                    stringBuilder.Append(";");
+                    xRecord = xRecordManager.AddRecord(strRecordName, 512, varListDesc, xStaticRecord.GetTagData());
                 }
 
-                Debug.Log(strRecordName + " add row:" + stringBuilder.ToString());
-             }
 
-             xRecord.AddRow(xAddStruct.Row, varListData);
+            }
+
+            if (null != xRecord)
+            {
+                if (self.IsNull())
+                {
+                    StringBuilder stringBuilder = new StringBuilder();
+                    for (int i = 0; i < varListData.Count(); ++i)
+                    {
+                        stringBuilder.Append(varListData.GetData(i).ToString());
+                        stringBuilder.Append(";");
+                    }
+
+                    Debug.Log(strRecordName + " add row:" + stringBuilder.ToString());
+                }
+
+                xRecord.AddRow(xAddStruct.Row, varListData);
+            }
          }
 
         private void EGMI_ACK_ADD_ROW(int id, MemoryStream stream)
@@ -1014,12 +1021,15 @@ namespace NFrame
                 Debug.LogError("error id" + xData.PlayerId);
                 return;
             }
+
             NFIRecordManager recordManager = go.GetRecordManager();
             NFIRecord record = recordManager.GetRecord(xData.RecordName.ToStringUtf8());
-
-            for (int i = 0; i < xData.RemoveRow.Count; i++)
+            if (record != null)
             {
-                record.Remove(xData.RemoveRow[i]);
+                for (int i = 0; i < xData.RemoveRow.Count; i++)
+                {
+                    record.Remove(xData.RemoveRow[i]);
+                }
             }
         }
 

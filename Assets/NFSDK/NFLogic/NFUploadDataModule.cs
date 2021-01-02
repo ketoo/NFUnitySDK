@@ -21,16 +21,16 @@ namespace NFrame
         NFIKernelModule mKernelModule;
         NFLoginModule mLoginModule;
         NFNetModule mNetModule;
-        NFElementModule mElementModule;
-        NFClassModule mClassModule;
+        NFIElementModule mElementModule;
+        NFIClassModule mClassModule;
 
         public override void Awake()
         {
             mKernelModule = mPluginManager.FindModule<NFIKernelModule>();
             mLoginModule = mPluginManager.FindModule<NFLoginModule>();
             mNetModule = mPluginManager.FindModule<NFNetModule>();
-            mElementModule = mPluginManager.FindModule<NFElementModule>();
-            mClassModule = mPluginManager.FindModule<NFClassModule>();
+            mElementModule = mPluginManager.FindModule<NFIElementModule>();
+            mClassModule = mPluginManager.FindModule<NFIClassModule>();
         }
 
 		public override void Init()
