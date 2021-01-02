@@ -54,7 +54,7 @@ namespace NFrame
                     NFIProperty propertyObject = propertyManager.GetProperty(propertyList.StringVal(i));
                     if (propertyObject.GetUpload())
                     {
-                        mKernelModule.RegisterPropertyCallback(self, NFrame.Player.ConfigID, OnPropertyDataHandler);
+                        mKernelModule.RegisterPropertyCallback(self, propertyObject.GetKey(), OnPropertyDataHandler);
                     }
                 }
 
@@ -63,7 +63,7 @@ namespace NFrame
                     NFIRecord recordObject = recordManager.GetRecord(recordList.StringVal(i));
                     if (recordObject.GetUpload())
                     {
-                        mKernelModule.RegisterRecordCallback(self, NFrame.Player.ConfigID, RecordEventHandler);
+                        mKernelModule.RegisterRecordCallback(self, recordObject.GetName(), RecordEventHandler);
                     }
                 }
             }
