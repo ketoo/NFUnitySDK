@@ -12,7 +12,7 @@ namespace NFSDK
 {
     public abstract class NFIProperty
     {
-        public delegate void PropertyEventHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar);
+        public delegate void PropertyEventHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar, Int64 reason);
 
         public abstract string GetKey();
 
@@ -35,17 +35,17 @@ namespace NFSDK
 
         public abstract NFVector3 QueryVector3();
 
-        public abstract bool SetInt(Int64 value);
+        public abstract bool SetInt(Int64 value, Int64 reason = 0);
 
-        public abstract bool SetFloat(double value);
+        public abstract bool SetFloat(double value, Int64 reason = 0);
 
-        public abstract bool SetString(string value);
+        public abstract bool SetString(string value, Int64 reason = 0);
 
-        public abstract bool SetObject(NFGUID value);
+        public abstract bool SetObject(NFGUID value, Int64 reason = 0);
 
-        public abstract bool SetVector2(NFVector2 value);
+        public abstract bool SetVector2(NFVector2 value, Int64 reason = 0);
 
-        public abstract bool SetVector3(NFVector3 value);
+        public abstract bool SetVector3(NFVector3 value, Int64 reason = 0);
 
         public abstract bool SetData(NFDataList.TData x);
 

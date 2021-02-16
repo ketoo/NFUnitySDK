@@ -17,15 +17,16 @@ namespace NFSDK
     //template<typename T>
     class NFStringRingBuffer
     {
-        public NFStringRingBuffer(int size = 1024 * 1024 * 1)
+        public NFStringRingBuffer(int size = 1024 * 1024 * 1, bool main = false)
         {
+            m_main = main;
             m_capacity = size;
             m_front = 0;
             m_rear = 0;
             m_data = new byte[m_capacity];
             m_trasferTempData = new byte[1024];
         }
-
+        private bool m_main;
         private int m_capacity;
         private int m_front;
         private int m_rear;
@@ -98,9 +99,17 @@ namespace NFSDK
             }
         }
 
+        Int64 totalNetBandwidth = 0;
+        int stackCount = 0;
         public bool Push(byte[] src, int size)
         {
-            Console.WriteLine("Push:" + size);
+            if (m_main)
+            {
+                stackCount += size;
+                totalNetBandwidth += size;
+                //UnityEngine.Debug.LogError("Push:" + size + " stack count:" + stackCount);
+            }
+
             while (Full(size))
             {
                 resize();
@@ -143,11 +152,12 @@ namespace NFSDK
                 return false;
             }
 
-            if (!readOnly)
+            if (m_main && !readOnly)
             {
-                Console.WriteLine("Pop:" + size);
+                stackCount -= size;
+                //UnityEngine.Debug.LogError("Pop:" + size + " stack count:" + stackCount);
             }
-
+    
             if (m_rear > m_front)
             {
                 Array.Copy(m_data, m_front, dst, 0, size);

@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using NFSDK;
 using NFrame;
+using System;
 
 public class NFUIMain : NFUIDialog
 {
@@ -121,7 +122,7 @@ public class NFUIMain : NFUIDialog
         mUIModule.ShowUI<NFUISetting>();
     }
 
-    private void OnConfigIDChange(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar)
+    private void OnConfigIDChange(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar, Int64 reason)
     {
         /*
         string strConfigID = newVar.StringVal();
@@ -135,7 +136,7 @@ public class NFUIMain : NFUIDialog
         */
     }
 
-    private void OnHPChange(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar)
+    private void OnHPChange(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar, Int64 reason)
     {
         int maxHP = (int)mKernelModule.QueryPropertyInt(self, NFrame.Player.MAXHP);
         int hp = (int)mKernelModule.QueryPropertyInt(self, NFrame.Player.HP);

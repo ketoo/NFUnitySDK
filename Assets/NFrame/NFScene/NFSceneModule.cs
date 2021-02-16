@@ -268,7 +268,7 @@ namespace NFSDK
 
 				if (data.StringVal().Length > 0)
 				{
-					OnConfigIDChangeHandler(self, NFrame.Player.ConfigID, data, data);
+					OnConfigIDChangeHandler(self, NFrame.Player.ConfigID, data, data, 0);
 				}
 
                 mKernelModule.RegisterPropertyCallback(self, NFrame.Player.ConfigID, OnConfigIDChangeHandler);
@@ -349,7 +349,7 @@ namespace NFSDK
             return Vector3.zero;
         }
 
-        private void OnHPChangeHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar)
+        private void OnHPChangeHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar, Int64 reason)
         {
             if (newVar.IntVal() <= 0)
             {
@@ -381,7 +381,7 @@ namespace NFSDK
             }
         }
 
-        private void OnConfigIDChangeHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar)
+        private void OnConfigIDChangeHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar, Int64 reason)
         {
             Vector3 vec = GetRenderObjectPosition(self);
 

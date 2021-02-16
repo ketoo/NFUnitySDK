@@ -548,7 +548,8 @@ namespace NFrame
             SendMsg((int)NFMsg.EGameMsgID.ReqLagTest, mxBody);
         }
 
-        public void RequireSync(NFGUID objectID, UnityEngine.Vector3 vPos, int state)
+        //WSAD移动
+        public void RequireMove(NFGUID objectID, int nType, UnityEngine.Vector3 vPos)
         {
             NFMsg.ReqAckPlayerPosSync xData = new NFMsg.ReqAckPlayerPosSync();
 
@@ -558,7 +559,7 @@ namespace NFrame
             posSyncUnit.Pos.X = vPos.x;
             posSyncUnit.Pos.Y = vPos.y;
             posSyncUnit.Pos.Z = vPos.z;
-            posSyncUnit.Status = state;
+            posSyncUnit.Status = nType;
             xData.SyncUnit.Add(posSyncUnit);
 
             mxBody.SetLength(0);
@@ -595,7 +596,7 @@ namespace NFrame
             NFMsg.ReqAckUseSkill xData = new NFMsg.ReqAckUseSkill();
             xData.User = mHelpModule.NFToPB(objectID);
             xData.SkillId = ByteString.CopyFromUtf8(strKillID);
-            xData.UseIndex = index;
+            xData.ClientIndex = index;
 
             if (nTargetIDList != null)
             {

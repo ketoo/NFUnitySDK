@@ -5,6 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/NFRoot.unity
     guid: 7c4cee9415fb44542a2f25d934344d7a
@@ -14,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Resources/Scenes/villageScene2.unity
     guid: 1053c8203f7ad4de9b4e3ecc5ce74e47
+  - enabled: 1
+    path: Assets/Resources/Scenes/villageScene1000.unity
+    guid: 1d9cbedc376c24517b1c04e7cd662aeb
   m_configObjects: {}

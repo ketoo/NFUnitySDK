@@ -5,6 +5,7 @@ using NFSDK;
 using ECM.Controllers;
 using ECM.Common;
 using ECM.Components;
+using System;
 
 public sealed class NFHeroMotor : BaseCharacterController
 {
@@ -318,7 +319,7 @@ public sealed class NFHeroMotor : BaseCharacterController
 
     }
 
-    void PropertyEventHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar)
+    void PropertyEventHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar, Int64 reason)
     {
         this.runSpeed = newVar.IntVal() / 100.0f;
     }

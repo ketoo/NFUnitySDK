@@ -143,10 +143,7 @@ namespace NFrame
 
         }
 
-        public override void AfterInit()
-        {
-        }
-
+     
         public override void Execute()
         {
         }
@@ -241,7 +238,7 @@ namespace NFrame
                 string strClassName = xInfo.ClassId.ToStringUtf8();
                 string strConfigID = xInfo.ConfigId.ToStringUtf8();
 
-                Debug.Log("new Object enter: " + strClassName + xObjectID.ToString() + " " + xInfo.X + " " + xInfo.Y + " " + xInfo.Z);
+                Debug.Log("new Object enter: " + strClassName + " " + xObjectID.ToString() + " " + strConfigID  + " (" + xInfo.X + "," + xInfo.Y + "," + xInfo.Z + ")");
 
                 ObjectDataBuff xDataBuff = new ObjectDataBuff();
                 mxObjectDataBuff.Add(xObjectID, xDataBuff);
@@ -523,6 +520,7 @@ namespace NFrame
             {
                 string name = xData.PropertyList[i].PropertyName.ToStringUtf8();
                 Int64 data = xData.PropertyList[i].Data;
+                Int64 reason = xData.PropertyList[i].Reason;
 
                 NFIProperty property = propertyManager.GetProperty(name);
                 if (null == property)
@@ -531,7 +529,7 @@ namespace NFrame
                     property = propertyManager.AddProperty(name, var);
                 }
 
-                property.SetInt(data);
+                property.SetInt(data, reason);
             }
         }
 
@@ -552,6 +550,7 @@ namespace NFrame
             {
                 string name = xData.PropertyList[i].PropertyName.ToStringUtf8();
                 float data = xData.PropertyList[i].Data;
+                Int64 reason = xData.PropertyList[i].Reason;
 
                 NFIProperty property = propertyManager.GetProperty(name);
                 if (null == property)
@@ -560,7 +559,7 @@ namespace NFrame
                     property = propertyManager.AddProperty(name, var);
                 }
 
-                property.SetFloat(data);
+                property.SetFloat(data, reason);
             }
         }
 
@@ -583,6 +582,7 @@ namespace NFrame
             {
                 string name = xData.PropertyList[i].PropertyName.ToStringUtf8();
                 string data = xData.PropertyList[i].Data.ToStringUtf8();
+                Int64 reason = xData.PropertyList[i].Reason;
 
                 NFIProperty property = propertyManager.GetProperty(name);
                 if (null == property)
@@ -591,7 +591,7 @@ namespace NFrame
                     property = propertyManager.AddProperty(name, var);
                 }
 
-                property.SetString(data);
+                property.SetString(data, reason);
             }
         }
 
@@ -613,6 +613,7 @@ namespace NFrame
             {
                 string name = xData.PropertyList[i].PropertyName.ToStringUtf8();
                 NFMsg.Ident data = xData.PropertyList[i].Data;
+                Int64 reason = xData.PropertyList[i].Reason;
 
                 NFIProperty property = propertyManager.GetProperty(name);
                 if (null == property)
@@ -621,7 +622,7 @@ namespace NFrame
                     property = propertyManager.AddProperty(name, var);
                 }
 
-                property.SetObject(mHelpModule.PBToNF(data));
+                property.SetObject(mHelpModule.PBToNF(data), reason);
             }
         }
 
@@ -644,6 +645,7 @@ namespace NFrame
             {
                 string name = xData.PropertyList[i].PropertyName.ToStringUtf8();
                 NFMsg.Vector2 data = xData.PropertyList[i].Data;
+                Int64 reason = xData.PropertyList[i].Reason;
 
                 NFIProperty property = propertyManager.GetProperty(name);
                 if (null == property)
@@ -652,7 +654,7 @@ namespace NFrame
                     property = propertyManager.AddProperty(name, var);
                 }
 
-                property.SetVector2(mHelpModule.PBToNF(data));
+                property.SetVector2(mHelpModule.PBToNF(data), reason);
             }
         }
 
@@ -674,6 +676,7 @@ namespace NFrame
             {
                 string name = xData.PropertyList[i].PropertyName.ToStringUtf8();
                 NFMsg.Vector3 data = xData.PropertyList[i].Data;
+                Int64 reason = xData.PropertyList[i].Reason;
 
                 NFIProperty property = propertyManager.GetProperty(name);
                 if (null == property)
@@ -682,7 +685,7 @@ namespace NFrame
                     property = propertyManager.AddProperty(name, var);
                 }
 
-                property.SetVector3(mHelpModule.PBToNF(data));
+                property.SetVector3(mHelpModule.PBToNF(data), reason);
             }
         }
 
@@ -962,30 +965,23 @@ namespace NFrame
                  string strClassName = mKernelModule.QueryPropertyString(self, NFrame.IObject.ClassName);
                  NFIClass xLogicClass = mClassModule.GetElement(strClassName);
                  NFIRecord xStaticRecord = xLogicClass.GetRecordManager().GetRecord(strRecordName);
-                if (xStaticRecord != null)
+
+                 xRecord = xRecordManager.AddRecord(strRecordName, 512, varListDesc, xStaticRecord.GetTagData());
+             }
+
+             if (self.IsNull())
+             {
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < varListData.Count(); ++i)
                 {
-                    xRecord = xRecordManager.AddRecord(strRecordName, 512, varListDesc, xStaticRecord.GetTagData());
+                    stringBuilder.Append(varListData.GetData(i).ToString());
+                    stringBuilder.Append(";");
                 }
 
+                Debug.Log(strRecordName + " add row:" + stringBuilder.ToString());
+             }
 
-            }
-
-            if (null != xRecord)
-            {
-                if (self.IsNull())
-                {
-                    StringBuilder stringBuilder = new StringBuilder();
-                    for (int i = 0; i < varListData.Count(); ++i)
-                    {
-                        stringBuilder.Append(varListData.GetData(i).ToString());
-                        stringBuilder.Append(";");
-                    }
-
-                    Debug.Log(strRecordName + " add row:" + stringBuilder.ToString());
-                }
-
-                xRecord.AddRow(xAddStruct.Row, varListData);
-            }
+             xRecord.AddRow(xAddStruct.Row, varListData);
          }
 
         private void EGMI_ACK_ADD_ROW(int id, MemoryStream stream)
@@ -1021,15 +1017,12 @@ namespace NFrame
                 Debug.LogError("error id" + xData.PlayerId);
                 return;
             }
-
             NFIRecordManager recordManager = go.GetRecordManager();
             NFIRecord record = recordManager.GetRecord(xData.RecordName.ToStringUtf8());
-            if (record != null)
+
+            for (int i = 0; i < xData.RemoveRow.Count; i++)
             {
-                for (int i = 0; i < xData.RemoveRow.Count; i++)
-                {
-                    record.Remove(xData.RemoveRow[i]);
-                }
+                record.Remove(xData.RemoveRow[i]);
             }
         }
 
@@ -1070,7 +1063,6 @@ namespace NFrame
         /// 
         private void EGMI_ACK_MOVE(int id, MemoryStream stream)
         {
-            Debug.Log("Move " + Time.time);
      
             NFMsg.MsgBase xMsg = NFMsg.MsgBase.Parser.ParseFrom(stream);
 
@@ -1120,10 +1112,13 @@ namespace NFrame
                     Debug.LogError("xHeroSync " + Time.time);
                     return;
                 }
+
                 UnityEngine.Vector3 v = new UnityEngine.Vector3();
                 v.x = syncUnit.Pos.X;
                 v.y = syncUnit.Pos.Y;
                 v.z = syncUnit.Pos.Z;
+
+                Debug.Log("Move " + v);
 
                 if (syncUnit.Type == PosSyncUnit.Types.EMoveType.EmtWalk)
                 {
@@ -1135,7 +1130,7 @@ namespace NFrame
                 }
                 else if (syncUnit.Type == PosSyncUnit.Types.EMoveType.EetTeleport)
                 {
-                    xHeroMotor.MoveToImmune(v, 0.001f);
+                    xHeroMotor.MoveToImmune(v);
                 }
             }
         }
@@ -1160,8 +1155,12 @@ namespace NFrame
                 xHeroSync.Clear();
 
                 //NFHeroSkill xHeroSkill = xGameObject.GetComponent<NFHeroSkill>();
-                //xHeroSkill.AckSkill(xUser, xData.UseIndex, xData.SkillId.ToStringUtf8(), xData.EffectData.ToList<NFMsg.EffectData>());
+                //xHeroSkill.AckSkill(xUser, xData.ClientIndex, xData.ServerIndex, xData.SkillId.ToStringUtf8(), xData.EffectData.ToList<NFMsg.EffectData>());
             }
+        }
+
+        public override void AfterInit()
+        {
         }
     }
 }

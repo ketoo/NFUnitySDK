@@ -140,7 +140,7 @@ namespace NFSDK
             Dictionary<string, NFIClass> xTable = GetElementList();
             foreach (KeyValuePair<string, NFIClass> kv in xTable)
             {
-                LoadLogicClassProperty((string)kv.Key);
+                LoadLogicClassProperty(kv.Value, mstrPath + kv.Value.GetPath());
             }
 
             //再为每个类加载iobject的属性
@@ -148,7 +148,7 @@ namespace NFSDK
             {
                 if (kv.Key != "IObject")
                 {
-                    AddBasePropertyFormOther(kv.Key, "IObject");
+                    AddBasePropertyFormOther(kv.Value, "IObject");
                 }
             }
         }
@@ -158,17 +158,14 @@ namespace NFSDK
             Dictionary<string, NFIClass> xTable = GetElementList();
             foreach (KeyValuePair<string, NFIClass> kv in xTable)
             {
-                LoadLogicClassRecord(kv.Key);
+                LoadLogicClassRecord(kv.Value, mstrPath + kv.Value.GetPath());
             }
         }
 
-        private void LoadLogicClassProperty(string strName)
+        private void LoadLogicClassProperty(NFIClass xLogicClass, string strLogicPath)
         {
-            NFIClass xLogicClass = GetElement(strName);
             if (null != xLogicClass)
             {
-                string strLogicPath = mstrPath + xLogicClass.GetPath();
-
 				strLogicPath = strLogicPath.Replace (".xml", "");
 
 				TextAsset textAsset = (TextAsset) Resources.Load(strLogicPath); 
@@ -241,12 +238,10 @@ namespace NFSDK
             }
         }
 
-        private void LoadLogicClassRecord(string strName)
+        private void LoadLogicClassRecord(NFIClass xLogicClass, string strLogicPath)
         {
-            NFIClass xLogicClass = GetElement(strName);
             if (null != xLogicClass)
             {
-				string strLogicPath = mstrPath + xLogicClass.GetPath();
 				strLogicPath = strLogicPath.Replace (".xml", "");
 
 				TextAsset textAsset = (TextAsset) Resources.Load(strLogicPath); 
@@ -358,19 +353,18 @@ namespace NFSDK
                 {
                     XmlNode xPropertyNode = xNodeList.Item(i);
                     XmlAttribute strID = xPropertyNode.Attributes["Id"];
-                    int start = strID.Value.LastIndexOf('/') + 1;
-                    int end = strID.Value.LastIndexOf('.');
-                    string className = strID.Value.Substring(start, end - start);
+                    //int start = strID.Value.LastIndexOf('/') + 1;
+                    //int end = strID.Value.LastIndexOf('.');
+                    //string className = strID.Value.Substring(start, end - start);
 
-                    xLogicClass.AddIncludeFile(className);
+                    xLogicClass.AddIncludeFile(strID.Value);
                 }
             }
         }
 
-        void AddBasePropertyFormOther(string strName, string strOther)
+        void AddBasePropertyFormOther(NFIClass xLogicClass, string strOther)
         {
             NFIClass xOtherClass = GetElement(strOther);
-            NFIClass xLogicClass = GetElement(strName);
             if (null != xLogicClass && null != xOtherClass)
             {
                 NFDataList xValue = xOtherClass.GetPropertyManager().GetPropertyList();
@@ -382,10 +376,9 @@ namespace NFSDK
             }
         }
 
-        void AddBaseRecordFormOther(string strName, string strOther)
+        void AddBaseRecordFormOther(NFIClass xLogicClass, string strOther)
         {
             NFIClass xOtherClass = GetElement(strOther);
-            NFIClass xLogicClass = GetElement(strName);
             if (null != xLogicClass && null != xOtherClass)
             {
                 NFDataList xValue = xOtherClass.GetRecordManager().GetRecordList();
@@ -412,8 +405,8 @@ namespace NFSDK
             List<string> includeFiles = classObject.GetIncludeFileList();
             foreach (var item in includeFiles)
             {
-                AddBasePropertyFormOther(classObject.GetName(), item);
-                AddBaseRecordFormOther(classObject.GetName(), item);
+                LoadLogicClassProperty(classObject, item);
+                LoadLogicClassRecord(classObject, item);
             }
         }
 

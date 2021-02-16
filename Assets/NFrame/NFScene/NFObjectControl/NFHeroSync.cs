@@ -129,7 +129,7 @@ public class NFHeroSync : MonoBehaviour
     {
         if (lastReportTime <= 0f)
         {
-            mNetModule.RequireSync(mLoginModule.mRoleID, mxHeroMotor.transform.position, (int)NFAnimaStateType.NONE);
+            mNetModule.RequireMove(mLoginModule.mRoleID, (int)NFAnimaStateType.NONE, mxHeroMotor.transform.position);
         }
 
         if (Time.time > (SYNC_TIME + lastReportTime))
@@ -153,7 +153,7 @@ public class NFHeroSync : MonoBehaviour
                         canFixFrame = false;
                     }
 
-                    mNetModule.RequireSync(mLoginModule.mRoleID, lastPos, (int)mAnimaStateMachine.CurState());
+                    mNetModule.RequireMove(mLoginModule.mRoleID, (int)mAnimaStateMachine.CurState(), lastPos);
                 }
                 else
                 {
@@ -161,7 +161,7 @@ public class NFHeroSync : MonoBehaviour
                     if (canFixFrame)
                     {
                         canFixFrame = false;
-                        mNetModule.RequireSync(mLoginModule.mRoleID, lastPos, (int)mAnimaStateMachine.CurState());
+                        mNetModule.RequireMove(mLoginModule.mRoleID, (int)mAnimaStateMachine.CurState(), lastPos);
                     }
                 }
             }

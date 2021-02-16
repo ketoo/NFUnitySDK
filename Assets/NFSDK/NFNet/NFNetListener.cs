@@ -91,7 +91,7 @@ namespace NFSDK
 
     public class NFNetListener
     {      
-		private NFStringRingBuffer mPacket = new NFStringRingBuffer(ConstDefine.MAX_PACKET_LEN);
+		private NFStringRingBuffer mPacket = new NFStringRingBuffer(ConstDefine.MAX_PACKET_LEN, true);
 
 		public delegate void EventDelegation(NFNetEventType eventType);
 		private EventDelegation mHandlerDelegation;
@@ -150,7 +150,7 @@ namespace NFSDK
                 {
 					if (head.DeCode())
 					{
-						if (head.unDataLen == mPacket.Size())
+						if (head.unDataLen == mPacket.Size() - ConstDefine.NF_PACKET_HEAD_SIZE)
 						{
 							body_and_head.Clear();
 							body_and_head.Push(mPacket, (int)head.unDataLen);
@@ -160,7 +160,7 @@ namespace NFSDK
 								OnClientDisconnect(new NFNetEventParams());
 							}
 						}
-						else if (mPacket.Size() > head.unDataLen)
+						else if (mPacket.Size() > head.unDataLen - ConstDefine.NF_PACKET_HEAD_SIZE)
 						{
 							body_and_head.Clear();
 							body_and_head.Push(mPacket, (int)head.unDataLen);
@@ -177,6 +177,7 @@ namespace NFSDK
 			}
 		}
 
+		//a whole message
 		bool OnDataReceived(NFStringRingBuffer sb)
 		{
 			head.Reset();

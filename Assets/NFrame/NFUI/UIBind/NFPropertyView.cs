@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using NFrame;
 using NFSDK;
+using System;
 
 public class NFPropertyView : MonoBehaviour {
 
@@ -60,7 +61,7 @@ public class NFPropertyView : MonoBehaviour {
             if (property != null)
             {
                 NFDataList.TData data = property.GetData();
-                PropertyEventHandler(bindID, propertyName, null, data);
+                PropertyEventHandler(bindID, propertyName, null, data, 0);
             }
         }
         else
@@ -109,7 +110,7 @@ public class NFPropertyView : MonoBehaviour {
 		}
 	}
 
-	void PropertyEventHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar)
+	void PropertyEventHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar, Int64 reason)
 	{
 		NFIProperty xProperty = mkernelModule.FindProperty(self, propertyName);
 		NFDataList.TData data = xProperty.GetData();

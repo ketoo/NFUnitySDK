@@ -148,7 +148,7 @@ namespace NFSDK
             return NFDataList.NULL_VECTOR3;
         }
 
-        public override bool SetInt(Int64 value)
+        public override bool SetInt(Int64 value, Int64 reason = 0)
 		{
 			if (NFDataList.VARIANT_TYPE.VTYPE_INT != mxData.GetType ())
 			{
@@ -173,7 +173,7 @@ namespace NFSDK
 
                 if (null != doHandleDel)
                 {
-                    doHandleDel(mSelf, msPropertyName, oldValue, newValue);
+                    doHandleDel(mSelf, msPropertyName, oldValue, newValue, reason);
                 }
 				
 			}
@@ -181,7 +181,7 @@ namespace NFSDK
 			return true;
 		}
 
-		public override bool SetFloat(double value)
+		public override bool SetFloat(double value, Int64 reason = 0)
 		{
 			if (NFDataList.VARIANT_TYPE.VTYPE_FLOAT != mxData.GetType ())
 			{
@@ -201,14 +201,14 @@ namespace NFSDK
 
                 if (null != doHandleDel)
                 {
-                    doHandleDel(mSelf, msPropertyName, oldValue, newValue);
+                    doHandleDel(mSelf, msPropertyName, oldValue, newValue, reason);
                 }
 			}
 
 			return true;
 		}
 
-		public override bool SetString(string value)
+		public override bool SetString(string value, Int64 reason = 0)
 		{
 			if (NFDataList.VARIANT_TYPE.VTYPE_STRING != mxData.GetType ())
 			{
@@ -226,14 +226,14 @@ namespace NFSDK
 
                 if (null != doHandleDel)
                 {
-                    doHandleDel(mSelf, msPropertyName, oldValue, newValue);
+                    doHandleDel(mSelf, msPropertyName, oldValue, newValue, reason);
                 }
             }
 
 			return true;
 		}
 
-		public override bool SetObject(NFGUID value)
+		public override bool SetObject(NFGUID value, Int64 reason = 0)
 		{
 			if (NFDataList.VARIANT_TYPE.VTYPE_OBJECT != mxData.GetType ())
 			{
@@ -252,14 +252,14 @@ namespace NFSDK
 
                 if (null != doHandleDel)
                 {
-                    doHandleDel(mSelf, msPropertyName, oldValue, newValue);
+                    doHandleDel(mSelf, msPropertyName, oldValue, newValue, reason);
                 }
             }
 
 			return true;
 		}
 
-        public override bool SetVector2(NFVector2 value)
+        public override bool SetVector2(NFVector2 value, Int64 reason = 0)
         {
 			if (NFDataList.VARIANT_TYPE.VTYPE_VECTOR2 != mxData.GetType ())
 			{
@@ -278,14 +278,14 @@ namespace NFSDK
 
                 if (null != doHandleDel)
                 {
-                    doHandleDel(mSelf, msPropertyName, oldValue, newValue);
+                    doHandleDel(mSelf, msPropertyName, oldValue, newValue, reason);
                 }
             }
 
             return true;
         }
 
-        public override bool SetVector3(NFVector3 value)
+        public override bool SetVector3(NFVector3 value, Int64 reason = 0)
         {
 			if (NFDataList.VARIANT_TYPE.VTYPE_VECTOR3 != mxData.GetType ())
 			{
@@ -304,7 +304,7 @@ namespace NFSDK
 
                 if (null != doHandleDel)
                 {
-                    doHandleDel(mSelf, msPropertyName, oldValue, newValue);
+                    doHandleDel(mSelf, msPropertyName, oldValue, newValue, reason);
                 }
             }
 
@@ -353,7 +353,7 @@ namespace NFSDK
             if (null != handler)
             {
                 NFDataList.TData oldValue = new NFDataList.TData(mxData);
-                handler(mSelf, msPropertyName, oldValue, oldValue);
+                handler(mSelf, msPropertyName, oldValue, oldValue, 0);
             }
         }
 

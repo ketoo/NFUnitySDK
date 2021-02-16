@@ -5,7 +5,7 @@ using NFSDK;
 using ECM.Controllers;
 using ECM.Common;
 using ECM.Components;
-
+using System;
 
 public class NFHeroInput : MonoBehaviour
 {
@@ -47,14 +47,14 @@ public class NFHeroInput : MonoBehaviour
         mHeroMotor.angularSpeed = 0f;
     }
 
-    public void PropertyMoveSpeedHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar)
+    public void PropertyMoveSpeedHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar, Int64 reason)
     {
         //set the animations's speed
         //run
         //walk
     }
 
-    public void PropertyAttackSpeedHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar)
+    public void PropertyAttackSpeedHandler(NFGUID self, string strProperty, NFDataList.TData oldVar, NFDataList.TData newVar, Int64 reason)
     {
         //set the animations's speed
         //normally attack1
